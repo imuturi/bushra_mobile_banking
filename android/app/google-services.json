@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "500200458846",
+    "project_id": "bushra-mobile-d40e2",
+    "storage_bucket": "bushra-mobile-d40e2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500200458846:android:f6a32955b70844983d82cf",
+        "android_client_info": {
+          "package_name": "com.bbbank.so.bushra_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNeYDE5uOY5utJNeSd95f3hYpgOQTmQl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
