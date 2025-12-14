@@ -31,13 +31,18 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool notificationFlag = false;
-  bool alertFlag = false;
+  bool alertFlag = true;
   bool biometricsFlag = false;
   String _appVersion = '';
 
   bool? _canCheckBiometrics;
   List<BiometricType>? _availableBiometrics;
   final LocalAuthentication auth = LocalAuthentication();
+
+  static const String KEY_NOTIFICATIONS_ENABLED = 'NOTIFICATIONS_ENABLED';
+  static const String KEY_TRANSACTION_ALERT_ENABLED = 'TRANSACTION_ALERT_ENABLED';
+
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -149,10 +154,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _loadSecureStorage() async {
-    final secureStorage = const FlutterSecureStorage();
-    String? biometricsEnabled = await secureStorage.read(key: 'BIOMETRICS_ENABLED');
+    final biometricsEnabled =
+    await _secureStorage.read(key: 'BIOMETRICS_ENABLED');
+    final notificationsEnabled =
+    await _secureStorage.read(key: KEY_NOTIFICATIONS_ENABLED);
+    final transactionAlertEnabled =
+    await _secureStorage.read(key: KEY_TRANSACTION_ALERT_ENABLED);
+
     setState(() {
-      biometricsFlag = biometricsEnabled == 'true'; // default false
+      biometricsFlag = biometricsEnabled == 'true';
+      notificationFlag = notificationsEnabled == 'true';
+      alertFlag = transactionAlertEnabled == 'true';
     });
   }
 
@@ -602,11 +614,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         scale: 0.5, // Adjust to your preferred size
                                         child: Switch(
                                           value: notificationFlag,
-                                          onChanged: (value) {
-                                            setState(() => notificationFlag = value);
+                                          onChanged: (value) async {
                                             if (value) {
-                                              showDialog(context: context, builder: (_) => const ComingSoonDialog());
+
+                                              await _secureStorage.write(
+                                                key: KEY_NOTIFICATIONS_ENABLED,
+                                                value: 'true',
+                                              );
+                                            } else {
+                                              await _secureStorage.write(
+                                                key: KEY_NOTIFICATIONS_ENABLED,
+                                                value: 'false',
+                                              );
                                             }
+
+                                            setState(() => notificationFlag = value);
                                           },
                                           activeColor: Colors.red.shade900,
                                         ),
@@ -621,14 +643,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     children: [
                                       const Text('Transaction Alert', style: TextStyle(fontSize: 11)),
                                       Transform.scale(
-                                        scale: 0.5, // Adjust to your preferred size
+                                        scale: 0.5,
                                         child: Switch(
                                           value: alertFlag,
-                                          onChanged: (value) {
+                                          onChanged: (value) async {
+                                            await _secureStorage.write(
+                                              key: KEY_TRANSACTION_ALERT_ENABLED,
+                                              value: value.toString(),
+                                            );
+
                                             setState(() => alertFlag = value);
-                                            if (value) {
-                                              showDialog(context: context, builder: (_) => const ComingSoonDialog());
-                                            }
                                           },
                                           activeColor: Colors.red.shade900,
                                         ),
