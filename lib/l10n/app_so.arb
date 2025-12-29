@@ -1,0 +1,33 @@
+{
+  "@@locale": "so",
+  "appName": "Bushra Mobile",
+  "welcome": "Soo dhawoow",
+  "login": "Gali",
+  "signup": "Is-diiwaan geli",
+  "home": "Guri",
+  "dashboard": "Dashboard",
+  "accounts": "Akoonada",
+  "transfers": "Lacag dhaafka",
+  "payments": "Lacag bixinta",
+  "settings": "Dejinta",
+  "logout": "Ka bax",
+  "email": "Ii-meel",
+  "password": "Furaha",
+  "confirmPassword": "Xaqiiji Furaha",
+  "phoneNumber": "Lambarka Taleefanka",
+  "submit": "Gudbi",
+  "cancel": "Jooji",
+  "save": "Kaydi",
+  "delete": "Tirtir",
+  "edit": "Wax ka badal",
+  "search": "Raadi",
+  "loading": "Socda...",
+  "error": "Khalad",
+  "success": "Guul",
+  "retry": "Isku day mar kale",
+  "noInternet": "Xiriirka Internetka ma jiro",
+  "tryAgain": "Isku day mar kale",
+  "@appName": {
+    "description": "Magaca app-ka"
+  }
+}
