@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class SuccessAlertDialog extends StatelessWidget {
   final String messageParent;
   final String message;
@@ -48,7 +50,7 @@ class SuccessAlertDialog extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
                 minimumSize: const Size(double.infinity, 50),
               ),
-              child: const Text("OKAY", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              child:  Text(AppLocalizations.of(context)!.okay, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
             ),
           ],
         ),

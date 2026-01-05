@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class SuccessTransactionData {
   final String title;
   final String dateTime;
@@ -106,7 +108,7 @@ class SuccessReceiptDialog extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Total Transaction",
+                                  AppLocalizations.of(context)!.totalTransaction,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontSizeDetail,
@@ -133,7 +135,7 @@ class SuccessReceiptDialog extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(vertical: 12),
                                   ),
                                   onPressed: isLoading ? null : onShare,
-                                  label: const Text("Share", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                  label: Text(AppLocalizations.of(context)!.share, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                                   icon: const Icon(Icons.share, size: 16, color: Colors.white),
                                 ),
                               ),
@@ -145,7 +147,7 @@ class SuccessReceiptDialog extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(vertical: 12),
                                   ),
                                   onPressed: isLoading ? null : onConfirmed,
-                                  label: const Text("Done", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                  label: Text(AppLocalizations.of(context)!.done, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                                   icon: const Icon(Icons.check, size: 16, color: Colors.white),
                                 ),
                               ),
