@@ -10,6 +10,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../change-pin/change-pin-old.dart';
+import '../l10n/app_localizations.dart';
 import '../register/landing-register-5-activate-screen.dart';
 import '../remote-config-services.dart';
 import '../utils/api-customer-accounts.dart';
@@ -131,8 +132,8 @@ class _PinInputLoginScreenState extends State<PinInputLoginScreen> {
                   size: 30,
                 ),
                 const SizedBox(width: 10),
-                const Text(
-                  'No Internet Connection',
+                Text(
+                  AppLocalizations.of(context)!.noInternetConnection,
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -173,7 +174,7 @@ class _PinInputLoginScreenState extends State<PinInputLoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: const Duration(seconds: 10), // Set to any duration
+        duration: const Duration(seconds: 10),
         backgroundColor: color,
         action: SnackBarAction(
           label: "DISMISS",
@@ -444,7 +445,7 @@ class _PinInputLoginScreenState extends State<PinInputLoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Enter PIN',
+                      AppLocalizations.of(context)!.enterPin,
                       style: TextStyle(
                         fontSize: isPortrait ? 18 : 16,
                         fontWeight: FontWeight.bold,
@@ -535,7 +536,7 @@ class _PinInputLoginScreenState extends State<PinInputLoginScreen> {
                     ),
                     const Divider(thickness: 1, indent: 32, endIndent: 32),
                     Text(
-                      'Use Biometrics',
+                      AppLocalizations.of(context)!.useBiometrics,
                       style: TextStyle(color: Colors.blue.shade900, fontSize: 12),
                     ),
                     Wrap(
@@ -545,7 +546,7 @@ class _PinInputLoginScreenState extends State<PinInputLoginScreen> {
                         OutlinedButton.icon(
                           onPressed: _authenticate,
                           icon: Icon(Icons.fingerprint, color: Colors.indigo.shade900),
-                          label: const Text('Login with fingerprint', style: TextStyle(fontSize: 10)),
+                          label: Text(AppLocalizations.of(context)!.loginWithFingerprint, style: TextStyle(fontSize: 10)),
                         ),
                         OutlinedButton.icon(
                           onPressed: _authenticate,
@@ -555,7 +556,7 @@ class _PinInputLoginScreenState extends State<PinInputLoginScreen> {
                             height: 26,
                             colorFilter: ColorFilter.mode(Colors.indigo.shade900, BlendMode.srcIn),
                           ),
-                          label: const Text('Login with face ID', style: TextStyle(fontSize: 10)),
+                          label: Text(AppLocalizations.of(context)!.loginWithFaceId, style: TextStyle(fontSize: 10)),
                         ),
                       ],
                     ),

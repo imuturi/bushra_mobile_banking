@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-accounts.dart';
 import '../utils/providers/provider-balances.dart';
 import '../utils/providers/provider-session.dart';
@@ -89,9 +90,9 @@ class _MyAccountsScreenState extends State<MyAccountsScreen> {
                   icon: const Icon(Icons.arrow_back, color: Colors.black),
                 ),
                 const SizedBox(width: 8),
-                const Expanded(
+                 Expanded(
                   child: Text(
-                    'My Accounts',
+                    AppLocalizations.of(context)!.myAccounts,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
@@ -130,7 +131,7 @@ class _MyAccountsScreenState extends State<MyAccountsScreen> {
                 ),
               ),
               child: Text(
-                'Normal Accounts',
+                AppLocalizations.of(context)!.normalAccounts,
                 style: TextStyle(
                   color: isNormalAccountSelected
                       ? Colors.white
@@ -157,7 +158,7 @@ class _MyAccountsScreenState extends State<MyAccountsScreen> {
                 ),
               ),
               child: Text(
-                'Wallet Accounts',
+                AppLocalizations.of(context)!.walletAccounts,
                 style: TextStyle(
                   color: !isNormalAccountSelected
                       ? Colors.white
@@ -210,7 +211,7 @@ class _MyAccountsScreenState extends State<MyAccountsScreen> {
             );
           },
           separatorBuilder: (context, index) {
-            return const SizedBox(height: 16); // Add space between items
+            return const SizedBox(height: 16);
           },
         );
       },
@@ -288,7 +289,7 @@ class _AccountCardState extends State<AccountCard> {
     Clipboard.setData(ClipboardData(text: widget.iban));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('IBAN copied to clipboard'),
+        content: Text(AppLocalizations.of(context)!.ibanCopiedToClipboard),
         duration: Duration(seconds: 2),
       ),
     );
@@ -377,8 +378,8 @@ class _AccountCardState extends State<AccountCard> {
                 Expanded(
                   child: Column(
                     children: [
-                      const Text(
-                        'Available Balance',
+                       Text(
+                        AppLocalizations.of(context)!.availableBalance,
                         style: TextStyle(color: Colors.white),
                       ),
                       Text(
@@ -396,23 +397,23 @@ class _AccountCardState extends State<AccountCard> {
                   height: 40,
                   color: Colors.white.withOpacity(0.5),
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      const Text(
-                        'Actual Balance',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        _isBalanceVisible
-                            ? '${widget.currency} ${NumberFormat("#,##0.00").format(widget.actualBalance)}'
-                            : '********',
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                ),
+                // Expanded(
+                //   child: Column(
+                //     children: [
+                //       const Text(
+                //         'Actual Balance',
+                //         style: TextStyle(color: Colors.white),
+                //       ),
+                //       Text(
+                //         _isBalanceVisible
+                //             ? '${widget.currency} ${NumberFormat("#,##0.00").format(widget.actualBalance)}'
+                //             : '********',
+                //         style: const TextStyle(
+                //             color: Colors.white, fontWeight: FontWeight.bold),
+                //       )
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -430,8 +431,8 @@ class _AccountCardState extends State<AccountCard> {
                     backgroundColor: Colors.red.shade800,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
-                  child: const Text(
-                    'Check Balance',
+                  child:  Text(
+                    AppLocalizations.of(context)!.checkBalance,
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -450,8 +451,8 @@ class _AccountCardState extends State<AccountCard> {
                     backgroundColor: Colors.red.shade800,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
-                  child: const Text(
-                    'View Statement',
+                  child:  Text(
+                    AppLocalizations.of(context)!.viewStatement,
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

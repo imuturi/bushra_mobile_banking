@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../l10n/app_localizations.dart';
 import '../remote-config-services.dart';
 import '../utils/api-login.dart';
 import '../utils/dto/api-request-security-questions-verification.dart';
@@ -40,13 +41,13 @@ class _LoginSecurityQuestionsState extends State<LoginSecurityQuestions> {
   void _onContinue(String phone) {
     if (_selectedQuestionId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select a security question")),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectASecurityQuestion)),
       );
       return;
     }
     if (_answerController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please provide your answer")),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseProvideYourAnswer)),
       );
       return;
     }
@@ -91,8 +92,7 @@ class _LoginSecurityQuestionsState extends State<LoginSecurityQuestions> {
           ),
           Container(
               margin: const EdgeInsets.only(left: 7),
-              child:const Text('We are verifying your answer \n Please Wait...'
-              )
+              child: Text(AppLocalizations.of(context)!.weAreVerifyingYourAnswerNPleaseWait)
           ),
         ],),
     );
@@ -115,7 +115,7 @@ class _LoginSecurityQuestionsState extends State<LoginSecurityQuestions> {
             children: <Widget>[
               Image.asset('assets/images/icons/success-check.png', width: 70,),
               const SizedBox(height: 18),
-              const Text('Verification successfully',
+              Text(AppLocalizations.of(context)!.verificationSuccessfully,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
@@ -123,7 +123,7 @@ class _LoginSecurityQuestionsState extends State<LoginSecurityQuestions> {
                 ),
               ),
               const SizedBox(height: 12),
-              const Text('You can now proceed login to your account'),
+              Text(AppLocalizations.of(context)!.youCanNowProceedLoginToYourAccount),
             ],
           ),
           actions: <Widget>[
@@ -145,7 +145,7 @@ class _LoginSecurityQuestionsState extends State<LoginSecurityQuestions> {
                   await prefs.setString('IS_ACCOUNT_ACTIVATED', 'FALSE');
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const PinInputLoginScreen()),);
                 },
-                child: const Text('ACTIVATE',
+                child: Text(AppLocalizations.of(context)!.activate,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -165,7 +165,7 @@ class _LoginSecurityQuestionsState extends State<LoginSecurityQuestions> {
       setState(() {
         isLoading = true;
       });
-      showCrossingBallsProgressDialog(context, 'We are verifying your answer \n Please Wait...');
+      showCrossingBallsProgressDialog(context, AppLocalizations.of(context)!.weAreVerifyingYourAnswerNPleaseWait,);
       String deviceId = await DeviceIdentifier.getDeviceIdentifier();
       final response = await apiLogin.customerSecurityQuestionVerify(
         SecurityQuestionValidationRequest(
@@ -255,8 +255,8 @@ class _LoginSecurityQuestionsState extends State<LoginSecurityQuestions> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Security question',
+        title: Text(
+            AppLocalizations.of(context)!.securityQuestion,
           style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -266,8 +266,8 @@ class _LoginSecurityQuestionsState extends State<LoginSecurityQuestions> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Please select and answer one of your security questions.',
+             Text(
+              AppLocalizations.of(context)!.pleaseSelectAndAnswerOneOfYourSecurityQuestions,
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w100),
             ),
             const SizedBox(height: 22),
@@ -297,8 +297,8 @@ class _LoginSecurityQuestionsState extends State<LoginSecurityQuestions> {
             // Answer input
             TextField(
               controller: _answerController,
-              decoration: const InputDecoration(
-                hintText: "Give your answer here",
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.giveYourAnswerHere,
                 border: OutlineInputBorder(),
               ),
             ),

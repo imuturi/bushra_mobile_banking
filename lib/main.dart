@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bushra_mobile/page-landing/page-home-landing-login.dart';
 import 'package:bushra_mobile/page-landing/page-home-splash.dart';
+import 'package:bushra_mobile/providers/local_provider.dart';
 import 'package:bushra_mobile/remote-config-services.dart';
 import 'package:bushra_mobile/security/blocked_device_screen.dart';
 import 'package:bushra_mobile/security/jail-break-check.dart';
@@ -20,16 +21,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'change-pin/forgot-pin-set-pin/page-forgot-pin.dart';
 import 'home/page-home.dart';
+import 'l10n/app_localizations.dart';
+import 'localization/somali_localizations_delegate.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   //TODO - Initialize Provider in main.dart
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final localeProvider = LocaleProvider();
+  await localeProvider.loadLocale();
+
   runApp(
     MultiProvider(
       providers: [
@@ -42,6 +51,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FavouritesProvider()),
         ChangeNotifierProvider(create: (_) => FavoriteTransferDataProvider()),
         ChangeNotifierProvider(create: (_) => NotificationServiceProvider()),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
       ],
       child: MyApp(),
     ),
@@ -170,9 +180,34 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final sessionProvider = Provider.of<SessionProvider>(context);
+    final localeProvider = context.watch<LocaleProvider>();
     return MaterialApp(
       navigatorKey: navigatorKey,
       title: 'Bushra Mobile App',
+        locale: localeProvider.locale,
+        supportedLocales: const [
+          Locale('en'),
+          Locale('so'),
+        ],
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          // Use custom delegates for Somali, fallback to English for others
+          localeProvider.locale.languageCode == 'so'
+              ? SomaliMaterialLocalizationsDelegate()
+              : GlobalMaterialLocalizations.delegate,
+          localeProvider.locale.languageCode == 'so'
+              ? SomaliWidgetsLocalizationsDelegate()
+              : GlobalWidgetsLocalizations.delegate,
+          localeProvider.locale.languageCode == 'so'
+              ? SomaliCupertinoLocalizationsDelegate()
+              : GlobalCupertinoLocalizations.delegate,
+        ],
+        // localizationsDelegates: const [
+        //   AppLocalizations.delegate,
+        //   GlobalMaterialLocalizations.delegate,
+        //   GlobalWidgetsLocalizations.delegate,
+        //   GlobalCupertinoLocalizations.delegate,
+        // ],
       theme: ThemeData(
         dividerColor: const Color(0xFFECEDF1),
         brightness: Brightness.light,
