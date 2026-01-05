@@ -27,6 +27,7 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
   bool _isFrontSide = true;
   File? _frontImage;
   File? _backImage;
+  bool _showInstructions = true;
 
   @override
   void initState() {
@@ -150,6 +151,7 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
                     ],
                   ),
                 ),
+                if (_showInstructions)
                 Container(
                   padding: const EdgeInsets.all(12),
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -167,7 +169,9 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
                       const SizedBox(height: 8),
                       ElevatedButton(
                         onPressed: () {
-                          //TODO
+                          setState(() {
+                            _showInstructions = false;
+                          });
                         },
                         style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade900),
                         child: const Text("GOT IT", style: TextStyle(color: Colors.white)),
@@ -210,7 +214,7 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
           color: isActive ? Colors.purple.shade900 : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(18),
         ),
         child: Text(
           label,

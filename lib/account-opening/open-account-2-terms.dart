@@ -105,6 +105,7 @@ class _OpenAccountTermsStateScreenState extends State<OpenAccountTerms> {
               children: [
                 PdfView(
                   controller: _pdfController!,
+                  scrollDirection: Axis.vertical,
                   onPageChanged: (page) {
                     setState(() {
                       _currentPage = page;
