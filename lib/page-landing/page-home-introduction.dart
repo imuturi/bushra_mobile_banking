@@ -8,6 +8,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../l10n/app_localizations.dart';
+
 class HomeOnBoarding extends StatefulWidget {
   const HomeOnBoarding({super.key});
 
@@ -213,7 +215,7 @@ class _HomeOnBoardingState extends State<HomeOnBoarding> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "GET STARTED",
+                                  AppLocalizations.of(context)!.getStarted,
                                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.red.shade900),
                                 ),
                               ),
@@ -304,8 +306,8 @@ class _CheckboxDialogState extends State<CheckboxDialog> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'Grant Permission',
+                 Text(
+                  AppLocalizations.of(context)!.grantPermission,
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black,
@@ -314,8 +316,8 @@ class _CheckboxDialogState extends State<CheckboxDialog> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  "To have a better experience with our product\nGive permission to the following",
+                Text(
+                  AppLocalizations.of(context)!.toHaveABetterExperienceWithOurProductngivePermissionToTheFollowing,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,

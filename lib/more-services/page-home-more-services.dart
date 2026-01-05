@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../sps/sps-merchant-screen.dart';
 import '../standing-order/page-home-sto.dart';
 import '../term-deposits/page-home-term-deposit.dart';
@@ -63,7 +64,7 @@ class _MoreServicesScreenState extends State<MoreServicesScreen> {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2101),
       builder: (context, child) {
         return Theme(
@@ -162,7 +163,7 @@ class _MoreServicesScreenState extends State<MoreServicesScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('More Services'),
+        title:  Text(AppLocalizations.of(context)!.moreServices),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -299,13 +300,13 @@ class _MoreServicesScreenState extends State<MoreServicesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Callback request',
+                   Text(
+                    AppLocalizations.of(context)!.callbackRequest,
                     style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16.0),
-                  const Text(
-                    'Confirm the date for callback',
+                   Text(
+                    AppLocalizations.of(context)!.confirmTheDateForCallback,
                     style: TextStyle(fontSize: 12.0, color: Colors.grey),
                   ),
                   const SizedBox(height: 8.0),
@@ -339,8 +340,8 @@ class _MoreServicesScreenState extends State<MoreServicesScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: const Text(
-                            'CANCEL',
+                          child:  Text(
+                            AppLocalizations.of(context)!.cancel,
                             style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -356,7 +357,7 @@ class _MoreServicesScreenState extends State<MoreServicesScreen> {
                             final email = user?.customerDetails.emailAddress;
                             if (phoneNumber == null || email == null || callbackDateTime.isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('User information is not available')),
+                                 SnackBar(content: Text(AppLocalizations.of(context)!.userInformationIsNotAvailable)),
                               );
                               return;
                             }
@@ -372,8 +373,8 @@ class _MoreServicesScreenState extends State<MoreServicesScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: const Text(
-                            'CONFIRM',
+                          child:  Text(
+                            AppLocalizations.of(context)!.confirm,
                             style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         ),

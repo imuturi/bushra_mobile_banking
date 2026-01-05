@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/providers/provider-notifications.dart';
 
 class AlertsScreen extends StatefulWidget {
@@ -31,8 +32,8 @@ class _AlertsScreenState extends State<AlertsScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          "Alerts",
+        title: Text(
+          AppLocalizations.of(context)!.alerts,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16.0,
@@ -82,7 +83,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               color: _selectedTab == 0 ? Colors.indigo.shade900 : Colors.white,
                               child: Text(
-                                "Notifications",
+                                AppLocalizations.of(context)!.notifications,
                                 style: TextStyle(
                                   color: _selectedTab == 0 ? Colors.white : Colors.indigo.shade900,
                                   fontWeight: FontWeight.bold,
@@ -99,7 +100,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               color: _selectedTab == 1 ? Colors.indigo.shade900 : Colors.white,
                               child: Text(
-                                "Request",
+                                AppLocalizations.of(context)!.request,
                                 style: TextStyle(
                                   color: _selectedTab == 1 ? Colors.white : Colors.indigo.shade900,
                                   fontWeight: FontWeight.bold,
@@ -127,7 +128,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
       builder: (context, provider, _) {
         final alerts = provider.alerts;
         if (alerts.isEmpty) {
-          return const Center(child: Text("No notifications"));
+          return Center(child: Text(AppLocalizations.of(context)!.noNotifications));
         }
         return ListView.builder(
           padding: const EdgeInsets.all(16),
@@ -198,7 +199,8 @@ class _AlertsScreenState extends State<AlertsScreen> {
                                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 ),
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: const Text("Close", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                                // child: const Text("Close", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                                child:  Text(AppLocalizations.of(context)!.close, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                               ),
                             ),
                           ],
@@ -291,7 +293,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
       padding: const EdgeInsets.all(16),
       children: [
         ExpansionTile(
-          title: const Text("Approve funds requested ",
+          title: Text(AppLocalizations.of(context)!.approveFundsRequested,
             style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
           ),
           children: [
@@ -329,7 +331,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "No request for funds at the moment",
+                    AppLocalizations.of(context)!.noRequestForFundsAtTheMoment,
                     style: TextStyle(fontSize: 14, color: Colors.grey.shade600, fontWeight: FontWeight.normal),
                   ),
                   const SizedBox(height: 8),

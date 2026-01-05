@@ -4,6 +4,7 @@ import 'package:bushra_mobile/page-landing/page-home-landing-support.dart';
 import 'package:bushra_mobile/register/landing-register-7-terms-conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../l10n/app_localizations.dart';
 import '../login/landing-login-3-login.dart';
 
 //TODO - THIS IS THE MAIN 2 (LOGIN )LANDING AFTER SUCCESSFUL REGISTRATION + LOGIN
@@ -85,7 +86,7 @@ class _LandingPageLoginState extends State<LandingPageLogin> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Your Personal Bank',
+                                  AppLocalizations.of(context)!.yourPersonalBank,
                                   style: TextStyle(
                                     fontSize: size.width * 0.035,
                                     color: Colors.red.shade900,
@@ -119,7 +120,7 @@ class _LandingPageLoginState extends State<LandingPageLogin> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'Enjoy your personal bank account, your phone is your bank.',
+                                AppLocalizations.of(context)!.enjoyYourPersonalBankAccountYourPhoneIsYourBank,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: size.width * 0.03,
@@ -135,7 +136,7 @@ class _LandingPageLoginState extends State<LandingPageLogin> {
                                   _actionButton(
                                     context: context,
                                     icon: Icons.account_balance,
-                                    label: 'Open Account',
+                                    label: AppLocalizations.of(context)!.openAccount,
                                     onPressed: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -148,7 +149,7 @@ class _LandingPageLoginState extends State<LandingPageLogin> {
                                   _actionButton(
                                     context: context,
                                     icon: Icons.help_outline,
-                                    label: 'Support',
+                                    label: AppLocalizations.of(context)!.support,
                                     onPressed: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -238,8 +239,8 @@ class _LandingPageLoginState extends State<LandingPageLogin> {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        child: const Text(
-          'LOGIN',
+        child:  Text(
+          AppLocalizations.of(context)!.login,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -266,7 +267,7 @@ class _LandingPageLoginState extends State<LandingPageLogin> {
           ),
         ),
         child: Text(
-          'REGISTER',
+          AppLocalizations.of(context)!.register,
           style: TextStyle(
             color: Colors.red.shade900,
             fontSize: 16,

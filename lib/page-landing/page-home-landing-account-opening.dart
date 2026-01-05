@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../account-opening/open-account-1.dart';
+import '../l10n/app_localizations.dart';
 
 class LandingPageAccountOpening extends StatelessWidget {
   const LandingPageAccountOpening({super.key});
@@ -19,8 +20,8 @@ class LandingPageAccountOpening extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text(
-          "Account Opening",
+        title: Text(
+          AppLocalizations.of(context)!.accountOpening,
           style: TextStyle(color: Colors.black, fontSize: 18),
         ),
         centerTitle: true,
@@ -52,8 +53,8 @@ class LandingPageAccountOpening extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "ACCOUNT OPENING",
+                       Text(
+                        AppLocalizations.of(context)!.accountOpening,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -74,7 +75,7 @@ class LandingPageAccountOpening extends StatelessWidget {
             ),
             const Divider(thickness: 1),
             ExpansionTile(
-              title: const Text("Business Account"),
+              title: Text(AppLocalizations.of(context)!.businessAccount),
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -82,7 +83,7 @@ class LandingPageAccountOpening extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "You will find Business Account products that are tailored for Business that follow account laws",
+                        AppLocalizations.of(context)!.youWillFindBusinessAccountProductsThatAreTailoredForBusinessThatFollowAccountLaws,
                         style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       ),
                       const SizedBox(height: 8),
@@ -98,7 +99,7 @@ class LandingPageAccountOpening extends StatelessWidget {
                           //TODO
                           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const OpenAccountScreen1()));
                         },
-                        child: const Text("GET STARTED", style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),),
+                        child: Text(AppLocalizations.of(context)!.getStarted, style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),),
                       ),
                     ],
                   ),
@@ -107,7 +108,7 @@ class LandingPageAccountOpening extends StatelessWidget {
             ),
             const Divider(thickness: 1),
             ExpansionTile(
-              title: const Text("Islamic Accounts"),
+              title: Text(AppLocalizations.of(context)!.islamicAccounts),
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -115,7 +116,7 @@ class LandingPageAccountOpening extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "You will find Islamic products that are tailored for Muslims that follow Sharia laws",
+                        AppLocalizations.of(context)!.youWillFindIslamicProductsThatAreTailoredForMuslimsThatFollowShariaLaws,
                         style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       ),
                       const SizedBox(height: 8),
@@ -131,7 +132,7 @@ class LandingPageAccountOpening extends StatelessWidget {
                           //TODO
                           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const OpenAccountScreen1()));
                         },
-                        child: const Text("GET STARTED", style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),),
+                        child: Text(AppLocalizations.of(context)!.getStarted, style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),),
                       ),
                     ],
                   ),
@@ -140,7 +141,7 @@ class LandingPageAccountOpening extends StatelessWidget {
             ),
             const Divider(thickness: 1),
             ExpansionTile(
-              title: const Text("Investment Account"),
+              title: Text(AppLocalizations.of(context)!.investmentAccount),
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -148,7 +149,7 @@ class LandingPageAccountOpening extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "You will find Investment Account products that are tailored for Business that follow account laws",
+                        AppLocalizations.of(context)!.youWillFindBusinessAccountProductsThatAreTailoredForBusinessThatFollowAccountLaws,
                         style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       ),
                       const SizedBox(height: 8),
@@ -164,7 +165,7 @@ class LandingPageAccountOpening extends StatelessWidget {
                           //TODO
                           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const OpenAccountScreen1()));
                         },
-                        child: const Text("GET STARTED", style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),),
+                        child:  Text(AppLocalizations.of(context)!.getStarted, style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),),
                       ),
                     ],
                   ),
@@ -173,7 +174,7 @@ class LandingPageAccountOpening extends StatelessWidget {
             ),
             const Divider(thickness: 1),
             ExpansionTile(
-              title: const Text("Students Accounts"),
+              title: Text(AppLocalizations.of(context)!.studentsAccounts),
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -181,7 +182,7 @@ class LandingPageAccountOpening extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "You will find Students Accounts products that are tailored for Business that follow account laws",
+                        AppLocalizations.of(context)!.youWillFindBusinessAccountProductsThatAreTailoredForBusinessThatFollowAccountLaws,
                         style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                       ),
                       const SizedBox(height: 8),
@@ -197,7 +198,8 @@ class LandingPageAccountOpening extends StatelessWidget {
                           //TODO
                           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const OpenAccountScreen1()));
                         },
-                        child: const Text("GET STARTED", style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),),
+                        // child: const Text("GET STARTED", style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),),
+                        child:  Text(AppLocalizations.of(context)!.getStarted, style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),),
                       ),
                     ],
                   ),

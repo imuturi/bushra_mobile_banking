@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../login/landing-login-1-account-verify.dart';
 
 class FirstTimeLoginDialog extends StatelessWidget {
@@ -20,8 +21,8 @@ class FirstTimeLoginDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'Are you registered with our mobile banking?',
+               Text(
+                AppLocalizations.of(context)!.areYouRegisteredWithOurMobileBanking,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -29,8 +30,8 @@ class FirstTimeLoginDialog extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'Please press the (YES) button to continue or press (NO) button to register to our mobile banking.',
+              Text(
+                AppLocalizations.of(context)!.pleasePressTheYesButtonToContinueOrPressNoButtonToRegisterToOurMobileBanking,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 12),
               ),
@@ -51,8 +52,8 @@ class FirstTimeLoginDialog extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'YES',
+                  child:  Text(
+                    AppLocalizations.of(context)!.yes,
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -71,8 +72,8 @@ class FirstTimeLoginDialog extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'NO',
+                  child: Text(
+                    AppLocalizations.of(context)!.no,
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
