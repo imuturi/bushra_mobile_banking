@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class VirtualCardScreen extends StatefulWidget {
   const VirtualCardScreen({super.key});
 
@@ -32,7 +34,7 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.black,
               ),
-              child: const Text('Virtual Card'),
+              child:  Text(AppLocalizations.of(context)!.virtualCard),
             ),
           ),
         ],
@@ -63,8 +65,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
-                            'Block/Report stolen card',
+                           Text(
+                             AppLocalizations.of(context)!.blockreportStolenCard,
                             style: TextStyle(
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
@@ -72,8 +74,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                             textAlign: TextAlign.start,
                           ),
                           const SizedBox(height: 16.0),
-                          const Text(
-                            'Reason',
+                           Text(
+                             AppLocalizations.of(context)!.reason,
                             style: TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.normal,
@@ -115,8 +117,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: const Text(
-                                    'CANCEL',
+                                  child:  Text(
+                                    AppLocalizations.of(context)!.cancel,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -139,8 +141,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: const Text(
-                                    'CONFIRM',
+                                  child:  Text(
+                                    AppLocalizations.of(context)!.confirm,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -180,8 +182,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
-                            'Mini / Full statement',
+                           Text(
+                            AppLocalizations.of(context)!.miniFullStatement,
                             style: TextStyle(
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
@@ -189,8 +191,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                             textAlign: TextAlign.start,
                           ),
                           const SizedBox(height: 16.0),
-                          const Text(
-                            'Statement type',
+                           Text(
+                             AppLocalizations.of(context)!.statementType,
                             style: TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.normal,
@@ -232,8 +234,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: const Text(
-                                    'CANCEL',
+                                  child:  Text(
+                                    AppLocalizations.of(context)!.cancel,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -256,8 +258,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: const Text(
-                                    'CONFIRM',
+                                  child:  Text(
+                                    AppLocalizations.of(context)!.confirm,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -297,8 +299,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
-                            'Change PIN',
+                           Text(
+                             AppLocalizations.of(context)!.changePin,
                             style: TextStyle(
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
@@ -307,8 +309,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                           ),
                           //OLD -PIN
                           const SizedBox(height: 8.0),
-                          const Text(
-                            'Old PIN',
+                           Text(
+                             AppLocalizations.of(context)!.oldPin,
                             style: TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.normal,
@@ -333,8 +335,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                           ),
                           //NEW -PIN
                           const SizedBox(height: 8.0),
-                          const Text(
-                            'New PIN',
+                           Text(
+                             AppLocalizations.of(context)!.newPin,
                             style: TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.normal,
@@ -359,8 +361,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                           ),
                           //CONFIRM -PIN
                           const SizedBox(height: 8.0),
-                          const Text(
-                            'Confirm PIN',
+                           Text(
+                             AppLocalizations.of(context)!.confirmPin,
                             style: TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.normal,
@@ -402,8 +404,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: const Text(
-                                    'CANCEL',
+                                  child:  Text(
+                                    AppLocalizations.of(context)!.cancel,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -426,8 +428,8 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  child: const Text(
-                                    'CONFIRM',
+                                  child:  Text(
+                                    AppLocalizations.of(context)!.confirm,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -468,16 +470,16 @@ class _VirtualCardScreenState extends State<VirtualCardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Master Wallet',
+           Text(
+             AppLocalizations.of(context)!.masterWallet,
             style: TextStyle(color: Colors.white, fontSize: 16),
           ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Estimated Balance',
+               Text(
+                 AppLocalizations.of(context)!.estimatedBalance,
                 style: TextStyle(color: Colors.white, fontSize: 14),
               ),
               Container(

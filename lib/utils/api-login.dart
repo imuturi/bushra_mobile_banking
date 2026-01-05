@@ -24,6 +24,7 @@ class ApiLogin{
   final referenceGenerator = ReferenceGenerator();
 
   Future<dynamic> customerRegistrationStatus(String phone, String account, String email, String passport, String dob, String verifyOnlyPhone, String documentType) async {
+
     return apiService.makeApiCall(
       _customerRegistrationStatusEndpoint,
       ApiModule.profile,

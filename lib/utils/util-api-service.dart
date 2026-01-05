@@ -15,7 +15,7 @@ import 'api_module.dart';
 
 class ApiService {
 
-  static const String _getTokenEndpoint = '/oauth2/token';
+  static const String _getTokenEndpoint = '/api/token';
   static String? _cachedToken;
   static DateTime? _tokenExpiry;
 
