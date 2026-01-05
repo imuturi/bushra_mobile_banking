@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class ErrorAlertDialog extends StatelessWidget {
   final String messageParent;
   final String message;
@@ -52,7 +54,7 @@ class ErrorAlertDialog extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
                 minimumSize: const Size(double.infinity, 50),
               ),
-              child: const Text("TRY AGAIN!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              child:  Text(AppLocalizations.of(context)!.tryAgain, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
             ),
           ],
         ),

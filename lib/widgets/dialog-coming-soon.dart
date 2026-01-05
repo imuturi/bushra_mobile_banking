@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class ComingSoonDialog extends StatelessWidget {
   const ComingSoonDialog({super.key});
 
@@ -37,8 +39,8 @@ class ComingSoonDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
-              const Text(
-                'This feature is coming soon. \n Please check back later.',
+               Text(
+                 AppLocalizations.of(context)!.thisFeatureIsComingSoonNPleaseCheckBackLater,
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 12,
@@ -66,8 +68,8 @@ class ComingSoonDialog extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text(
-                'OKAY',
+              child:  Text(
+                AppLocalizations.of(context)!.okay,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,

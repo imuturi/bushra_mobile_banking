@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../l10n/app_localizations.dart';
+
 class BlockedDeviceScreen extends StatelessWidget {
   const BlockedDeviceScreen({super.key});
 
@@ -17,7 +19,7 @@ class BlockedDeviceScreen extends StatelessWidget {
               Icon(Icons.warning_amber_rounded, color: Colors.red.shade900, size: 80),
               SizedBox(height: 20),
               Text(
-                'Security Alert',
+                AppLocalizations.of(context)!.securityAlert,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
@@ -32,8 +34,8 @@ class BlockedDeviceScreen extends StatelessWidget {
                 width: double.infinity - 50,
                 child: ElevatedButton.icon(
                   icon: const Icon(Icons.exit_to_app, color: Colors.white, size: 24,),
-                  label: const Text(
-                    "EXIT",
+                  label:  Text(
+                    AppLocalizations.of(context)!.exit,
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   onPressed:(){

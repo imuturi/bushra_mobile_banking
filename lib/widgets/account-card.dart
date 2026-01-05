@@ -103,6 +103,7 @@ class _AccountCardState extends State<AccountCard> {
                           .headlineSmall
                           ?.copyWith(
                         color: Colors.white,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -125,6 +126,7 @@ class _AccountCardState extends State<AccountCard> {
                         widget.card.accountBalance,
                         style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                           color: Colors.white,
+                          fontSize: 26,
                           fontWeight: FontWeight.bold,),
                       )
                           :

@@ -40,6 +40,7 @@ class CustomDatePickerWidget extends StatelessWidget {
               DateTime? pickedDate = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
+                locale: const Locale('en', 'GB'),
                 firstDate: DateTime(1900),
                 lastDate: DateTime.now(),
                 builder: (context, child) {

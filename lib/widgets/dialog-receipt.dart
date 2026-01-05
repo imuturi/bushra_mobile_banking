@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 
+import '../l10n/app_localizations.dart';
 import 'dialog-transaction-status-check.dart';
 
 class TransactionStatusCheckDialog2 extends StatelessWidget {
@@ -53,8 +54,8 @@ class TransactionStatusCheckDialog2 extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(onPressed: onConfirmed, child: const Text("OK")),
-                TextButton(onPressed: onShare, child: const Text("Share")),
+                TextButton(onPressed: onConfirmed, child: Text(AppLocalizations.of(context)!.ok)),
+                TextButton(onPressed: onShare, child: Text(AppLocalizations.of(context)!.share)),
               ],
             ),
           ],
