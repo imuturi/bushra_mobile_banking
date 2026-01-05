@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 
 
 class QRPaymentIndividualScreen extends StatefulWidget {
@@ -19,9 +21,9 @@ class _QRPaymentIndividualScreenState extends State<QRPaymentIndividualScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.arrow_back),
-        title: const Text('Scan QR Code'),
+        title: Text(AppLocalizations.of(context)!.scanAQrCode),
       ),
-      body: const Padding(
+      body:  Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,11 +32,11 @@ class _QRPaymentIndividualScreenState extends State<QRPaymentIndividualScreen> {
             SizedBox(height: 16),
             MerchantDetails(),
             SizedBox(height: 16),
-            Text("How much would you like to pay?", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(AppLocalizations.of(context)!.howMuchWouldYouLikeToPay, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             AmountSelector(),
             SizedBox(height: 16),
-            Text("Select debit account"),
+            Text(AppLocalizations.of(context)!.selectDebitAccount),
             AccountDropdown(),
             Spacer(),
             PayButton(),
@@ -83,13 +85,13 @@ class MerchantDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Card(
+    return  Card(
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Merchant details", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+            Text(AppLocalizations.of(context)!.merchantDetails, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             Text("Merchant Name: Tasima Kumasi"),
             Text("Merchant ID: 2345678"),
@@ -195,7 +197,7 @@ class PayButton extends StatelessWidget {
         onPressed: () {
           //TODO
         },
-        child: const Text("PAY", style: TextStyle(color: Colors.white, fontSize: 16)),
+        child:  Text(AppLocalizations.of(context)!.pay, style: TextStyle(color: Colors.white, fontSize: 16)),
       ),
     );
   }

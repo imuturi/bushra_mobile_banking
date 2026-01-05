@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../remote-config-services.dart';
 import '../utils/constants/app_constants.dart';
 import '../utils/providers/provider-session.dart';
@@ -48,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: const Text('Take a photo'),
+                title:  Text(AppLocalizations.of(context)!.takeAPhoto),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera);
@@ -56,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.photo),
-                title: const Text('Choose from gallery'),
+                title: Text(AppLocalizations.of(context)!.chooseFromGallery),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery);
@@ -140,8 +141,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 18),
-                  const Text(
-                    'Profile changed successfully',
+                   Text(
+                    AppLocalizations.of(context)!.profileChangedSuccessfully,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -150,8 +151,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Your profile details have been updated successfully.',
+                  Text(
+                    AppLocalizations.of(context)!.yourProfileDetailsHaveBeenUpdatedSuccessfully,
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 12,
@@ -179,8 +180,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text(
-                    'ACTIVATE',
+                  child:  Text(
+                    AppLocalizations.of(context)!.activate,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -202,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await _clearImageCache();
       if (_imageFile == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please select an image')),
+           SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectAnImage)),
         );
         return;
       }
@@ -341,7 +342,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        title: const Text('Profile information',
+        title: Text(AppLocalizations.of(context)!.profileInformation,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 17.0,
@@ -422,7 +423,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderRadius: BorderRadius.circular(12)),
               ),
               onPressed: _uploadData,
-              child: const Text("Save Changes",
+              // child: const Text("Save Changes",
+              child: Text(AppLocalizations.of(context)!.saveChanges,
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
