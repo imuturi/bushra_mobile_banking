@@ -323,27 +323,27 @@ class _PayBillElectricityScreenState extends State<PayBillElectricityScreen> {
               ],
             ),
             // Add to Reminder Switch
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Schedule reminder", style: TextStyle(color: Colors.grey)),
-                Transform.scale(
-                  scale: 0.5, // Adjust this value to change the size (0.7 means 70% of the original size)
-                  child: Switch(
-                    value: reminderFlag,
-                    onChanged: (value) {
-                      setState(() {
-                        reminderFlag = value;
-                      });
-                    },
-                    activeColor: Colors.blue.shade700,
-                    inactiveTrackColor: Colors.grey.shade100,
-                    inactiveThumbColor: Colors.grey.shade700,
-                    activeTrackColor: Colors.grey.shade200,
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     const Text("Schedule reminder", style: TextStyle(color: Colors.grey)),
+            //     Transform.scale(
+            //       scale: 0.5, // Adjust this value to change the size (0.7 means 70% of the original size)
+            //       child: Switch(
+            //         value: reminderFlag,
+            //         onChanged: (value) {
+            //           setState(() {
+            //             reminderFlag = value;
+            //           });
+            //         },
+            //         activeColor: Colors.blue.shade700,
+            //         inactiveTrackColor: Colors.grey.shade100,
+            //         inactiveThumbColor: Colors.grey.shade700,
+            //         activeTrackColor: Colors.grey.shade200,
+            //       ),
+            //     ),
+            //   ],
+            // ),
             // Frequency buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bushra_mobile/home/fund-transfers/page-home-transfer-v2-pin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +9,17 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
+import '../../models/dto/favourites-add-request.dart' as fav_models;
+import '../../utils/api-customer-favourites.dart';
 import '../../utils/api-customer-transfers.dart';
 import '../../utils/dto/api-response-get-charges.dart';
 import '../../utils/dto/api-response-login.dart';
 import '../../utils/providers/provider-balances.dart';
 import '../../utils/reference-generator.dart';
 import '../../utils/providers/provider-session.dart';
+import '../../utils/util-get-imei.dart';
 import '../../widgets/dialog-transaction-charges.dart';
+// import '../../utils/dto/api-response-get-charges.dart' as charges_models;
 
 class FundsTransferOwnScreen extends StatefulWidget {
   const FundsTransferOwnScreen({super.key});
@@ -27,9 +33,11 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
   bool favouriteFlag = false;
   bool isFetchingCharges = false;
   String loginId = 'FALSE';
+  late ApiCustomerFavourites apiCustomerFavourites;
 
   final apiCustomerFundsTransfer = ApiCustomerFundsTransfers();
   final referenceGenerator = ReferenceGenerator();
+  TextEditingController narrationController = TextEditingController();
 
   TextEditingController beneficiaryAccount = TextEditingController();
   TextEditingController beneficiaryAccountName = TextEditingController();
@@ -57,6 +65,7 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
         selectedAmount = double.tryParse(_amountController.text);
       });
     });
+    apiCustomerFavourites = ApiCustomerFavourites();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
       }
@@ -66,6 +75,93 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
   @override
   void dispose() {
     super.dispose();
+    narrationController.dispose();
+  }
+
+  Future<void> _saveToFavorites(String phone) async {
+    try {
+      // Get device IMEI
+      String imei = await DeviceIdentifier.getDeviceIdentifier();
+
+      // Create a simple name for the favorite
+      String favoriteName = "Own: ${_maskAccount(debitAccountNumber)} to ${_maskAccount(creditAccountNumber)}";
+      if (narrationController.text.isNotEmpty) {
+        favoriteName = narrationController.text;
+      }
+
+      // Create the request as a Map (no model conflicts)
+      final requestMap = {
+        "xref": referenceGenerator.generateUniqueReference(false),
+        "txntimestamp": DateTime.now().toUtc().toIso8601String(),
+        "transactionDetails": {
+          "direction": "0200",
+          "transactionType": "ADDFAVORITES",
+          "transactionCode": "ADDFAVORITES",
+          "hostCode": "MOBILE",
+          "debitAccount": debitAccountNumber,
+          "phoneNumber": phone,
+          "category": "beneficiary",
+          "id": referenceGenerator.generateUniqueReference(false),
+          "name": favoriteName,
+          "bankcode": "OWN_BANK",
+          "type": "OWN_ACCOUNT",
+          "amount": _amountController.text.isNotEmpty ? _amountController.text : "0.00",
+          "recipient": creditAccountNumber,
+        },
+        "channelDetails": {
+          "host": "IP",
+          "geolocation": "1.2921, 36.8219",
+          "userAgent": Platform.isAndroid ? "Android" : (Platform.isIOS ? "iOS" : "Unknown"),
+          "userAgentVersion": "1.0",
+          "channel": "MOBILE",
+          "clientId": "client123",
+          "deviceId": imei,
+        },
+      };
+
+      // Check what your API method expects
+      // Option A: If it expects a Map
+      // final response = await apiCustomerFavourites.postCustomerFavourites(requestMap);
+
+      // Option B: If it expects a TransactionRequest object, check if there's a fromJson factory
+      final request = fav_models.TransactionRequest.fromJson(requestMap);
+      final response = await apiCustomerFavourites.postCustomerFavourites(request);
+
+      if (response["data"]["response_code"] == "00") {
+        if (kDebugMode) {
+          print('Successfully added to favorites');
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Added to favorites!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        if (kDebugMode) {
+          print('Failed to add favorite: ${response["data"]["response"]}');
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to add to favorites'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error saving favorite: $e');
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $e'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   void showSnackBar(BuildContext context, String message, Color color) {
@@ -146,7 +242,10 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
               // Handle cancel
               Navigator.pop(context);
             },
-            onConfirm: () {
+            onConfirm: () async {
+              if (favouriteFlag) {
+                await _saveToFavorites(phone);
+              }
               // Handle confirmation
               Navigator.push(context, MaterialPageRoute(builder: (context) =>  PinInputCommitTransactionScreen(
                 transferType: 'INTERNALFUNDSTRANSFER-SELF',
@@ -157,7 +256,9 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
                 beneficiaryName: beneficiaryName,
                 currency: debitAccountCurrency,
                 transactionAmount: selectedAmount.toString(),
-                narration: beneficiaryNarration.text,
+                narration: narrationController.text.isNotEmpty
+                    ? narrationController.text
+                    : beneficiaryNarration.text,
                 isFavorite: favouriteFlag,
               )
               ));
@@ -186,6 +287,47 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
   String _maskAccount(String account) {
     if (account.length <= 4) return account;
     return '${"*" * 5}${account.substring(account.length - 4)}';
+  }
+
+  Widget _buildNarrationField() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Stack(
+        children: [
+          TextField(
+            controller: narrationController,
+            maxLines: 2,
+            minLines: 1,
+            decoration: InputDecoration(
+              hintText: "Enter reason for transfer (optional)",
+              filled: true,
+              fillColor: Colors.grey.shade100,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+            ),
+            maxLength: 100, // Optional: limit character count
+          ),
+          Positioned(
+            left: 10,
+            right: 10,
+            bottom: 0,
+            child: Container(
+              height: 1,
+              color: Colors.grey.shade900,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -361,6 +503,11 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
                 ),
               ],
             ),
+
+          // Narration Field
+          Text("Narration (Optional)", style: TextStyle(color: Colors.grey)),
+          const SizedBox(height: 8),
+          _buildNarrationField(), // Create this method below
             const SizedBox(height: 40),
             // Transfer Button
             SizedBox(
@@ -445,8 +592,7 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {
-              String maskedAccount =
-                  "A/C #${account.accountNumber.substring(0, 4)}****${account.accountNumber.substring(account.accountNumber.length - 4)}";
+              String maskedAccount = "A/C ${account.accountNumber}";
               return DropdownMenuItem<String>(
                 value: account.accountNumber,
                 child: Text(maskedAccount, style: TextStyle(fontSize: 12),),
@@ -498,8 +644,10 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {
+              // String maskedAccount =
+              //     "A/C #${account.accountNumber.substring(0, 4)}****${account.accountNumber.substring(account.accountNumber.length - 4)}";
               String maskedAccount =
-                  "A/C #${account.accountNumber.substring(0, 4)}****${account.accountNumber.substring(account.accountNumber.length - 4)}";
+                  "A/C ${account.accountNumber}";
               return DropdownMenuItem<String>(
                 value: account.accountNumber,
                 child: Text(maskedAccount, style: TextStyle(fontSize: 12),),

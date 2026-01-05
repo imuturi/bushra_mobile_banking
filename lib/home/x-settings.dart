@@ -14,7 +14,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../change-pin/forgot-pin-set-pin/page-forgot-pin-create.dart';
+import '../l10n/app_localizations.dart';
 import '../page-landing/page-home-landing-support.dart';
+import '../providers/local_provider.dart';
 import '../remote-config-services.dart';
 import '../settings-details/customer-profile-screen.dart';
 import '../utils/constants/app_constants.dart';
@@ -438,7 +440,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Navigator.pop(context);
           },
         ) : null,
-        title: const Text('Settings'),
+        title: Text(AppLocalizations.of(context)!.settings),
         backgroundColor: Colors.white,
         centerTitle: false,
       ),
@@ -535,12 +537,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(height: 12),
-                                const Row(
+                                Row(
                                   children: [
                                     Icon(Icons.perm_identity_outlined),
                                     SizedBox(width: 10),
                                     Text(
-                                      'General',
+                                      AppLocalizations.of(context)!.general,
                                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                                     ),
                                   ],
@@ -549,7 +551,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   dense: true,
                                   contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 14),
                                   leading: const Icon(Icons.support_agent, size: 18,),
-                                  title: const Text('Support',
+                                  title: Text(AppLocalizations.of(context)!.support,
                                     style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.normal,
@@ -563,7 +565,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   dense: true,
                                   contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 14),
                                   leading: const Icon(Icons.lock, size: 18,),
-                                  title: const Text('Change PIN',
+                                  title: Text(AppLocalizations.of(context)!.changePin,
                                     style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.normal,
@@ -576,30 +578,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     );
                                   },
                                 ),
-                                ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 14),
-                                  leading: const Icon(Icons.language,size: 18,),
-                                  title: const Text('Change language (English)',
-                                    style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.normal,
-                                  ),),
-                                  trailing: const Icon(Icons.arrow_forward_ios, size: 14),
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => const ComingSoonDialog(),
+                                Consumer<LocaleProvider>(
+                                  builder: (context, localeProvider, _) {
+                                    final isEnglish = localeProvider.locale.languageCode == 'en';
+
+                                    return ListTile(
+                                      dense: true,
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 14),
+                                      leading: const Icon(Icons.language, size: 18),
+                                      title: Text(
+                                        AppLocalizations.of(context)!.settings,
+                                        style: const TextStyle(fontSize: 11),
+                                      ),
+                                      subtitle: Text(
+                                        isEnglish ? 'English' : 'Somali',
+                                        style: const TextStyle(fontSize: 10, color: Colors.grey),
+                                      ),
+                                      trailing: Transform.scale(
+                                        scale: 0.5,
+                                        child: Switch(
+                                          value: isEnglish,
+                                          onChanged: (value) {
+                                            localeProvider.setLocale(
+                                              value ? const Locale('en') : const Locale('so'),
+                                            );
+                                          },
+                                        ),
+                                      ),
                                     );
                                   },
                                 ),
+
                                 const SizedBox(height: 14),
-                                const Row(
+                                Row(
                                   children: [
                                     Icon(Icons.notifications_none),
                                     SizedBox(width: 10),
                                     Text(
-                                      'Notification',
+                                      AppLocalizations.of(context)!.notification,
                                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                                     ),
                                   ],
@@ -609,7 +625,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text('Notifications', style: TextStyle(fontSize: 11)),
+                                      Text(AppLocalizations.of(context)!.notifications, style: TextStyle(fontSize: 11)),
                                       Transform.scale(
                                         scale: 0.5, // Adjust to your preferred size
                                         child: Switch(
@@ -641,7 +657,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text('Transaction Alert', style: TextStyle(fontSize: 11)),
+                                      Text(AppLocalizations.of(context)!.transactionAlert, style: TextStyle(fontSize: 11)),
                                       Transform.scale(
                                         scale: 0.5,
                                         child: Switch(
@@ -660,12 +676,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     ],
                                   ),
                                 ),
-                                const Row(
+                                Row(
                                   children: [
                                     Icon(Icons.settings),
                                     SizedBox(width: 10),
                                     Text(
-                                      'Settings',
+                                      AppLocalizations.of(context)!.settings,
                                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                                     ),
                                   ],
@@ -675,7 +691,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text('Activate Biometric', style: TextStyle(fontSize: 11)),
+                                      Text(AppLocalizations.of(context)!.activateBiometric, style: TextStyle(fontSize: 11)),
                                       Transform.scale(
                                         scale: 0.5, // Adjust to your preferred size
                                         child: Switch(
@@ -724,8 +740,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           borderRadius: BorderRadius.circular(8),
                                         ),
                                       ),
-                                      child: const Text(
-                                        'LOGOUT',
+                                      child: Text(
+                                        AppLocalizations.of(context)!.logout,
                                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                                       ),
                                     ),

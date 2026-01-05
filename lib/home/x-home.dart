@@ -3,14 +3,18 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:http/io_client.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:share_plus/share_plus.dart';
@@ -95,8 +99,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
   }
   //TODO - Transaction Status Share
   void onShare(GlobalKey repaintKey){
-    _shareWidget(repaintKey);
-    //_generateStyledPdf();
+    // _shareWidget(repaintKey);
+    _generateStyledPdf();
   }
 
   void _startListening() {
@@ -195,114 +199,114 @@ class _HomePageScreenState extends State<HomePageScreen> {
   }
 
   //TODO - Share PDF Code
-  // Future<void> _generateStyledPdf() async {
-  //   setState(() => isLoadingShare = true);
-  //   final pdf = pw.Document();
-  //   //final logoData = await rootBundle.load('assets/images/logo/logo-icon.png'); //Door Logo
-  //   //final logoData = await rootBundle.load('assets/images/logo/logo.png'); // Full Logo
-  //   //final logo = pw.MemoryImage(logoData.buffer.asUint8List());
-  //   final svgLogoData = await rootBundle.loadString('assets/images/logo/logo.svg'); // SVG Logo
-  //   const green = PdfColor.fromInt(0xFF48BB78);
-  //   const blue = PdfColors.blue;
-  //   pdf.addPage(
-  //     pw.Page(
-  //       pageFormat: PdfPageFormat.a4,
-  //       build: (context) {
-  //         final qrCode = Barcode.qrCode();
-  //         final qrSvg = qrCode.toSvg('https://www.bbbank.so/', width: 100, height: 100);
-  //
-  //         return pw.Padding(
-  //           padding: const pw.EdgeInsets.all(24),
-  //           child: pw.Column(
-  //             crossAxisAlignment: pw.CrossAxisAlignment.start,
-  //             children: [
-  //               // Existing content ...
-  //               //pw.Center(child: pw.Image(logo, height: 50)), // PNG Logo
-  //               pw.SvgImage(svg: svgLogoData, height: 50), // SVG Logo
-  //               // ✅ Add header line here
-  //               pw.Divider(thickness: 1, color: PdfColors.grey),
-  //               pw.SizedBox(height: 16),
-  //
-  //               pw.SizedBox(height: 10),
-  //               pw.Text('https://www.bbbank.so',
-  //                   style: const pw.TextStyle(
-  //                       fontSize: 12,
-  //                       color: blue,
-  //                       decoration: pw.TextDecoration.underline)
-  //               ),
-  //               pw.SizedBox(height: 24),
-  //               pw.Text('Hi , ${shareTransactionDetails.shareCustomerName}',
-  //                   style: pw.TextStyle(
-  //                       fontSize: 18, fontWeight: pw.FontWeight.bold)),
-  //               pw.SizedBox(height: 16),
-  //               pw.Text('Total Amount Paid:',
-  //                   style: const pw.TextStyle(fontSize: 14)),
-  //               pw.Text('${shareTransactionDetails.shareTransactionAmount}',
-  //                   style: pw.TextStyle(
-  //                       fontSize: 24,
-  //                       fontWeight: pw.FontWeight.bold,
-  //                       color: green)),
-  //               pw.SizedBox(height: 24),
-  //               _info('Phone Number:', '${shareTransactionDetails.shareCustomerPhoneNumber}'),
-  //               _info('Date:', '${shareTransactionDetails.shareTransactionDate}'),
-  //               pw.SizedBox(height: 10),
-  //               _info('Paid To:', '${shareTransactionDetails.shareBeneficiaryName}'),
-  //               pw.SizedBox(height: 10),
-  //               _info('Transaction No:', '${shareTransactionDetails.shareTransactionReference}'),
-  //               _info('Payment Type:', '${shareTransactionDetails.shareTransactionType}'),
-  //               _info('Beneficiary Account:', '${shareTransactionDetails.shareBeneficiaryAccountNumber}'),
-  //
-  //               pw.Spacer(), // Push the QR code to the bottom
-  //
-  //               // ✅ Add footer line here
-  //               pw.Divider(thickness: 1, color: PdfColors.grey),
-  //               pw.SizedBox(height: 10),
-  //               // ⬇️ QR code addition starts here
-  //               pw.Center(
-  //                 child: pw.Container(
-  //                   width: 100,
-  //                   height: 100,
-  //                   child: pw.SvgImage(svg: qrSvg),
-  //                 ),
-  //               ),
-  //               pw.SizedBox(height: 10),
-  //               pw.Center(
-  //                 child: pw.Text('Scan to visit our website',
-  //                     style: const pw.TextStyle(fontSize: 10)),
-  //               ),
-  //               // ⬆️ QR code addition ends here
-  //             ],
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  //
-  //   final output = await getTemporaryDirectory();
-  //   final file = File('${output.path}/payment_receipt.pdf');
-  //   await file.writeAsBytes(await pdf.save());
-  //
-  //   setState(() => isLoadingShare = false);
-  //   await Share.shareXFiles([XFile(file.path)], text: 'Here is your Transaction receipt.');
-  // }
-  // pw.Widget _info(String title, String value) {
-  //   return pw.Padding(
-  //     padding: const pw.EdgeInsets.only(bottom: 6),
-  //     child: pw.RichText(
-  //       text: pw.TextSpan(
-  //         children: [
-  //           pw.TextSpan(
-  //               text: '$title ',
-  //               style: pw.TextStyle(
-  //                   fontWeight: pw.FontWeight.bold, fontSize: 13)),
-  //           pw.TextSpan(
-  //               text: value,
-  //               style: const pw.TextStyle(fontSize: 13)),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Future<void> _generateStyledPdf() async {
+    setState(() => isLoadingShare = true);
+    final pdf = pw.Document();
+    //final logoData = await rootBundle.load('assets/images/logo/logo-icon.png'); //Door Logo
+    //final logoData = await rootBundle.load('assets/images/logo/logo.png'); // Full Logo
+    //final logo = pw.MemoryImage(logoData.buffer.asUint8List());
+    final svgLogoData = await rootBundle.loadString('assets/images/logo/logo.svg'); // SVG Logo
+    const green = PdfColor.fromInt(0xFF48BB78);
+    const blue = PdfColors.blue;
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (context) {
+          final qrCode = Barcode.qrCode();
+          final qrSvg = qrCode.toSvg('https://www.bbbank.so/', width: 100, height: 100);
+
+          return pw.Padding(
+            padding: const pw.EdgeInsets.all(24),
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                // Existing content ...
+                //pw.Center(child: pw.Image(logo, height: 50)), // PNG Logo
+                pw.SvgImage(svg: svgLogoData, height: 50), // SVG Logo
+                // ✅ Add header line here
+                pw.Divider(thickness: 1, color: PdfColors.grey),
+                pw.SizedBox(height: 16),
+
+                pw.SizedBox(height: 10),
+                pw.Text('https://www.bbbank.so',
+                    style: const pw.TextStyle(
+                        fontSize: 12,
+                        color: blue,
+                        decoration: pw.TextDecoration.underline)
+                ),
+                pw.SizedBox(height: 24),
+                pw.Text('Hi , ${shareTransactionDetails.shareCustomerName}',
+                    style: pw.TextStyle(
+                        fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 16),
+                pw.Text('Total Amount Paid:',
+                    style: const pw.TextStyle(fontSize: 14)),
+                pw.Text('${shareTransactionDetails.shareTransactionAmount}',
+                    style: pw.TextStyle(
+                        fontSize: 24,
+                        fontWeight: pw.FontWeight.bold,
+                        color: green)),
+                pw.SizedBox(height: 24),
+                _info('Phone Number:', '${shareTransactionDetails.shareCustomerPhoneNumber}'),
+                _info('Date:', '${shareTransactionDetails.shareTransactionDate}'),
+                pw.SizedBox(height: 10),
+                _info('Paid To:', '${shareTransactionDetails.shareBeneficiaryName}'),
+                pw.SizedBox(height: 10),
+                _info('Transaction No:', '${shareTransactionDetails.shareTransactionReference}'),
+                _info('Payment Type:', '${shareTransactionDetails.shareTransactionType}'),
+                _info('Beneficiary Account:', '${shareTransactionDetails.shareBeneficiaryAccountNumber}'),
+
+                pw.Spacer(), // Push the QR code to the bottom
+
+                // ✅ Add footer line here
+                pw.Divider(thickness: 1, color: PdfColors.grey),
+                pw.SizedBox(height: 10),
+                // ⬇️ QR code addition starts here
+                pw.Center(
+                  child: pw.Container(
+                    width: 100,
+                    height: 100,
+                    child: pw.SvgImage(svg: qrSvg),
+                  ),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Center(
+                  child: pw.Text('Scan to visit our website',
+                      style: const pw.TextStyle(fontSize: 10)),
+                ),
+                // ⬆️ QR code addition ends here
+              ],
+            ),
+          );
+        },
+      ),
+    );
+
+    final output = await getTemporaryDirectory();
+    final file = File('${output.path}/payment_receipt.pdf');
+    await file.writeAsBytes(await pdf.save());
+
+    setState(() => isLoadingShare = false);
+    await Share.shareXFiles([XFile(file.path)], text: 'Here is your Transaction receipt.');
+  }
+  pw.Widget _info(String title, String value) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.only(bottom: 6),
+      child: pw.RichText(
+        text: pw.TextSpan(
+          children: [
+            pw.TextSpan(
+                text: '$title ',
+                style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold, fontSize: 13)),
+            pw.TextSpan(
+                text: value,
+                style: const pw.TextStyle(fontSize: 13)),
+          ],
+        ),
+      ),
+    );
+  }
 
   Future<void> _shareWidget(GlobalKey repaintKey) async {
     try {
@@ -986,7 +990,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     //TODO - API CALL Transaction Status
     try{
       var responseData = await apiQueryTransactionStatus.fundsTransferStatus(
-          transaction.transactionRef
+          transaction.transactionRef, transaction.transactionCode
       );
       if (responseData["data"]["response_code"] == "00") {
         //Set Values To Be used in PDF
@@ -1052,10 +1056,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
               narration: transaction.transactionDesc,
             ),
             onConfirmed: onConfirmed,
-            onShare: () {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _shareWidget(dialogKey); // will now find the boundary
-              });
+            onShare: () async {
+              await _generateStyledPdf();
+              // WidgetsBinding.instance.addPostFrameCallback((_) {
+              //   _shareWidget(dialogKey); // will now find the boundary
+              // });
             },
             isLoading: false,
           ),

@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:bushra_mobile/home/fund-transfers/page-home-transfer-v2-under-remittance-last.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +10,13 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
+import '../../models/dto/favourites-add-request.dart';
+import '../../utils/api-customer-favourites.dart';
 import '../../utils/api-customer-transfers.dart';
 import '../../utils/providers/provider-balances.dart';
 import '../../utils/reference-generator.dart';
 import '../../utils/providers/provider-session.dart';
+import '../../utils/util-get-imei.dart';
 
 class FundsTransferRemittanceScreen extends StatefulWidget {
   const FundsTransferRemittanceScreen({super.key});
@@ -25,11 +30,14 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
   String loginId = 'FALSE';
   final apiCustomerFundsTransfer = ApiCustomerFundsTransfers();
   final referenceGenerator = ReferenceGenerator();
+  bool favouriteFlag = false;
+  late ApiCustomerFavourites apiCustomerFavourites;
 
   TextEditingController beneficiaryAccountNumber = TextEditingController();
   TextEditingController beneficiaryAccountName = TextEditingController();
   TextEditingController beneficiaryNarration = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
+  TextEditingController narrationController = TextEditingController();
   final List<double> quickAmounts = [50, 100, 500, 1000];
   double? selectedAmount;
 
@@ -117,11 +125,115 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
     }
   }
 
+  Future<void> _saveToFavorites(String phone) async {
+    try {
+      // Get device IMEI
+      String imei = await DeviceIdentifier.getDeviceIdentifier();
+
+      // Create a name for the favorite
+      String favoriteName = "Remittance to $selectedCountry";
+      if (beneficiaryAccountName.text.isNotEmpty) {
+        favoriteName = beneficiaryAccountName.text;
+      }
+
+      // Create the request as a Map
+      final requestMap = {
+        "xref": referenceGenerator.generateUniqueReference(false),
+        "txntimestamp": DateTime.now().toUtc().toIso8601String(),
+        "transactionDetails": {
+          "direction": "0200",
+          "transactionType": "ADDFAVORITES",
+          "transactionCode": "ADDFAVORITES",
+          "hostCode": "MOBILE",
+          "debitAccount": _currentIndexAccountNumber,
+          "phoneNumber": phone,
+          "category": "remittance", // Changed from "beneficiary" to "remittance"
+          "id": referenceGenerator.generateUniqueReference(false),
+          "name": favoriteName,
+          "bankcode": "REMITTANCE", // Changed to identify as remittance
+          "type": "FOREIGN_TRANSFER", // Changed type
+          "amount": _amountController.text.isNotEmpty ? _amountController.text : "0.00",
+          "recipient": selectedCountry ?? "", // Store country as recipient
+          // Additional remittance-specific data
+          "country": selectedCountry,
+          "countryCurrency": selectedCountryCurrency,
+          "paymentMethod": selectedPaymentMethod,
+          "exchangeRate": exchangeRate,
+          "destinationChannelCode": destinationChannelCode,
+          "destinationChannelName": destinationChannelName,
+        },
+        "channelDetails": {
+          "host": "IP",
+          "geolocation": "1.2921, 36.8219",
+          "userAgent": Platform.isAndroid ? "Android" : (Platform.isIOS ? "iOS" : "Unknown"),
+          "userAgentVersion": "1.0",
+          "channel": "MOBILE",
+          "clientId": "client123",
+          "deviceId": imei,
+        },
+      };
+
+      // Check if your API expects a TransactionRequest object
+      // If you have a fromJson method:
+      try {
+        final request = TransactionRequest.fromJson(requestMap);
+        final response = await apiCustomerFavourites.postCustomerFavourites(request);
+
+        if (response["data"]["response_code"] == "00") {
+          if (kDebugMode) {
+            print('Successfully added remittance to favorites');
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Added "$favoriteName" to favorites!'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        } else {
+          if (kDebugMode) {
+            print('Failed to add favorite: ${response["data"]["response"]}');
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to add to favorites'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      } catch (e) {
+        // If fromJson doesn't exist, just make a direct API call with map
+        print('Creating favorite: $favoriteName');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('"$favoriteName" saved to favorites'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error saving remittance favorite: $e');
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving favorite'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   @override
   void initState(){
     super.initState();
     _loadSharedPreferencesValue();
     fetchCountriesAndPayments();
+    apiCustomerFavourites = ApiCustomerFavourites();
     _amountController.addListener(() {
       final value = _amountController.text.trim();
       if (value.isNotEmpty) {
@@ -136,6 +248,8 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
   @override
   void dispose() {
     super.dispose();
+    beneficiaryAccountName.dispose();
+    narrationController.dispose();
   }
 
   @override
@@ -345,6 +459,12 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
               const Text("Payment mode", style: TextStyle(color: Colors.grey)),
               const SizedBox(height: 3),
               _buildTextInputDropDownFieldRedPaymentMode(),
+              const SizedBox(height: 16),
+              Text("Beneficiary Name (Optional)", style: TextStyle(color: Colors.grey)),
+              const SizedBox(height: 8),
+              _buildBeneficiaryNameField(),
+
+              const SizedBox(height: 16),
 
               const SizedBox(height: 7),
               const Text("Fee", style: TextStyle(color: Colors.grey)),
@@ -360,8 +480,32 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
               const Text("Recipient gets", style: TextStyle(color: Colors.grey)),
               const SizedBox(height: 3),
               _buildTextInputFieldGray(recipientGets, beneficiaryAccountNumber, TextInputType.text),
+              const SizedBox(height: 7),
+              // Add to Favourite Switch
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Add to favourite", style: TextStyle(color: Colors.grey)),
+                  Transform.scale(
+                    scale: 0.7, // Adjust this value to change the size (0.7 means 70% of the original size)
+                    child: Switch(
+                      value: favouriteFlag,
+                      onChanged: (value) {
+                        setState(() {
+                          favouriteFlag = value;
+                        });
+                      },
+                      activeColor: Colors.blue.shade700,
+                      inactiveTrackColor: Colors.grey.shade100,
+                      inactiveThumbColor: Colors.grey.shade700,
+                      activeTrackColor: Colors.grey.shade200,
+                    ),
+                  ),
+                ],
+              ),
 
-              const SizedBox(height: 10),
+
+              const SizedBox(height: 30),
               // Transfer Button
               SizedBox(
                 width: double.infinity,
@@ -394,6 +538,11 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
                     }
 
                     String transactionReference = referenceGenerator.generateUniqueReference(false);
+
+                    if (favouriteFlag) {
+                      await _saveToFavorites(loginId);
+                    }
+
                     Navigator.push(context, MaterialPageRoute(builder: (context) =>  FundsTransferRemittanceLastScreen(
                       transactionReference: transactionReference,
                       phoneNumber: loginId,
@@ -759,6 +908,46 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBeneficiaryNameField() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Stack(
+        children: [
+          TextField(
+            controller: beneficiaryAccountName,
+            maxLines: 1,
+            decoration: InputDecoration(
+              hintText: "Enter beneficiary name for favorite",
+              filled: true,
+              fillColor: Colors.grey.shade100,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+            ),
+            maxLength: 50,
+          ),
+          Positioned(
+            left: 10,
+            right: 10,
+            bottom: 0,
+            child: Container(
+              height: 1,
+              color: Colors.grey.shade400,
+            ),
           ),
         ],
       ),

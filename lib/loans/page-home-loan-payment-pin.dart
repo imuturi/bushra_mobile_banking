@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-accounts.dart';
 import '../utils/api-customer-details.dart';
 import '../utils/api-customer-favourites.dart';
@@ -502,7 +503,7 @@ class _PinInputLoanRepaymentScreenState extends State<PinInputLoanRepaymentScree
                       Container(
                         margin: const EdgeInsets.all(12.0),
                         child: Text(
-                          'Please enter your PIN to continue.',
+                          AppLocalizations.of(context)!.pleaseEnterYourPinToContinue,
                           style: TextStyle(
                             fontSize: isPortrait ? 14 : 12,
                             fontWeight: FontWeight.normal,
