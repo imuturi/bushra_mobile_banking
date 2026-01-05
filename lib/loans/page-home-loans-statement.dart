@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-loans.dart';
 import '../utils/providers/provider-session.dart';
 import '../utils/util-log-service.dart';
@@ -70,7 +71,7 @@ class _LoanStatementScreenState extends State<LoanStatementScreen> {
           ),
           Container(
               margin: const EdgeInsets.only(left: 7),
-              child:const Text('Posting loan repayment \n Please Wait...'
+              child: Text(AppLocalizations.of(context)!.postingLoanRepaymentNPleaseWait
               )
           ),
         ],),
@@ -170,8 +171,8 @@ class _LoanStatementScreenState extends State<LoanStatementScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          "Loan Statements",
+        title: Text(
+          AppLocalizations.of(context)!.loanStatements,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16.0,
@@ -186,11 +187,11 @@ class _LoanStatementScreenState extends State<LoanStatementScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Sort Dropdown
-            const Row(
+             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Transactions',
+                  AppLocalizations.of(context)!.transactions,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
@@ -205,7 +206,7 @@ class _LoanStatementScreenState extends State<LoanStatementScreen> {
                 Row(
                   children: [
                     Text(
-                      "Sort By: ",
+                      AppLocalizations.of(context)!.sortBy,
                       style: TextStyle(fontSize: 10,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey[600],
@@ -237,7 +238,7 @@ class _LoanStatementScreenState extends State<LoanStatementScreen> {
                   )
               )
                   : loanStatements.isEmpty
-                  ? Center(child: Text("No transactions available", style: TextStyle(
+                  ? Center(child: Text(AppLocalizations.of(context)!.noTransactionsAvailable, style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
                 color: isDarkMode ? Colors.grey.shade500 : Colors.grey.shade500,
@@ -434,8 +435,8 @@ class TransactionItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Monthly Instalment',
+                 Text(
+                  AppLocalizations.of(context)!.monthlyInstalment,
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                   ),

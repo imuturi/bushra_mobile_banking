@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-loans.dart';
 import '../utils/providers/provider-session.dart';
 import '../utils/util-get-imei.dart';
@@ -92,7 +93,7 @@ class _LoanScheduleScreenState extends State<LoanScheduleScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: BackButton(),
-        title: Text('Loan schedule'),
+        title: Text(AppLocalizations.of(context)!.loanSchedule),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -103,7 +104,7 @@ class _LoanScheduleScreenState extends State<LoanScheduleScreen> {
             DropdownButtonFormField<LoanAccount>(
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(18.0)),
-                labelText: 'Select the loan',
+                labelText: AppLocalizations.of(context)!.selectALoan,
               ),
               value: selectedLoanAccount,
               items: widget.loanAccountsList.map((loan) {
@@ -128,7 +129,7 @@ class _LoanScheduleScreenState extends State<LoanScheduleScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Amount Disbursed', style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
+                Text(AppLocalizations.of(context)!.amountDisbursed, style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
                 Text('\$$amountFinanced', style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -138,7 +139,7 @@ class _LoanScheduleScreenState extends State<LoanScheduleScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Outstanding', style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
+                Text(AppLocalizations.of(context)!.outstanding, style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
                 Text('\$$amountDue', style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -150,11 +151,11 @@ class _LoanScheduleScreenState extends State<LoanScheduleScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  Expanded(child: Center(child: Text('Due Date', style: TextStyle(color: Colors.white)))),
-                  Expanded(child: Center(child: Text('Outstanding', style: TextStyle(color: Colors.white)))),
-                  Expanded(child: Center(child: Text('Due Amount', style: TextStyle(color: Colors.white)))),
-                  Expanded(child: Center(child: Text('Paid Amount', style: TextStyle(color: Colors.white)))),
+                children: [
+                  Expanded(child: Center(child: Text(AppLocalizations.of(context)!.dueDate, style: TextStyle(color: Colors.white)))),
+                  Expanded(child: Center(child: Text(AppLocalizations.of(context)!.outstanding, style: TextStyle(color: Colors.white)))),
+                  Expanded(child: Center(child: Text(AppLocalizations.of(context)!.dueAmount, style: TextStyle(color: Colors.white)))),
+                  Expanded(child: Center(child: Text(AppLocalizations.of(context)!.paidAmount, style: TextStyle(color: Colors.white)))),
                 ],
               ),
             ),

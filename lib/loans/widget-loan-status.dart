@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../l10n/app_localizations.dart';
 import 'dto/loan-accounts-response.dart';
 
 class LoanDetailsWidget extends StatefulWidget {
@@ -64,10 +65,10 @@ class _LoanDetailsWidgetState extends State<LoanDetailsWidget> {
             ),
             value: selectedLoan,
             items: [
-              const DropdownMenuItem<LoanAccount>(
+               DropdownMenuItem<LoanAccount>(
                 value: null,
                 child: Text(
-                  'Select a loan',
+                  AppLocalizations.of(context)!.selectALoan,
                   style: TextStyle(
                     color: Colors.black,
                     fontStyle: FontStyle.italic,
@@ -104,9 +105,9 @@ class _LoanDetailsWidgetState extends State<LoanDetailsWidget> {
 
   Widget _buildLoanDetailsContent() {
     if (selectedLoan == null) {
-      return const Center(
+      return  Center(
         child: Text(
-          'Loans not selected',
+            AppLocalizations.of(context)!.loansNotSelected,
           style: TextStyle(fontSize: 18, color: Colors.grey),
         ),
       );
@@ -136,8 +137,8 @@ class _LoanDetailsWidgetState extends State<LoanDetailsWidget> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'Outstanding Loan',
+                   Text(
+                    AppLocalizations.of(context)!.outstandingLoan,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,

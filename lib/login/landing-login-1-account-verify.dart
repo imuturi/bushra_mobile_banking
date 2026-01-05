@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../l10n/app_localizations.dart';
 import '../register/dto/customer-verification-details.dart';
 import '../utils/api-login.dart';
 import '../utils/providers/provider-session.dart';
@@ -70,6 +71,7 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
           setState(() {
             isLoading = false;
             Navigator.pop(context);
+            // showErrorDialog(context, 'Oops! Your Account Verification Failed', 'Passport Information Does Not match banks captured data.', onRetry);
             showErrorDialog(context, 'Oops! Your Account Verification Failed', 'Passport Information Does Not match banks captured data.', onRetry);
           });
           return;
@@ -211,8 +213,8 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Account lookup',
+        title: Text(
+          AppLocalizations.of(context)!.accountLookup,
           style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -227,8 +229,8 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Please provide the following details.',
+                    Text(
+                      AppLocalizations.of(context)!.pleaseProvideTheFollowingDetails,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -236,23 +238,23 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    const Text("Select Document Type", style: TextStyle(color: Colors.grey)),
+                    Text(AppLocalizations.of(context)!.selectDocumentType, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     _buildDocumentTypeDropDown(),
 
                     const SizedBox(height: 16),
-                    const Text('ID Number / Passport Number', style: TextStyle(color: Colors.grey)),
+                    Text(AppLocalizations.of(context)!.idNumberPassportNumber, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     _buildTextInputFieldRed("Eg. P12345678", idController, TextInputType.text),
 
                     const SizedBox(height: 20),
 
-                    const Text('Phone Number', style: TextStyle(color: Colors.grey)),
+                    Text(AppLocalizations.of(context)!.phoneNumber, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     _buildTextInputFieldPhoneNumber('Eg 615566243', phoneController),
                     const SizedBox(height: 20),
 
-                    const Text('Date of Birth', style: TextStyle(color: Colors.grey)),
+                    Text( AppLocalizations.of(context)!.dateOfBirth, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     CustomDatePickerWidget(
                       context: context,
@@ -261,7 +263,7 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    const Text('Account Number', style: TextStyle(color: Colors.grey)),
+                    Text(AppLocalizations.of(context)!.accountNumber, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     _buildTextInputFieldGray("Eg. 0013000006100", accountNumberController, TextInputType.number),
                   ],
@@ -374,8 +376,8 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 18),
-                  const Text(
-                    'Account found successfully',
+                  Text(
+                    AppLocalizations.of(context)!.accountFoundSuccessfully,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -384,8 +386,8 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'We found the account with the details you provided to us. Please click activate button to continue',
+                   Text(
+                      AppLocalizations.of(context)!.weFoundTheAccountWithTheDetailsYouProvidedToUsPleaseClickActivateButtonToContinue,
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 12,
@@ -418,8 +420,8 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
                       ),
                     );
                   },
-                  child: const Text(
-                    'ACTIVATE',
+                  child: Text(
+                    AppLocalizations.of(context)!.activate,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -439,7 +441,7 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: const Duration(seconds: 10), // Set to any duration
+        duration: const Duration(seconds: 10),
         backgroundColor: color,
         action: SnackBarAction(
           label: "DISMISS",
@@ -461,8 +463,8 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
   Widget _buildTextInputFieldRed(String hint, TextEditingController controller, TextInputType textInputType, {int maxLines = 1}){
     return Container(
       decoration: BoxDecoration(
-        color: Colors.red.shade50, // Light red background
-        borderRadius: BorderRadius.circular(8), // Rounded corners
+        color: Colors.red.shade50,
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Stack(
         children: [
@@ -629,7 +631,7 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select document type", style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.normal)),
+            hint: Text(AppLocalizations.of(context)!.selectDocumentType, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.normal)),
             value: selectedDocumentType, // Can be null initially
             items: documentTypes.map((docType) {
               return DropdownMenuItem<DocumentType>(
@@ -641,7 +643,7 @@ class _AccountLookupScreenState extends State<AccountLookupScreen> {
               setState(() {
                 selectedDocumentType = newValue;
                 _selectedDocumentValue = newValue?.value;
-                selectedDocumentLabel = newValue?.description ?? 'ID Number / Passport Number';
+                selectedDocumentLabel = newValue?.description ?? AppLocalizations.of(context)!.idNumberPassportNumber;
               });
             },
           ),

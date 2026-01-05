@@ -578,6 +578,7 @@ class _LoansScreenState extends State<LoansScreen> {
               ),
             ),
           ),
+          SizedBox(height: 50,)
         ]
       ),
     );
