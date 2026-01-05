@@ -2,6 +2,7 @@ import 'package:bushra_mobile/term-deposits/page-home-term-deposit-pin.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-term-deposits.dart';
 import '../utils/dto/api-response-login.dart';
 import '../utils/reference-generator.dart';
@@ -126,7 +127,7 @@ class _TermDepositCreateScreenState extends State<TermDepositCreateScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Create term Deposit'),
+        title: Text(AppLocalizations.of(context)!.createTermDeposit),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -138,17 +139,17 @@ class _TermDepositCreateScreenState extends State<TermDepositCreateScreen> {
           children: [
 
             const SizedBox(height: 16),
-            const Text("Term deposit type", style: TextStyle(color: Colors.grey)),
+             Text(AppLocalizations.of(context)!.termDepositType, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
             _buildTextInputDropDownFieldRedTermDepositType(),
 
             const SizedBox(height: 8),
-            const Text("Debit from", style: TextStyle(color: Colors.grey)),
+             Text(AppLocalizations.of(context)!.debitFrom, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
             _buildTextInputDropDownFieldRedAccountsDebit(accounts),
 
             const SizedBox(height: 7),
-            _buildInputField("Amount", "Eg. USD 50", amountController),
+            _buildInputField(AppLocalizations.of(context)!.amount, "Eg. USD 50", amountController),
 
             const SizedBox(height: 8),
             _buildInputField("Profit Rate", "Eg. 50", profitRateController, maxLines: 1, readOnly: true),
@@ -329,7 +330,7 @@ class _TermDepositCreateScreenState extends State<TermDepositCreateScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select maturity tenure", style: TextStyle(fontSize: 12),),
+            hint:  Text(AppLocalizations.of(context)!.selectMaturityTenure, style: TextStyle(fontSize: 12),),
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             value: selectedMaturityInstructions,
@@ -383,7 +384,7 @@ class _TermDepositCreateScreenState extends State<TermDepositCreateScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select an account", style: TextStyle(fontSize: 12),),
+            hint:  Text(AppLocalizations.of(context)!.selectAnAccount, style: TextStyle(fontSize: 12),),
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {
@@ -436,7 +437,7 @@ class _TermDepositCreateScreenState extends State<TermDepositCreateScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Payout Account", style: TextStyle(fontSize: 12),),
+            hint:  Text(AppLocalizations.of(context)!.payoutAccount, style: TextStyle(fontSize: 12),),
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {
@@ -480,9 +481,9 @@ class _TermDepositCreateScreenState extends State<TermDepositCreateScreen> {
           onChanged: onChanged,
           activeColor: Colors.red.shade900,
         ),
-        const Expanded(
+         Expanded(
           child: Text(
-            "Accept Terms and Conditions",
+            AppLocalizations.of(context)!.acceptTermsAndConditions,
             style: TextStyle(fontSize: 13),
             overflow: TextOverflow.ellipsis,
           ),

@@ -2,6 +2,7 @@ import 'package:bushra_mobile/term-deposits/page-home-term-deposit-create.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-term-deposits.dart';
 import '../utils/reference-generator.dart';
 import '../utils/providers/provider-session.dart';
@@ -114,7 +115,7 @@ class _TermDepositScreenState extends State<TermDepositScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Term Deposit'),
+        title:  Text(AppLocalizations.of(context)!.termDeposit),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -148,8 +149,8 @@ class _TermDepositScreenState extends State<TermDepositScreen> {
               ),
             ),
             const SizedBox(height: 24),
-            const Text(
-              "Oops! Sorry currently you don't have any records",
+             Text(
+              AppLocalizations.of(context)!.oopsSorryCurrentlyYouDontHaveAnyRecords,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -157,8 +158,8 @@ class _TermDepositScreenState extends State<TermDepositScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'For term deposit please create one.',
+             Text(
+               AppLocalizations.of(context)!.forTermDepositPleaseCreateOne,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,

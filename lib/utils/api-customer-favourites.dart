@@ -35,6 +35,42 @@ class ApiCustomerFavourites{
     );
   }
 
+  Future<dynamic> addCustomerFavourites({
+    required String imei,
+    required String phone,
+    required String category,
+    required Map<String, dynamic> favoriteData,
+  }) async {
+    return apiService.makeApiCall(
+      _createCustomerFavouritesEndpoint,
+      ApiModule.fundsTransfer,
+      method: 'POST',
+      body: {
+        "xref": referenceGenerator.generateUniqueReference(false),
+        "txntimestamp": DateTime.now().toUtc().toIso8601String(),
+        "transactionDetails": {
+          "direction": "0200",
+          "transactionType": "ADDFAVORITES",
+          "transactionCode": "ADDFAVORITES",
+          "hostCode": "MOBILE",
+          "debitAccount": phone,
+          "phoneNumber": phone,
+          "category": category,
+          ...favoriteData, // Spread the favorite data
+        },
+        "channelDetails": {
+          "host": "IP",
+          "geolocation": "1.2921, 36.8219",
+          "userAgent": Platform.isAndroid ? "Android" : (Platform.isIOS ? "iOS" : "Unknown"),
+          "userAgentVersion": "1.0",
+          "channel": "MOBILE",
+          "clientId": "client123",
+          "deviceId": imei,
+        },
+      },
+    );
+  }
+
   Future<dynamic> deleteCustomerFavourites(String imei, String phone, String favouriteType, String favouriteId) async {
     return apiService.makeApiCall(
       _deleteCustomerFavouritesEndpoint,

@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-accounts.dart';
 import '../utils/api-customer-details.dart';
 import '../utils/api-customer-term-deposits.dart';
@@ -436,7 +437,7 @@ class _PinInputCommitTDScreenState extends State<PinInputCommitTDScreen> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'Enter PIN',
+                        AppLocalizations.of(context)!.enterPin,
                         style: TextStyle(
                           fontSize: isPortrait ? 18 : 16,
                           fontWeight: FontWeight.bold,
@@ -447,7 +448,7 @@ class _PinInputCommitTDScreenState extends State<PinInputCommitTDScreen> {
                       Container(
                         margin: const EdgeInsets.all(12.0),
                         child: Text(
-                          'Please enter your PIN to continue.',
+                          AppLocalizations.of(context)!.pleaseEnterYourPinToContinue,
                           style: TextStyle(
                             fontSize: isPortrait ? 14 : 12,
                             fontWeight: FontWeight.normal,
@@ -643,7 +644,7 @@ class _TransferDoneDialogState extends State<TransferDoneDialog> {
             ),
             const SizedBox(height: 8.0),
             Text(
-              "Transfer Done",
+              AppLocalizations.of(context)!.transferDone,
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
@@ -673,8 +674,8 @@ class _TransferDoneDialogState extends State<TransferDoneDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Total Transaction",
+                 Text(
+                  AppLocalizations.of(context)!.totalTransaction,
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
@@ -703,7 +704,7 @@ class _TransferDoneDialogState extends State<TransferDoneDialog> {
                       borderRadius: BorderRadius.circular(18.0),
                     ),
                   ),
-                  label: const Text("Share",
+                  label:  Text(AppLocalizations.of(context)!.share,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -721,7 +722,7 @@ class _TransferDoneDialogState extends State<TransferDoneDialog> {
                     ),
                   ),
                   icon: const Icon(Icons.done, color: Colors.white,),
-                  label: const Text("Done",
+                  label:  Text(AppLocalizations.of(context)!.done,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

@@ -137,7 +137,7 @@ class ApiCustomerFundsTransfers {
   }
 
 
-  Future<dynamic> fundsTransferStatus(String transactionReference) async {
+  Future<dynamic> fundsTransferStatus(String transactionReference, String transactionCode) async {
     return apiService.makeApiCall(
       _customerFundsTransferStatus,
       ApiModule.fundsTransfer,
@@ -148,7 +148,7 @@ class ApiCustomerFundsTransfers {
         'transactionDetails': {
           'direction': "0200",
           'transactionType': "TRANSACTIONSTATUS",
-          'transactionCode': "TRANSACTIONSTATUS",
+          'transactionCode': transactionCode,
           'hostCode': "MOBILE",
           'transactionRef': transactionReference
         },
