@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart' as ms;
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import 'package:image_picker/image_picker.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/api-qrcode.dart';
 
 class QRCodeScannerScreen extends StatefulWidget {
@@ -282,9 +283,9 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
                     minHeight: 35,
                     minWidth: 150,
                   ),
-                  children: const [
-                    Text("Scan Now", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                    Text("Scan From Gallery", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  children: [
+                    Text(AppLocalizations.of(context)!.scanNow, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    Text(AppLocalizations.of(context)!.scanFromGallery, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                   ],
                   onPressed: (int index) async {
                     setState(() {
@@ -323,8 +324,8 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    "Scan a QR Code",
+                   Text(
+                    AppLocalizations.of(context)!.scanAQrCode,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

@@ -4,6 +4,7 @@ import 'package:bushra_mobile/remote-config-services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../l10n/app_localizations.dart';
 import '../login/landing-login-3-login.dart';
 import '../utils/api-otp-functions.dart';
 import '../utils/providers/provider-registration.dart';
@@ -225,7 +226,7 @@ class _ActivateMobileBankingScreen extends State<ActivateMobileBankingScreen> {
               children: [
                 // Title
                 Text(
-                  "       Activate Mobile Banking",
+                  AppLocalizations.of(context)!.activateMobileBanking,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20,
@@ -234,7 +235,7 @@ class _ActivateMobileBankingScreen extends State<ActivateMobileBankingScreen> {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-                const Text('Activation Code'),
+                 Text(AppLocalizations.of(context)!.activationCode),
                 // Activation Code Field
                 TextField(
                   controller: otpCodeController,
@@ -248,7 +249,8 @@ class _ActivateMobileBankingScreen extends State<ActivateMobileBankingScreen> {
                 ),
                 const SizedBox(height: 16.0),
                 // Phone Number Field
-                const Text('Phone Number'),
+                // const Text('Phone Number'),
+                Text(AppLocalizations.of(context)!.selectAQuestionHere),
                 TextField(
                   readOnly: true,
                   //controller: phoneController,

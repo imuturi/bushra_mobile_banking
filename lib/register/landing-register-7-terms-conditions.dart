@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:pdfx/pdfx.dart';
+import '../l10n/app_localizations.dart';
 import 'landing-register-1.dart';
 
 class TermsAndConditionsScreen extends StatefulWidget {
@@ -80,12 +81,12 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
       ),
       body: Column(
         children: [
-          const Padding(
+           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Last updated Jan 30TH 2024",
+                AppLocalizations.of(context)!.lastUpdatedJan30Th2024,
                 style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
               ),
             ),
@@ -196,8 +197,8 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                 ),
               ),
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                "DECLINE",
+              child:  Text(
+                AppLocalizations.of(context)!.decline,
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
@@ -215,8 +216,8 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
               onPressed: isAtEnd
                   ? () => Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()))
                   : null,
-              child: const Text(
-                "ACCEPT",
+              child:  Text(
+                AppLocalizations.of(context)!.accept,
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),

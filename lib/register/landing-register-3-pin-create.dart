@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../l10n/app_localizations.dart';
 import 'landing-register-4-pin-confirm.dart';
 
 class RegisterPinInputScreen1 extends StatefulWidget {
@@ -44,7 +45,7 @@ class _RegisterPinInputScreen1State extends State<RegisterPinInputScreen1> {
       Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPinInputScreen2(customerPin: enteredPin,)));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a 6-digit PIN')),
+         SnackBar(content: Text(AppLocalizations.of(context)!.pleaseEnterA6DigitPin)),
       );
     }
   }
@@ -87,7 +88,7 @@ class _RegisterPinInputScreen1State extends State<RegisterPinInputScreen1> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Create your New PIN',
+                      AppLocalizations.of(context)!.createYourNewPin,
                       style: TextStyle(
                         fontSize: isPortrait ? 14 : 12,
                         fontWeight: FontWeight.bold,
@@ -98,7 +99,7 @@ class _RegisterPinInputScreen1State extends State<RegisterPinInputScreen1> {
                     Container(
                       margin: const EdgeInsets.all(12.0),
                       child: Text(
-                        'Set your personal 6-digit code, it will be used for secure and last sign-in.',
+                        AppLocalizations.of(context)!.setYourPersonal6DigitCodeItWillBeUsedForSecureAndLastSignin,
                         style: TextStyle(
                           fontSize: isPortrait ? 12 : 10,
                           fontWeight: FontWeight.normal,
@@ -161,7 +162,7 @@ class _RegisterPinInputScreen1State extends State<RegisterPinInputScreen1> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'This keeps your account secure',
+                      AppLocalizations.of(context)!.thisKeepsYourAccountSecure,
                       style: TextStyle(
                         fontSize: isPortrait ? 12 : 10,
                         fontWeight: FontWeight.normal,

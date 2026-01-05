@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../page-landing/page-home-landing-login.dart';
 import '../remote-config-services.dart';
 import '../utils/api-customer-accounts.dart';
@@ -105,8 +106,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   size: 30,
                 ),
                 const SizedBox(width: 10),
-                const Text(
-                  'No Internet Connection',
+                 Text(
+                  AppLocalizations.of(context)!.noInternetConnection,
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -175,7 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: <Widget>[
               Image.asset('assets/images/icons/success-check.png', width: 70,),
               const SizedBox(height: 18),
-              const Text('Account found successfully',
+              Text(AppLocalizations.of(context)!.accountFoundSuccessfully,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -183,7 +184,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              const Text('We found the account with the details you provided to us. Please click activate button to continue'),
+              Text(AppLocalizations.of(context)!.weFoundTheAccountWithTheDetailsYouProvidedToUsPleaseClickActivateButtonToContinue),
             ],
           ),
           actions: <Widget>[
@@ -492,8 +493,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Register',
+        title:  Text(
+          AppLocalizations.of(context)!.register,
           style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -508,8 +509,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Please provide the following details.',
+                     Text(
+                      AppLocalizations.of(context)!.pleaseProvideTheFollowingDetails,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -517,22 +518,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    const Text("Select Document Type", style: TextStyle(color: Colors.grey)),
+                     Text(AppLocalizations.of(context)!.selectDocumentType, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     _buildDocumentTypeDropDown(),
 
                     const SizedBox(height: 16),
-                    const Text('ID Number / Passport Number', style: TextStyle(color: Colors.grey)),
+                     Text(AppLocalizations.of(context)!.idNumberPassportNumber, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     _buildTextInputFieldRed("Eg. P12345678", idController, TextInputType.text),
                     const SizedBox(height: 20),
 
-                    const Text('Phone Number', style: TextStyle(color: Colors.grey)),
+                     Text(AppLocalizations.of(context)!.phoneNumber, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     _buildTextInputFieldPhoneNumber('Eg 615566243', phoneController),
                     const SizedBox(height: 20),
 
-                    const Text('Date of Birth', style: TextStyle(color: Colors.grey)),
+                     Text(AppLocalizations.of(context)!.dateOfBirth, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     CustomDatePickerWidget(
                       context: context,
@@ -541,7 +542,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    const Text('Account Number', style: TextStyle(color: Colors.grey)),
+                     Text(AppLocalizations.of(context)!.accountNumber, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 8),
                     _buildTextInputFieldGray("Eg. 0013000006100", accountNumberController, TextInputType.number),
 
@@ -802,7 +803,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select document type", style: TextStyle(fontSize: 12)),
+            hint: Text(AppLocalizations.of(context)!.selectDocumentType, style: TextStyle(fontSize: 12)),
             value: selectedDocumentType, // Can be null initially
             items: documentTypes.map((docType) {
               return DropdownMenuItem<DocumentType>(
@@ -814,7 +815,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               setState(() {
                 selectedDocumentType = newValue;
                 _selectedDocumentValue = newValue?.value;
-                selectedDocumentLabel = newValue?.description ?? 'ID Number / Passport Number';
+                selectedDocumentLabel = newValue?.description ?? AppLocalizations.of(context)!.idNumberPassportNumber;
               });
             },
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/providers/provider-registration.dart';
 import '../widgets/progress-dialog.dart';
 import 'landing-register-3-pin-create.dart';
@@ -61,8 +62,8 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
             children: <Widget>[
               Image.asset('assets/images/icons/success-check.png', width: 70),
               const SizedBox(height: 16),
-              const Text(
-                'Security question set successfully',
+               Text(
+                AppLocalizations.of(context)!.securityQuestionSetSuccessfully,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
@@ -71,8 +72,8 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'You have successfully set your security questions. Please press continue button to proceed ..',
+               Text(
+                AppLocalizations.of(context)!.youHaveSuccessfullySetYourSecurityQuestionsPleasePressContinueButtonToProceed,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
@@ -131,8 +132,8 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Set security question',
+        title:  Text(
+          AppLocalizations.of(context)!.setSecurityQuestion,
           style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -147,18 +148,18 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Please provide the following security questions to finalise activation.',
+                     Text(
+                      AppLocalizations.of(context)!.pleaseProvideTheFollowingSecurityQuestionsToFinaliseActivation,
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'Set and answer the following questions',
+                     Text(
+                        AppLocalizations.of(context)!.setAndAnswerTheFollowingQuestions,
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                     ),
                     const SizedBox(height: 15),
-                    const Text(
-                      'Q1. Whats your pet name ?',
+                     Text(
+                       AppLocalizations.of(context)!.q1WhatsYourPetName,
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                     ),
                     const SizedBox(height: 8),
@@ -170,7 +171,7 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: _question1,
-                          hint: Text('Select a question here',
+                          hint: Text(AppLocalizations.of(context)!.selectAQuestionHere,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
@@ -196,8 +197,8 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                     const SizedBox(height: 10),
                     TextField(
                       controller: _answer1Controller,
-                      decoration:  const InputDecoration(
-                        hintText: 'Give your answer here',
+                      decoration:   InputDecoration(
+                        hintText: AppLocalizations.of(context)!.giveYourAnswerHere,
                         border: OutlineInputBorder(),
                       ),
                       style: TextStyle(
@@ -208,8 +209,8 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'Q2. Whats your favourite car ?',
+                     Text(
+                      AppLocalizations.of(context)!.q2WhatsYourFavouriteCar,
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                     ),
                     const SizedBox(height: 8),
@@ -221,7 +222,7 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: _question2,
-                          hint: Text('Select a question here',
+                          hint: Text(AppLocalizations.of(context)!.selectAQuestionHere,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
@@ -248,8 +249,8 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                     const SizedBox(height: 10),
                     TextField(
                       controller: _answer2Controller,
-                      decoration:  const InputDecoration(
-                        hintText: 'Give your answer here',
+                      decoration:   InputDecoration(
+                        hintText: AppLocalizations.of(context)!.giveYourAnswerHere,
                         border: OutlineInputBorder(),
                       ),
                       style: TextStyle(
@@ -260,8 +261,8 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'Q3. Whats the name of your best friend ?',
+                     Text(
+                      AppLocalizations.of(context)!.q3WhatsTheNameOfYourBestFriend,
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                     ),
                     const SizedBox(height: 8),
@@ -272,7 +273,7 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
-                          hint: Text('Select a question here',
+                          hint: Text(AppLocalizations.of(context)!.selectAQuestionHere,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
@@ -300,8 +301,9 @@ class _RegisterSecurityQuestionsState extends State<RegisterSecurityQuestions> {
                     const SizedBox(height: 10),
                     TextField(
                       controller: _answer3Controller,
-                      decoration:  const InputDecoration(
-                        hintText: 'Give your answer here',
+                      decoration:   InputDecoration(
+                        // hintText: 'Give your answer here',
+                        hintText: AppLocalizations.of(context)!.giveYourAnswerHere,
                         border: OutlineInputBorder(),
                       ),
                       style: TextStyle(

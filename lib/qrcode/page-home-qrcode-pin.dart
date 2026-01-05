@@ -26,6 +26,7 @@ import '../../utils/util-log-service.dart';
 import '../../widgets/dialog-error.dart';
 import '../../widgets/dialog-transaction-status-check.dart';
 import '../../widgets/progress-dialog.dart';
+import '../l10n/app_localizations.dart';
 
 class PinInputQRCodeTransactionScreen extends StatefulWidget {
   final String transferType;
@@ -213,7 +214,7 @@ class _PinInputQRCodeTransactionScreenState extends State<PinInputQRCodeTransact
           builder: (context) => TransactionStatusCheckDialog(
             repaintKey: dialogKey,
             data: TransactionStatusCheckData(
-              title: "Transfer Done",
+              title: AppLocalizations.of(context)!.transferDone,
               dateTime: DateFormat("MMM d, yyyy | h:mm:ss a").format(DateTime.now()),
               reference: widget.transactionReference,
               source: widget.debitAccount,
@@ -509,7 +510,7 @@ class _PinInputQRCodeTransactionScreenState extends State<PinInputQRCodeTransact
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'Enter PIN',
+          AppLocalizations.of(context)!.enterPin,
                         style: TextStyle(
                           fontSize: isPortrait ? 18 : 16,
                           fontWeight: FontWeight.bold,
@@ -520,7 +521,7 @@ class _PinInputQRCodeTransactionScreenState extends State<PinInputQRCodeTransact
                       Container(
                         margin: const EdgeInsets.all(12.0),
                         child: Text(
-                          'Please enter your PIN to continue.',
+                          AppLocalizations.of(context)!.pleaseEnterYourPinToContinue,
                           style: TextStyle(
                             fontSize: isPortrait ? 14 : 12,
                             fontWeight: FontWeight.normal,
