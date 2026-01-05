@@ -1,6 +1,8 @@
 import 'package:bushra_mobile/standing-order/page-home-sto-create-1.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class StandingOrderListScreen extends StatefulWidget {
   const StandingOrderListScreen({super.key});
 
@@ -16,7 +18,7 @@ class _StandingOrderListScreenState extends State<StandingOrderListScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Standing Order'),
+        title: Text(AppLocalizations.of(context)!.standingOrder),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -32,8 +34,8 @@ class _StandingOrderListScreenState extends State<StandingOrderListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Here are your current standing orders',
+             Text(
+              AppLocalizations.of(context)!.hereAreYourCurrentStandingOrders,
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 16),
@@ -49,8 +51,8 @@ class _StandingOrderListScreenState extends State<StandingOrderListScreen> {
               ),
               child: Column(
                 children: [
-                  const Text(
-                    'RECURRING STANDING ORDER',
+                   Text(
+                     AppLocalizations.of(context)!.recurringStandingOrder,
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

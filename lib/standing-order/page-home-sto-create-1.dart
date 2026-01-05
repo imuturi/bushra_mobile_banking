@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-accounts.dart';
 import '../utils/dto/api-response-get-acc-status.dart' as AccountStatus;
 import '../utils/reference-generator.dart';
@@ -135,7 +136,7 @@ class _StandingOrderCreate1ScreenState extends State<StandingOrderCreate1Screen>
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Create new standing order', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),
+        title:  Text(AppLocalizations.of(context)!.createNewStandingOrder, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -147,11 +148,11 @@ class _StandingOrderCreate1ScreenState extends State<StandingOrderCreate1Screen>
           children: [
             //TODO -- NEW ------------------------
             const SizedBox(height: 7),
-            const Text("Debit from", style: TextStyle(color: Colors.grey)),
+            Text(AppLocalizations.of(context)!.debitFrom, style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
             _buildTextInputDropDownFieldRed(accounts),
             const SizedBox(height: 7),
-            const Text('Beneficiary Account Number/IBAN', style: TextStyle(color: Colors.grey)),
+             Text(AppLocalizations.of(context)!.beneficiaryAccountNumberiban, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
             _buildTextInputFieldGrayFocused('Eg. A/C #0001*******6789', beneficiaryAccount, TextInputType.number, focusNode: accountNumberFocusNode),
             if (isFetchingAccountName)
@@ -171,19 +172,19 @@ class _StandingOrderCreate1ScreenState extends State<StandingOrderCreate1Screen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 7),
-                  const Text("Beneficiary Name", style: TextStyle(color: Colors.grey)),
+                   Text(AppLocalizations.of(context)!.beneficiaryName, style: TextStyle(color: Colors.grey)),
                   const SizedBox(height: 7),
-                  _buildTextInputFieldGrayFocused('Beneficiary Name', beneficiaryAccountName, TextInputType.text, enabled: false),
+                  _buildTextInputFieldGrayFocused(AppLocalizations.of(context)!.beneficiaryName, beneficiaryAccountName, TextInputType.text, enabled: false),
                 ],
               ),
             const SizedBox(height: 7),
             _buildInputField("Transfer Amount", "Eg. USD 50", beneficiaryAmount),
             const SizedBox(height: 7),
-            const Text("Frequency", style: TextStyle(color: Colors.grey)),
+             Text(AppLocalizations.of(context)!.frequency, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
             _buildPaymentFrequencyDropdown(),
             const SizedBox(height: 10),
-            const Text('Select start date', style: TextStyle(color: Colors.grey)),
+             Text(AppLocalizations.of(context)!.selectStartDate, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
             Stack(
               children: [
@@ -244,7 +245,7 @@ class _StandingOrderCreate1ScreenState extends State<StandingOrderCreate1Screen>
               ],
             ),
             const SizedBox(height: 8),
-            const Text('Select end date', style: TextStyle(color: Colors.grey)),
+             Text(AppLocalizations.of(context)!.selectEndDate, style: TextStyle(color: Colors.grey)),
             Stack(
               children: [
                 TextField(
@@ -304,7 +305,7 @@ class _StandingOrderCreate1ScreenState extends State<StandingOrderCreate1Screen>
               ],
             ),
             const SizedBox(height: 7),
-            _buildInputField("Narration", "Eg. Reason", beneficiaryNarration),
+            _buildInputField(AppLocalizations.of(context)!.narration, "Eg. Reason", beneficiaryNarration),
             const SizedBox(height: 7),
             const SizedBox(height: 22),
             // Continue Button
@@ -377,7 +378,7 @@ class _StandingOrderCreate1ScreenState extends State<StandingOrderCreate1Screen>
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select an account"),
+            hint: Text(AppLocalizations.of(context)!.selectAnAccount),
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {
@@ -436,7 +437,7 @@ class _StandingOrderCreate1ScreenState extends State<StandingOrderCreate1Screen>
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("PAYMENT FREQUENCY"),
+            hint:  Text(AppLocalizations.of(context)!.paymentFrequency),
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: frequencies.map((frequency) {

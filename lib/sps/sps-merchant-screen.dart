@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../utils/api-customer-accounts.dart';
 import '../utils/api-customer-transfers.dart';
@@ -122,7 +123,7 @@ class _QRPaymentMerchantScreenState extends State<QRPaymentMerchantScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Scan QR Code'),
+        title:  Text(AppLocalizations.of(context)!.scanAQrCode),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -172,7 +173,7 @@ class _QRPaymentMerchantScreenState extends State<QRPaymentMerchantScreen> {
             const SizedBox(height: 16),
             const MerchantDetails(),
             const SizedBox(height: 16),
-            const Text("How much would you like to pay?", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+             Text(AppLocalizations.of(context)!.howMuchWouldYouLikeToPay, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,7 +203,7 @@ class _QRPaymentMerchantScreenState extends State<QRPaymentMerchantScreen> {
               },
             ),
             const SizedBox(height: 16),
-            const Text("Select debit account"),
+             Text(AppLocalizations.of(context)!.selectDebitAccount),
             DropdownButtonFormField<String>(
               value: accounts?.any((a) => a.accountNumber == selectedAccount) == true
                   ? selectedAccount
@@ -215,7 +216,7 @@ class _QRPaymentMerchantScreenState extends State<QRPaymentMerchantScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              hint: const Text("Select debit account"),
+              hint:  Text(AppLocalizations.of(context)!.selectDebitAccount),
               items: accounts?.map<DropdownMenuItem<String>>((account) {
                 String maskedAccount =
                     "A/C #${account.accountNumber.substring(0, 4)}****${account.accountNumber.substring(account.accountNumber.length - 4)}";
@@ -340,7 +341,7 @@ class MerchantDetails extends StatelessWidget {
           const SizedBox(height: 12,),
           SizedBox(
             width: MediaQuery.of(context).size.width - 20,
-            child: const Card(
+            child:  Card(
               margin: EdgeInsets.zero,
               child: Padding(
                 padding: EdgeInsets.all(16.0),
@@ -348,12 +349,13 @@ class MerchantDetails extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Merchant details",
+                      AppLocalizations.of(context)!.merchantDetails,
                       style: TextStyle(
                           color: Colors.red, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 12),
-                    Text("Merchant Name: Tasima Kumasi",
+                    // Text("Merchant Name: Tasima Kumasi",
+                    Text("${AppLocalizations.of(context)!.merchantName}: Tasima Kumasi",
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
@@ -388,7 +390,7 @@ class PayButton extends StatelessWidget {
         onPressed: () {
           //TODO
         },
-        child: const Text("PAY", style: TextStyle(color: Colors.white, fontSize: 16 ,fontWeight: FontWeight.bold)),
+        child:  Text(AppLocalizations.of(context)!.pay, style: TextStyle(color: Colors.white, fontSize: 16 ,fontWeight: FontWeight.bold)),
       ),
     );
   }

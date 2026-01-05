@@ -1,6 +1,8 @@
 import 'package:bushra_mobile/standing-order/page-home-sto-create-1.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class StandingOrderScreen extends StatelessWidget {
   const StandingOrderScreen({super.key});
 
@@ -13,7 +15,8 @@ class StandingOrderScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Standing Order'),
+        // title: const Text('Standing Order'),
+        title: Text(AppLocalizations.of(context)!.standingOrder),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -37,10 +40,10 @@ class StandingOrderScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            const Padding(
+             Padding(
               padding: EdgeInsets.all(16),
               child: Text(
-                "Oops! Sorry currently you don't have any records",
+                AppLocalizations.of(context)!.oopsSorryCurrentlyYouDontHaveAnyRecords,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -48,8 +51,8 @@ class StandingOrderScreen extends StatelessWidget {
               ),
             ),
 
-            const Text(
-              'For standing order please create one.',
+             Text(
+              AppLocalizations.of(context)!.forStandingOrderPleaseCreateOne,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -59,7 +62,7 @@ class StandingOrderScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 16, right: 16), // adjust height & side space
+        padding: const EdgeInsets.only(bottom: 40, right: 16), // adjust height & side space
         child: SizedBox(
           width: 200,
           height: 50,
@@ -74,12 +77,12 @@ class StandingOrderScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(26), // adjust radius here
             ),
-            label: const Row(
+            label: Row(
               children: [
                 Icon(Icons.add, color: Colors.white),
                 SizedBox(width: 8),
                 Text(
-                  'NEW STANDING ORDER',
+                  AppLocalizations.of(context)!.newStandingOrder,
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
