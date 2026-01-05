@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:bushra_mobile/utils/dto/api-response-login.dart';
 import 'package:bushra_mobile/qrcode/page-home-qrcode-pin.dart';
 import '../home/page-home.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-transfers.dart';
 import '../utils/dto/api-response-get-charges.dart';
 import '../utils/providers/provider-balances.dart';
@@ -149,6 +150,7 @@ class _MerchantPaymentScreenState extends State<MerchantPaymentScreen> {
         showDialog(
           context: context,
           builder: (context) => ConfirmTransferDialog(
+            // dialogDescription: "Please confirm you are making a QR Payment Transfer",
             dialogDescription: "Please confirm you are making a QR Payment Transfer",
             amount: '$debitAccountCurrency ${_amountController.text}',
             recipientAccount: widget.merchantId!,
@@ -212,7 +214,7 @@ class _MerchantPaymentScreenState extends State<MerchantPaymentScreen> {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen()));
           },
         ),
-        title: const Text("Pay using QR code",),
+        title: Text(AppLocalizations.of(context)!.payUsingQrCode,),
         centerTitle: false,
       ),
       body: SingleChildScrollView(
@@ -285,7 +287,7 @@ class _MerchantPaymentScreenState extends State<MerchantPaymentScreen> {
                 children: [
                   // Section title
                   Text(
-                    "Merchant Details",
+                    AppLocalizations.of(context)!.merchantDetails,
                     style: TextStyle(
                       color: Colors.red.shade900,
                       fontSize: 12,
@@ -298,7 +300,7 @@ class _MerchantPaymentScreenState extends State<MerchantPaymentScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Merchant Name:",
+                      AppLocalizations.of(context)!.merchantName,
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                       ),
                       Text(
@@ -316,7 +318,7 @@ class _MerchantPaymentScreenState extends State<MerchantPaymentScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Marchant ID:",
+                        AppLocalizations.of(context)!.merchantId2345678,
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                       ),
                       Text(
@@ -333,14 +335,14 @@ class _MerchantPaymentScreenState extends State<MerchantPaymentScreen> {
             ),
             const SizedBox(height: 12),
             const SizedBox(height: 10),
-            const Text('How much would you like to transfer?'),
+             Text(AppLocalizations.of(context)!.howMuchWouldYouLikeToTransfer),
             //TODO -- NEW ------------------------
             const SizedBox(height: 8),
             _buildTextInputFieldGrayAmountMain("Enter Amount", "eg 1000.00", _amountController, maxLines: 1),
             const SizedBox(height: 14),
-            const Center(
+             Center(
               child: Text(
-                'The minimum transfer amount is 0.1',
+                AppLocalizations.of(context)!.theMinimumTransferAmountIs01,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 12,
@@ -394,11 +396,11 @@ class _MerchantPaymentScreenState extends State<MerchantPaymentScreen> {
             ),
             //TODO -- NEW ------------------------
             const SizedBox(height: 7),
-            const Text("Account from", style: TextStyle(color: Colors.grey)),
+            Text(AppLocalizations.of(context)!.accountFrom, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
             _buildTextInputDropDownFieldRed(accounts),
             const SizedBox(height: 7),
-            _buildInputField("Narration", "Eg. Reason"),
+            _buildInputField(AppLocalizations.of(context)!.narration, "Eg. Reason"),
             const SizedBox(height: 7),
             const SizedBox(height: 30),
             // Transfer Button
@@ -570,7 +572,7 @@ class _MerchantPaymentScreenState extends State<MerchantPaymentScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select an account", style: TextStyle(fontSize: 12),),
+            hint: Text(AppLocalizations.of(context)!.selectAnAccount, style: TextStyle(fontSize: 12),),
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {
@@ -642,7 +644,7 @@ class _MerchantPaymentScreenState extends State<MerchantPaymentScreen> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "Actual Balance\n",
+                        text: AppLocalizations.of(context)!.actualBalance,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,

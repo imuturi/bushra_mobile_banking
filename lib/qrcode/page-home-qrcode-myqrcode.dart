@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/api-qrcode.dart';
 import '../utils/constants/app_constants.dart';
 import '../utils/providers/provider-session.dart';
@@ -272,8 +273,8 @@ class _MyQRScreenState extends State<MyQRScreen> {
       appBar: AppBar(
         backgroundColor: Colors.grey.shade300,
         automaticallyImplyLeading: true,
-        title: const Text(
-          'My QR Code',
+        title:  Text(
+          AppLocalizations.of(context)!.myQrCode,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 17.0,
@@ -319,6 +320,7 @@ class _MyQRScreenState extends State<MyQRScreen> {
                   fontSize: size.width * 0.045, // scales with width
                 ),
               ),
+              // Text("Telephone: ${authProvider.customerDetails.phoneNumber}"),
               Text("Telephone: ${authProvider.customerDetails.phoneNumber}"),
               const SizedBox(height: 16),
               // QR Container
@@ -344,7 +346,7 @@ class _MyQRScreenState extends State<MyQRScreen> {
                     _buildTextInputDropDownFieldRed(accounts),
                     const SizedBox(height: 12),
                     if (qrString != null)
-                      const Text("Scan my QR code for payments"),
+                       Text(AppLocalizations.of(context)!.scanMyQrCodeForPayments),
                     const SizedBox(height: 12),
                     Expanded(
                       child: Center(
@@ -365,8 +367,8 @@ class _MyQRScreenState extends State<MyQRScreen> {
                                     size: size.width * 0.55,
                                   );
                                 } else {
-                                  return const Text(
-                                    "Select an account to generate QR",
+                                  return Text(
+                                    AppLocalizations.of(context)!.selectAnAccountToGenerateQr,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
                                   );
@@ -422,7 +424,7 @@ class _MyQRScreenState extends State<MyQRScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select your account to view QR", style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal), textAlign: TextAlign.center,),
+            hint: Text(AppLocalizations.of(context)!.selectAnAccountToGenerateQr, style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal), textAlign: TextAlign.center,),
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {

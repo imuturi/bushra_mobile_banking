@@ -8,6 +8,7 @@ import '../../utils/reference-generator.dart';
 import '../../utils/providers/provider-session.dart';
 import '../../widgets/dialog-transaction-charges.dart';
 import '../home/page-home.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-transfers.dart';
 import '../utils/dto/api-response-get-charges.dart';
 import '../utils/util-log-service.dart';
@@ -202,7 +203,7 @@ class _FundsTransferSpsQRScreenState extends State<FundsTransferSpsQRScreen> {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen()));
           },
         ),
-        title: const Text("Pay using QR code",),
+        title:  Text(AppLocalizations.of(context)!.payUsingQrCode,),
         centerTitle: false,
       ),
       body: SingleChildScrollView(
@@ -275,7 +276,7 @@ class _FundsTransferSpsQRScreenState extends State<FundsTransferSpsQRScreen> {
                 children: [
                   // Section title
                   Text(
-                    "Beneficiary Details",
+                    AppLocalizations.of(context)!.beneficiaryDetails,
                     style: TextStyle(
                       color: Colors.red.shade900,
                       fontSize: 12,
@@ -288,7 +289,7 @@ class _FundsTransferSpsQRScreenState extends State<FundsTransferSpsQRScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Receiver Name:",
+                        AppLocalizations.of(context)!.receiverName,
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                       ),
                       Text(
@@ -322,14 +323,14 @@ class _FundsTransferSpsQRScreenState extends State<FundsTransferSpsQRScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            const Text('How much would you like to transfer?'),
+            Text(AppLocalizations.of(context)!.howMuchWouldYouLikeToTransfer),
             //TODO -- NEW ------------------------
             const SizedBox(height: 8),
             _buildTextInputFieldGrayAmountMain("Enter Amount", "eg 1000.00", _amountController, maxLines: 1),
             const SizedBox(height: 14),
-            const Center(
+             Center(
               child: Text(
-                'The minimum transfer amount is 0.1',
+                AppLocalizations.of(context)!.theMinimumTransferAmountIs01,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 12,
@@ -383,11 +384,11 @@ class _FundsTransferSpsQRScreenState extends State<FundsTransferSpsQRScreen> {
             ),
             //TODO -- NEW ------------------------
             const SizedBox(height: 7),
-            const Text("Account from", style: TextStyle(color: Colors.grey)),
+            Text(AppLocalizations.of(context)!.accountFrom, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
             _buildTextInputDropDownFieldRed(accounts),
             const SizedBox(height: 7),
-            _buildInputField("Narration", "Eg. Reason"),
+            _buildInputField(AppLocalizations.of(context)!.narration, "Eg. Reason"),
             const SizedBox(height: 30),
             // Transfer Button
             SizedBox(
@@ -444,8 +445,8 @@ class _FundsTransferSpsQRScreenState extends State<FundsTransferSpsQRScreen> {
                     ),
                   )
                     :
-                  const Text(
-                    "PAY",
+                   Text(
+                    AppLocalizations.of(context)!.pay,
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                   ),
               ),
@@ -558,7 +559,7 @@ class _FundsTransferSpsQRScreenState extends State<FundsTransferSpsQRScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select an account", style: TextStyle(fontSize: 12),),
+            hint:  Text(AppLocalizations.of(context)!.selectAnAccount, style: TextStyle(fontSize: 12),),
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {
@@ -630,7 +631,7 @@ class _FundsTransferSpsQRScreenState extends State<FundsTransferSpsQRScreen> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "Actual Balance\n",
+                        text: AppLocalizations.of(context)!.actualBalance,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,

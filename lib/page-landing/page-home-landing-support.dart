@@ -9,6 +9,7 @@ import 'package:http/io_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../l10n/app_localizations.dart';
 import '../remote-config-services.dart';
 import '../utils/constants/app_constants.dart';
 
@@ -126,7 +127,7 @@ class _SupportScreenState extends State<SupportScreen> {
                     left: 0,
                     right: 0,
                     child: Text(
-                      "We Are Here to\nSupport You",
+                      AppLocalizations.of(context)!.weAreHereTonsupportYou,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,
@@ -198,7 +199,7 @@ class _SupportScreenState extends State<SupportScreen> {
                       }
                     },
                     icon: Icon(Icons.phone, color: Colors.blue.shade900),
-                    label: Text("Call Center",
+                    label: Text(AppLocalizations.of(context)!.callCenter,
                       style: TextStyle(color: Colors.blue.shade900, fontWeight: FontWeight.bold),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -223,7 +224,7 @@ class _SupportScreenState extends State<SupportScreen> {
                     },
                     icon: Icon(Icons.location_on, color: Colors.blue.shade900),
                     label: Text(
-                      "Bank Direction",
+                      AppLocalizations.of(context)!.bankDirection,
                       style: TextStyle(color: Colors.blue.shade900, fontWeight: FontWeight.bold),
                     ),
                     style: OutlinedButton.styleFrom(
