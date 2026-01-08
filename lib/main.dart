@@ -4,9 +4,10 @@ import 'dart:io';
 import 'package:bushra_mobile/page-landing/page-home-landing-login.dart';
 import 'package:bushra_mobile/page-landing/page-home-splash.dart';
 import 'package:bushra_mobile/providers/local_provider.dart';
-import 'package:bushra_mobile/remote-config-services.dart';
+// import 'package:bushra_mobile/remote-config-services.dart'; // Disabled - Firebase dependent
 import 'package:bushra_mobile/security/blocked_device_screen.dart';
 import 'package:bushra_mobile/security/jail-break-check.dart';
+// import 'package:bushra_mobile/security/jail-break-check.dart';
 import 'package:bushra_mobile/utils/providers/provider-balances.dart';
 import 'package:bushra_mobile/utils/providers/provider-favourites.dart';
 import 'package:bushra_mobile/utils/providers/provider-mini-recent.dart';
@@ -16,10 +17,12 @@ import 'package:bushra_mobile/utils/providers/provider-registration.dart';
 import 'package:bushra_mobile/utils/providers/provider-themes.dart';
 import 'package:bushra_mobile/utils/providers/provider-transfer-favourite-data.dart';
 import 'package:bushra_mobile/utils/providers/provider-session.dart';
-import 'package:bushra_mobile/widgets/placeholder-firebase-screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
+// import 'package:bushra_mobile/widgets/placeholder-firebase-screen.dart'; // Disabled - Firebase dependent
+// import 'package:firebase_core/firebase_core.dart'; // Disabled
+// import 'package:firebase_crashlytics/firebase_crashlytics.dart'; // Disabled
+// import 'package:firebase_remote_config/firebase_remote_config.dart'; // Disabled
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -51,9 +54,10 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FavouritesProvider()),
         ChangeNotifierProvider(create: (_) => FavoriteTransferDataProvider()),
         ChangeNotifierProvider(create: (_) => NotificationServiceProvider()),
-        ChangeNotifierProvider(create: (_) => LocaleProvider()),
+        // ChangeNotifierProvider(create: (_) => LocaleProvider()),
+        ChangeNotifierProvider.value(value: localeProvider),
       ],
-      child: MyApp(),
+      child: MyApp()
     ),
   );
 }
@@ -65,7 +69,7 @@ class MyApp extends StatefulWidget {
 }
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
-  bool _firebaseReady = false;
+  bool _firebaseReady = true; // Set to true since Firebase is disabled
   bool _initializing = true;
   bool _forceUpdateRequired = false;
   bool _isDeviceSecure = false;
@@ -82,9 +86,9 @@ class _MyAppState extends State<MyApp> {
     });
     try {
       await Firebase.initializeApp();
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await checkForceUpdate(navigatorKey.currentContext!);
-      });
+      // WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //   await checkForceUpdate(navigatorKey.currentContext!);
+      // });
 
       // todo Initialize Notifications
       // final notificationsProvider = NotificationServiceProvider();
@@ -105,11 +109,12 @@ class _MyAppState extends State<MyApp> {
       final isSecure = await SecurityService.isDeviceSecure();
       //await AppInstallManager.handleFirstInstall();
       setState(() {
-        _isDeviceSecure = isSecure;
-        _firebaseReady = true;
+        // _isDeviceSecure = isSecure;
+        _isDeviceSecure = true;
+        _firebaseReady = true; // Always true since Firebase is disabled
       });
     } catch (e) {
-      debugPrint('❌ Firebase init failed: $e');
+      debugPrint('❌ App initialization failed: $e');
     } finally {
       setState(() {
         _initializing = false;
@@ -117,6 +122,8 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  // Firebase Remote Config disabled - commented out entire function
+  /*
   Future<void> checkForceUpdate(BuildContext context) async {
     String installedVersionAndBuildNumber = '';
     String latestVersion = '';
@@ -150,6 +157,7 @@ class _MyAppState extends State<MyApp> {
       debugPrint('✅ App is up to date: $currentVersion (min: $minVersion, build: $minBuild)');
     }
   }
+  */
 
   bool _isVersionLower(String current, String required) {
     try {
@@ -167,11 +175,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _showForceUpdateDialog(BuildContext context, String installedVersions, latestVersion) {
-    final info = PackageInfo.fromPlatform(); // ensure current version is available
+    final info = PackageInfo.fromPlatform();
     info.then((packageInfo) {
       showDialog(
         context: context,
-        barrierDismissible: false, // Don't allow dismissing by tapping outside
+        barrierDismissible: false,
         builder: (_) => VersionUpdateDialog(installedVersions: installedVersions, latestVersion: latestVersion),
       );
     });
@@ -182,8 +190,8 @@ class _MyAppState extends State<MyApp> {
     final sessionProvider = Provider.of<SessionProvider>(context);
     final localeProvider = context.watch<LocaleProvider>();
     return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'Bushra Mobile App',
+        navigatorKey: navigatorKey,
+        title: 'Bushra Mobile App',
         locale: localeProvider.locale,
         supportedLocales: const [
           Locale('en'),
@@ -191,7 +199,6 @@ class _MyAppState extends State<MyApp> {
         ],
         localizationsDelegates: [
           AppLocalizations.delegate,
-          // Use custom delegates for Somali, fallback to English for others
           localeProvider.locale.languageCode == 'so'
               ? SomaliMaterialLocalizationsDelegate()
               : GlobalMaterialLocalizations.delegate,
@@ -202,80 +209,80 @@ class _MyAppState extends State<MyApp> {
               ? SomaliCupertinoLocalizationsDelegate()
               : GlobalCupertinoLocalizations.delegate,
         ],
-        // localizationsDelegates: const [
-        //   AppLocalizations.delegate,
-        //   GlobalMaterialLocalizations.delegate,
-        //   GlobalWidgetsLocalizations.delegate,
-        //   GlobalCupertinoLocalizations.delegate,
-        // ],
-      theme: ThemeData(
-        dividerColor: const Color(0xFFECEDF1),
-        brightness: Brightness.light,
-        primaryColor: Colors.white,
-        fontFamily: 'Exo2',
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
-          titleMedium: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          titleSmall: TextStyle(fontSize: 14),
-          bodyLarge: TextStyle(fontSize: 16.0),
-          bodyMedium: TextStyle(fontSize: 12.0),
-          bodySmall: TextStyle(fontSize: 10.0),
-          headlineLarge: TextStyle(fontSize: 18.0, color: Colors.black54),
-          headlineMedium: TextStyle(fontSize: 16.0, color: Colors.black54),
-          headlineSmall: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
-          displayLarge: TextStyle(fontSize: 20.0, color: Colors.black54),
-          displayMedium: TextStyle(fontSize: 16.0, color: Colors.black54),
-          displaySmall: TextStyle(fontSize: 14.0, color: Colors.black54),
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          hintStyle: TextStyle(fontSize: 14.0, color: Colors.grey),
-          labelStyle: TextStyle(fontSize: 14.0, color: Colors.black),
-          floatingLabelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          border: OutlineInputBorder(),
-          filled: true,
-          fillColor: Colors.white,
-        ),
-        dropdownMenuTheme: DropdownMenuThemeData(
-          textStyle: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+        theme: ThemeData(
+          dividerColor: const Color(0xFFECEDF1),
+          brightness: Brightness.light,
+          primaryColor: Colors.white,
+          fontFamily: 'Exo2',
+          textTheme: const TextTheme(
+            titleLarge: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
+            titleMedium: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            titleSmall: TextStyle(fontSize: 14),
+            bodyLarge: TextStyle(fontSize: 16.0),
+            bodyMedium: TextStyle(fontSize: 12.0),
+            bodySmall: TextStyle(fontSize: 10.0),
+            headlineLarge: TextStyle(fontSize: 18.0, color: Colors.black54),
+            headlineMedium: TextStyle(fontSize: 16.0, color: Colors.black54),
+            headlineSmall: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+            displayLarge: TextStyle(fontSize: 20.0, color: Colors.black54),
+            displayMedium: TextStyle(fontSize: 16.0, color: Colors.black54),
+            displaySmall: TextStyle(fontSize: 14.0, color: Colors.black54),
           ),
-          inputDecorationTheme: InputDecorationTheme(
+          inputDecorationTheme: const InputDecorationTheme(
+            hintStyle: TextStyle(fontSize: 14.0, color: Colors.grey),
+            labelStyle: TextStyle(fontSize: 14.0, color: Colors.black),
+            floatingLabelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            border: OutlineInputBorder(),
+            filled: true,
+            fillColor: Colors.white,
           ),
+          dropdownMenuTheme: DropdownMenuThemeData(
+            textStyle: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
-      ),
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         home: _initializing
             ? Center(child: CircularProgressIndicator(color: Colors.red.shade900))
-            : !_firebaseReady
-            ? FirebaseOfflinePlaceholder(onRetry: _initializeApp)
-            : !_isDeviceSecure
-            ? const BlockedDeviceScreen()
-            : _forceUpdateRequired
+            : // Firebase placeholder removed since Firebase is disabled
+        // !_firebaseReady
+        // ? FirebaseOfflinePlaceholder(onRetry: _initializeApp)
+        // :
+        // !_isDeviceSecure
+        //     ? const BlockedDeviceScreen()
+        //     : _forceUpdateRequired
+        //     ? const SizedBox.shrink()
+        //     : sessionProvider.isLoggedIn && sessionProvider.user != null
+        //     ? DashboardScreen()
+        //     : SplashScreen(),
+        _forceUpdateRequired
             ? const SizedBox.shrink()
             : sessionProvider.isLoggedIn && sessionProvider.user != null
             ? DashboardScreen()
             : SplashScreen(),
-      routes: {
-        '/splash': (_) => SplashScreen(),
-        '/login': (_) => LandingPageLogin(),
-        '/home': (_) => DashboardScreen(),
-        '/forgot-password': (_) => ForgotPinScreen(),
-      }
+        routes: {
+          '/splash': (_) => SplashScreen(),
+          '/login': (_) => LandingPageLogin(),
+          '/home': (_) => DashboardScreen(),
+          '/forgot-password': (_) => ForgotPinScreen(),
+        }
     );
   }
 }
 
-
-//Update Version Code
 class VersionUpdateDialog extends StatelessWidget {
   final String installedVersions;
   final String latestVersion;
   const VersionUpdateDialog({super.key, required this.installedVersions, required this.latestVersion});
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -312,16 +319,14 @@ class VersionUpdateDialog extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               SizedBox(
-                width: screenWidth * 0.8, // responsive width
+                width: screenWidth * 0.8,
                 child: ElevatedButton(
                   onPressed: () async {
-                    //TODO: Implement update logic
-                    //'https://apps.apple.com/ke/app/bushra-mobile/id6741591752'
                     final url = Platform.isAndroid
                         ? 'https://play.google.com/store/apps/details?id=com.bbbank.so.bushra_mobile'
                         : 'https://apps.apple.com/app/id6741591752';
                     if (await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+                      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
                     }
                   },
                   style: ElevatedButton.styleFrom(
