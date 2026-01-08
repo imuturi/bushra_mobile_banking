@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class CustomBottomNav extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
@@ -39,7 +41,7 @@ class CustomBottomNav extends StatelessWidget {
                   child: _buildNavItem(
                     context,
                     icon: Icons.home_rounded,
-                    label: "Home",
+                    label: AppLocalizations.of(context)!.home,
                     isSelected: selectedIndex == 0,
                     onTap: () => onItemTapped(0),
                     fontSize: fontSize,
@@ -50,7 +52,7 @@ class CustomBottomNav extends StatelessWidget {
                   child: _buildNavItem(
                     context,
                     icon: Icons.qr_code_scanner_rounded,
-                    label: "Scan to pay",
+                    label: AppLocalizations.of(context)!.scanToPay,
                     isSelected: selectedIndex == 1,
                     onTap: () => onItemTapped(1),
                     fontSize: fontSize,
@@ -61,7 +63,7 @@ class CustomBottomNav extends StatelessWidget {
                   child: _buildNavItem(
                     context,
                     icon: Icons.settings,
-                    label: "Settings",
+                    label: AppLocalizations.of(context)!.settings,
                     isSelected: selectedIndex == 2,
                     onTap: () => onItemTapped(2),
                     fontSize: fontSize,
@@ -86,35 +88,40 @@ class CustomBottomNav extends StatelessWidget {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    return InkWell( // ✅ full clickable surface
+    return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(vertical: 6),
         decoration: isSelected
             ? BoxDecoration(
-          color: Colors.indigo.shade900, // Selected background
+          color: Colors.indigo.shade900,
           borderRadius: BorderRadius.circular(12),
         )
             : null,
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
+              size: 22,
               color: isSelected
                   ? Colors.white
                   : (isDarkMode ? Colors.white70 : Colors.black),
             ),
-            const SizedBox(width: 2),
+            const SizedBox(height: 2),
             Text(
               label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
               style: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
                 color: isSelected
                     ? Colors.white
                     : (isDarkMode ? Colors.white70 : Colors.black),
-                fontWeight: FontWeight.bold,
-                fontSize: fontSize,
               ),
             ),
           ],
