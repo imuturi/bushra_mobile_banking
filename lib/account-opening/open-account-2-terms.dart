@@ -29,11 +29,18 @@ class _OpenAccountTermsStateScreenState extends State<OpenAccountTerms> {
   PdfController? _pdfController;
   int _currentPage = 0;
   int _totalPages = 1;
+  bool _showScrollButton = true;
 
   @override
   void initState() {
     super.initState();
     loadPDF();
+  }
+
+  @override
+  void dispose() {
+    _pdfController?.dispose();
+    super.dispose();
   }
 
   Future<void> loadPDF() async {
@@ -70,6 +77,13 @@ class _OpenAccountTermsStateScreenState extends State<OpenAccountTerms> {
     }
   }
 
+  // Function to scroll to bottom
+  void _scrollToBottom() {
+    if (_pdfController != null && _totalPages > 1) {
+      _pdfController!.jumpToPage(_totalPages - 1);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,111 +97,151 @@ class _OpenAccountTermsStateScreenState extends State<OpenAccountTerms> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Column(
+      body: Stack(
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Last updated Jan 30TH 2024",
-                style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+          Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Last updated Jan 30TH 2024",
+                    style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const Divider(thickness: 2),
+
+              // WebView for PDF
+              Expanded(
+                child: localPath == null || _pdfController == null
+                    ? _buildShimmerLoader()
+                    : Stack(
+                  children: [
+                    PdfView(
+                      controller: _pdfController!,
+                      scrollDirection: Axis.vertical,
+                      onPageChanged: (page) {
+                        setState(() {
+                          _currentPage = page;
+                          isAtEnd = (_currentPage == _totalPages - 1);
+                          // Hide scroll button when reaching near the end
+                          if (page >= _totalPages - 2) {
+                            _showScrollButton = false;
+                          } else {
+                            _showScrollButton = true;
+                          }
+                        });
+                      },
+                    ),
+                    _buildScrollIndicator(),
+                  ],
+                ),
+              ),
+
+              // Buttons
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.indigo.shade900,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text(
+                          "DECLINE",
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isAtEnd ? Colors.red.shade900 : Colors.grey,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: isAtEnd
+                            ? () {
+                          if (widget.accountType == 'XYZ') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OpenAccountVerifyIdentityScreen3(
+                                  accountType: widget.accountType,
+                                  passportNumber: widget.passportNumber,
+                                  phoneNumber: widget.phoneNumber,
+                                  dateOfBirth: widget.dateOfBirth,
+                                ),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OpenAccountVerifyIdentityScreen3(
+                                  accountType: widget.accountType,
+                                  passportNumber: widget.passportNumber,
+                                  phoneNumber: widget.phoneNumber,
+                                  dateOfBirth: widget.dateOfBirth,
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                            : null,
+                        child: const Text(
+                          "ACCEPT",
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          // Floating scroll to bottom button
+          if (_showScrollButton && _pdfController != null && _totalPages > 1)
+            Positioned(
+              bottom: 80, // Position above the accept/decline buttons
+              right: 16,
+              child: GestureDetector(
+                onTap: _scrollToBottom,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade900,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.arrow_downward,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
               ),
             ),
-          ),
-          const Divider(thickness: 2),
-
-          // WebView for PDF
-          Expanded(
-            child: localPath == null || _pdfController == null
-                ? _buildShimmerLoader()
-                : Stack(
-              children: [
-                PdfView(
-                  controller: _pdfController!,
-                  scrollDirection: Axis.vertical,
-                  onPageChanged: (page) {
-                    setState(() {
-                      _currentPage = page;
-                      isAtEnd = (_currentPage == _totalPages);
-                    });
-                  },
-                ),
-                _buildScrollIndicator(),
-              ],
-            ),
-          ),
-
-          // Buttons
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.indigo.shade900,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      "DECLINE",
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: isAtEnd ? Colors.red.shade900 : Colors.grey,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: isAtEnd
-                        ? () {
-                      if (widget.accountType == 'XYZ') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OpenAccountVerifyIdentityScreen3(
-                              accountType: widget.accountType,
-                              passportNumber: widget.passportNumber,
-                              phoneNumber: widget.phoneNumber,
-                              dateOfBirth: widget.dateOfBirth,
-                            ),
-                          ),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OpenAccountVerifyIdentityScreen3(
-                              accountType: widget.accountType,
-                              passportNumber: widget.passportNumber,
-                              phoneNumber: widget.phoneNumber,
-                              dateOfBirth: widget.dateOfBirth,
-                            ),
-                          ),
-                        );
-                      }
-                    }
-                        : null,
-                    child: const Text(
-                      "ACCEPT",
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -256,5 +310,4 @@ class _OpenAccountTermsStateScreenState extends State<OpenAccountTerms> {
       ),
     );
   }
-
 }

@@ -19,16 +19,40 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
   PdfController? _pdfController;
   int _currentPage = 0;
   int _totalPages = 1;
+  final ScrollController _scrollController = ScrollController();
+  bool _showScrollButton = true;
 
   @override
   void initState() {
     super.initState();
     loadPDF();
+
+    // Listen to scroll position to hide/show the floating button
+    _scrollController.addListener(() {
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+
+      // Show button if not at bottom, hide if at bottom
+      if (currentScroll >= maxScroll * 0.95) { // 95% scrolled
+        if (_showScrollButton) {
+          setState(() {
+            _showScrollButton = false;
+          });
+        }
+      } else {
+        if (!_showScrollButton) {
+          setState(() {
+            _showScrollButton = true;
+          });
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
     _pdfController?.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -66,6 +90,13 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
     }
   }
 
+  // Function to scroll to bottom
+  void _scrollToBottom() {
+    if (_pdfController != null && _totalPages > 1) {
+      _pdfController!.jumpToPage(_totalPages - 1);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,39 +110,77 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Column(
+      body: Stack(
         children: [
-           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                AppLocalizations.of(context)!.lastUpdatedJan30Th2024,
-                style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+          Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    AppLocalizations.of(context)!.lastUpdatedJan30Th2024,
+                    style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const Divider(thickness: 2),
+              Expanded(
+                child: localPath == null || _pdfController == null
+                    ? _buildShimmerLoader()
+                    : Stack(
+                  children: [
+                    PdfView(
+                      controller: _pdfController!,
+                      scrollDirection: Axis.vertical,
+                      onPageChanged: (page) {
+                        setState(() {
+                          _currentPage = page;
+                          isAtEnd = (_currentPage == _totalPages - 1);
+                          // Hide scroll button when reaching near the end
+                          if (page >= _totalPages - 2) {
+                            _showScrollButton = false;
+                          }
+                        });
+                      },
+                    ),
+                    _buildScrollIndicator(),
+                  ],
+                ),
+              ),
+              _buildButtons(),
+            ],
+          ),
+
+          // Floating scroll to bottom button
+          if (_showScrollButton && _pdfController != null && _totalPages > 1)
+            Positioned(
+              bottom: 80, // Position above the accept/decline buttons
+              right: 16,
+              child: GestureDetector(
+                onTap: _scrollToBottom,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade900,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.arrow_downward,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
               ),
             ),
-          ),
-          const Divider(thickness: 2),
-          Expanded(
-            child: localPath == null || _pdfController == null
-                ? _buildShimmerLoader()
-                : Stack(
-              children: [
-                PdfView(
-                  controller: _pdfController!,
-                  scrollDirection: Axis.vertical,
-                  onPageChanged: (page) {
-                    setState(() {
-                      _currentPage = page;
-                      isAtEnd = (_currentPage == _totalPages);
-                    });
-                  },
-                ),
-                _buildScrollIndicator(),
-              ],
-            ),
-          ),
-          _buildButtons(),
         ],
       ),
     );
@@ -197,7 +266,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                 ),
               ),
               onPressed: () => Navigator.pop(context),
-              child:  Text(
+              child: Text(
                 AppLocalizations.of(context)!.decline,
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
@@ -216,7 +285,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
               onPressed: isAtEnd
                   ? () => Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()))
                   : null,
-              child:  Text(
+              child: Text(
                 AppLocalizations.of(context)!.accept,
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
