@@ -3,6 +3,15 @@
   "appName": "Bushra Mobile",
   "welcome": "Welcome",
   "login": "Login",
+  "fundTransfer": "Fund Transfer",
+  "transactionDetails": "Transaction Details"
+  "favourites": "favourites"
+  "newTransfer": "New Transfer"
+  "history": "History"
+  "whichPeopleWouldYouLikeToTransferFundsTo": "Which people would you like to transfer funds to ?"
+  "otherTransfer": "Other Transfer"
+  "spsTransfer": "SPS Transfer"
+  "remittance": "Remittance"
   "signup": "Sign Up",
   "home": "Home",
   "dashboard": "Dashboard",

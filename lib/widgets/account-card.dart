@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../bill-payment/page-home-bill-payment-main.dart';
 import '../home/page-home-statements.dart';
 import '../home/fund-transfers/page-home-transfer-v2-main.dart';
+import '../l10n/app_localizations.dart';
 import '../loans/page-home-loans.dart';
 import '../models/account-card-model.dart';
 import '../more-services/page-home-more-services.dart';
@@ -189,7 +190,7 @@ class _AccountCardState extends State<AccountCard> {
                         children: [
                           _buildServiceIcon(
                             icon: FontAwesomeIcons.moneyBillTransfer,
-                            label: 'Fund Transfer',
+                            label: AppLocalizations.of(context)!.fundTransfer,
                             isActive: widget.isActiveCard,
                             onTap: () {
                               if (widget.card.accountStatus == 'ACTIVE') {
@@ -205,7 +206,7 @@ class _AccountCardState extends State<AccountCard> {
                           ),
                           _buildServiceIcon(
                             icon: Icons.receipt_long,
-                            label: 'Paybills',
+                            label: AppLocalizations.of(context)!.paybill,
                             isActive: widget.isActiveCard,
                             onTap: () {
                               if (widget.card.accountStatus == 'ACTIVE') {
@@ -221,7 +222,7 @@ class _AccountCardState extends State<AccountCard> {
                           ),
                           _buildServiceIcon(
                             icon: Icons.monetization_on,
-                            label: 'Loans',
+                            label: AppLocalizations.of(context)!.loans,
                             isActive: widget.isActiveCard,
                             onTap: () {
                               if (widget.card.accountStatus == 'ACTIVE') {
@@ -237,7 +238,7 @@ class _AccountCardState extends State<AccountCard> {
                           ),
                           _buildServiceIcon(
                             icon: Icons.grid_view,
-                            label: 'More Services',
+                            label: AppLocalizations.of(context)!.moreServices,
                             isActive: widget.isActiveCard,
                             onTap: () {
                               if (widget.card.accountStatus == 'ACTIVE') {

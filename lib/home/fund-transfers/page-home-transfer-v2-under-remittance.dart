@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../main.dart';
 import '../../models/dto/favourites-add-request.dart';
 import '../../utils/api-customer-favourites.dart';
@@ -323,8 +324,8 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Foreign Remittance',
+        title: Text(
+          AppLocalizations.of(context)!.foreignRemittance,
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: false,
@@ -390,14 +391,14 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
                 ),
               ),
               const SizedBox(height: 10),
-              const Text('How much would you like to transfer?'),
+              Text(AppLocalizations.of(context)!.howMuchWouldYouLikeToTransfer),
               //TODO -- NEW ------------------------
               const SizedBox(height: 8),
               _buildTextInputFieldGrayAmountMain("Enter Amount", "eg 1000.00", _amountController, maxLines: 1),
               const SizedBox(height: 14),
-              const Center(
+              Center(
                 child: Text(
-                  'The minimum transfer amount is 0.1',
+                  AppLocalizations.of(context)!.theMinimumTransferAmountIs01,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 12,
@@ -451,33 +452,33 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
               ),
               //TODO -- NEW ------------------------
               const SizedBox(height: 7),
-              const Text("Select the country", style: TextStyle(color: Colors.grey)),
+              Text(AppLocalizations.of(context)!.selectTheCountry, style: TextStyle(color: Colors.grey)),
               const SizedBox(height: 3),
               _buildTextInputDropDownFieldRedCountry(),
 
               const SizedBox(height: 7),
-              const Text("Payment mode", style: TextStyle(color: Colors.grey)),
+              Text(AppLocalizations.of(context)!.paymentMode, style: TextStyle(color: Colors.grey)),
               const SizedBox(height: 3),
               _buildTextInputDropDownFieldRedPaymentMode(),
               const SizedBox(height: 16),
-              Text("Beneficiary Name (Optional)", style: TextStyle(color: Colors.grey)),
+              Text(AppLocalizations.of(context)!.beneficiaryName, style: TextStyle(color: Colors.grey)),
               const SizedBox(height: 8),
               _buildBeneficiaryNameField(),
 
               const SizedBox(height: 16),
 
               const SizedBox(height: 7),
-              const Text("Fee", style: TextStyle(color: Colors.grey)),
+              Text(AppLocalizations.of(context)!.fee, style: TextStyle(color: Colors.grey)),
               const SizedBox(height: 3),
               _buildTextInputFieldGray(fees, beneficiaryAccountNumber, TextInputType.text),
 
               const SizedBox(height: 7),
-              const Text("Exchange rate", style: TextStyle(color: Colors.grey)),
+              Text(AppLocalizations.of(context)!.exchangeRate, style: TextStyle(color: Colors.grey)),
               const SizedBox(height: 3),
               _buildTextInputFieldGray(exchangeRate, beneficiaryAccountNumber, TextInputType.text),
 
               const SizedBox(height: 7),
-              const Text("Recipient gets", style: TextStyle(color: Colors.grey)),
+              Text(AppLocalizations.of(context)!.recipientGets, style: TextStyle(color: Colors.grey)),
               const SizedBox(height: 3),
               _buildTextInputFieldGray(recipientGets, beneficiaryAccountNumber, TextInputType.text),
               const SizedBox(height: 7),
@@ -485,7 +486,7 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Add to favourite", style: TextStyle(color: Colors.grey)),
+                  Text(AppLocalizations.of(context)!.addToFavourite, style: TextStyle(color: Colors.grey)),
                   Transform.scale(
                     scale: 0.7, // Adjust this value to change the size (0.7 means 70% of the original size)
                     child: Switch(
@@ -600,7 +601,7 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select the country you are sending money to",
+            hint: Text(AppLocalizations.of(context)!.selectTheCountryYouAreSendingMoneyTo,
                 style: TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.normal)
             ),
             dropdownColor: Colors.white,
@@ -657,7 +658,7 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select the receiver payment mode",
+            hint: Text(AppLocalizations.of(context)!.selectTheReceiverPaymentMode,
                 style: TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.normal)
             ),
             dropdownColor: Colors.white,
@@ -889,7 +890,7 @@ class _FundsTransferRemittanceScreenState extends State<FundsTransferRemittanceS
 
                     const SizedBox(height: 8),
                     Text(
-                      "Actual Balance",
+                      AppLocalizations.of(context)!.actualBalance,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 13,

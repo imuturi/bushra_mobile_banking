@@ -18,6 +18,30 @@ class AppLocalizationsSo extends AppLocalizations {
   String get login => 'GALI';
 
   @override
+  String get transactionDetails => 'faahfaahinta wax kala iibsiga';
+
+  @override
+  String get favourites => 'Kuwa ugu jecel';
+
+  @override
+  String get newTransfer => 'Wareejin Cusub';
+
+  @override
+  String get history => 'Taariikhda';
+
+  @override
+  String get whichPeopleWouldYouLikeToTransferFundsTo => 'Dadkee ayaad jeceshahay inaad lacagta u wareejiso?';
+
+  @override
+  String get otherTransfer => 'Wareejin Kale';
+
+  @override
+  String get spsTransfer => 'SPS Wareejinta';
+
+  @override
+  String get remittance => 'Xawaaladaha';
+
+  @override
   String get signup => 'Is-diiwaan geli';
 
   @override

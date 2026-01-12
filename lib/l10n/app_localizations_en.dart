@@ -18,6 +18,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login => 'LOGIN';
 
   @override
+  String get transactionDetails => 'Transaction Details';
+
+  @override
+  String get favourites => 'Favourites';
+
+  @override
+  String get newTransfer => 'New Transfer';
+
+  @override
+  String get history => 'History';
+
+  @override
+  String get otherTransfer => 'Other Transfer';
+
+  @override
+  String get whichPeopleWouldYouLikeToTransferFundsTo => 'Which people would you like to transfer funds to ?';
+
+  @override
+  String get spsTransfer => 'SPS Transfer';
+
+  @override
+  String get remittance => 'Remittance';
+
+  @override
   String get signup => 'Sign Up';
 
   @override

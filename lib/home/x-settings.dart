@@ -580,30 +580,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                                 Consumer<LocaleProvider>(
                                   builder: (context, localeProvider, _) {
-                                    final isEnglish = localeProvider.locale.languageCode == 'en';
+                                    final currentLocale = localeProvider.locale;
+                                    final isEnglish = currentLocale.languageCode == 'en';
 
                                     return ListTile(
                                       dense: true,
                                       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 14),
                                       leading: const Icon(Icons.language, size: 18),
                                       title: Text(
-                                        AppLocalizations.of(context)!.settings,
+                                        AppLocalizations.of(context)!.language,
                                         style: const TextStyle(fontSize: 11),
                                       ),
-                                      subtitle: Text(
-                                        isEnglish ? 'English' : 'Somali',
-                                        style: const TextStyle(fontSize: 10, color: Colors.grey),
-                                      ),
-                                      trailing: Transform.scale(
-                                        scale: 0.5,
-                                        child: Switch(
-                                          value: isEnglish,
-                                          onChanged: (value) {
-                                            localeProvider.setLocale(
-                                              value ? const Locale('en') : const Locale('so'),
-                                            );
-                                          },
+                                      trailing: DropdownButton<Locale>(
+                                        value: currentLocale,
+                                        underline: Container(), // Remove default underline
+                                        icon: const Icon(Icons.arrow_drop_down, size: 20),
+                                        elevation: 2,
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.black87,
                                         ),
+                                        onChanged: (Locale? newLocale) {
+                                          if (newLocale != null) {
+                                            localeProvider.setLocale(newLocale);
+                                          }
+                                        },
+                                        items: const [
+                                          DropdownMenuItem<Locale>(
+                                            value: Locale('en'),
+                                            child: Text('English'),
+                                          ),
+                                          DropdownMenuItem<Locale>(
+                                            value: Locale('so'),
+                                            child: Text('Somali'),
+                                          ),
+                                        ],
                                       ),
                                     );
                                   },

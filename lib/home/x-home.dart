@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/account-card-model.dart';
 import '../remote-config-services.dart';
 import '../notifications/page-home-alert.dart';
@@ -759,7 +760,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Welcome Back 👋',
+                                  "${AppLocalizations.of(context)!.welcomeBack}",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -851,7 +852,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          "Transactions",
+                          AppLocalizations.of(context)!.transactions,
                           style: TextStyle(
                             fontSize: isSmallScreen ? 16 : 18,
                             fontWeight: FontWeight.bold,
@@ -866,7 +867,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "View More",
+                                AppLocalizations.of(context)!.viewMore,
                                 style: TextStyle(
                                   fontSize: isSmallScreen ? 12 : 14,
                                   fontWeight: FontWeight.bold,
@@ -904,7 +905,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                           if (transactions.isEmpty) {
                             return Center(
                               child: Text(
-                                "No transactions available",
+                                AppLocalizations.of(context)!.noTransactionsAvailable,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey.shade800,
@@ -1016,7 +1017,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
           builder: (context) => TransactionStatusCheckDialog(
             repaintKey: dialogKey,
             data: TransactionStatusCheckData(
-              title: "Transaction Details",
+              title: AppLocalizations.of(context)!.transactionDetails,
               dateTime: DateFormat("MMM d, yyyy | h:mm:ss a").format(DateTime.parse(transaction.authTimestamp)),
               reference: (transaction.creditorName.trim().isEmpty) ? transaction.debitRef : transaction.transactionRef,
               source: debitAccount,
@@ -1057,10 +1058,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
             ),
             onConfirmed: onConfirmed,
             onShare: () async {
-              await _generateStyledPdf();
-              // WidgetsBinding.instance.addPostFrameCallback((_) {
-              //   _shareWidget(dialogKey); // will now find the boundary
-              // });
+              // await _generateStyledPdf();
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _shareWidget(dialogKey);
+              });
             },
             isLoading: false,
           ),

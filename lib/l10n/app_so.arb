@@ -3,6 +3,15 @@
   "appName": "Bushra Mobile",
   "welcome": "Soo dhawoow",
   "login": "Gali",
+  "fundTransfer": "Wareejin Lacag",
+  "transactionDetails": "faahfaahinta wax kala iibsiga"
+  "favourites": "Kuwa ugu jecel"
+  "newTransfer": "Wareejin Cusub"
+  "history": "Taariikhda"
+  "whichPeopleWouldYouLikeToTransferFundsTo": "Dadkee ayaad jeceshahay inaad lacagta u wareejiso?"
+  "otherTransfer": "Wareejin Kale"
+  "spsTransfer": "SPS Wareejinta"
+  "remittance": "Xawaaladaha"
   "signup": "Is-diiwaan geli",
   "home": "Guri",
   "dashboard": "Dashboard",

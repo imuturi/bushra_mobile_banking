@@ -131,6 +131,8 @@ abstract class AppLocalizations {
   /// **'Dashboard'**
   String get dashboard;
 
+  String get language => 'Language';
+
   /// No description provided for @accounts.
   ///
   /// In en, this message translates to:
@@ -286,6 +288,22 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Outstanding'**
   String get outstanding;
+
+  String get transactionDetails;
+
+  String get favourites;
+
+  String get newTransfer;
+
+  String get history;
+
+  String get whichPeopleWouldYouLikeToTransferFundsTo;
+
+  String get otherTransfer;
+
+  String get spsTransfer;
+
+  String get remittance;
 
   /// No description provided for @paidAmount.
   ///

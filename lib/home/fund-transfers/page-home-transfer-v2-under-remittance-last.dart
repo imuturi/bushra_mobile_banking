@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import '../../l10n/app_localizations.dart';
 import '../../utils/api-customer-transfers.dart';
 import '../../utils/dto/api-response-get-charges.dart';
 
@@ -190,8 +191,8 @@ class _FundsTransferRemittanceLastScreenState extends State<FundsTransferRemitta
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Foreign Remittance',
+        title: Text(
+          AppLocalizations.of(context)!.foreignRemittance,
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: false,
@@ -203,7 +204,7 @@ class _FundsTransferRemittanceLastScreenState extends State<FundsTransferRemitta
           children: [
 
             const SizedBox(height: 7),
-            const Text("Full Name", style: TextStyle(color: Colors.grey)),
+            Text(AppLocalizations.of(context)!.fullName, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 3),
             _buildTextInputFieldGray('Enter the recipient full name', beneficiaryFullName, TextInputType.text),
 
@@ -235,7 +236,7 @@ class _FundsTransferRemittanceLastScreenState extends State<FundsTransferRemitta
             // _buildTextInputFieldGray('Enter the recipient account number', beneficiaryAccountNumber, TextInputType.text),
 
             const SizedBox(height: 7),
-            _buildInputField("Narration", "Enter your narration here", beneficiaryNarration),
+            _buildInputField(AppLocalizations.of(context)!.narration, "Enter your narration here", beneficiaryNarration),
             const SizedBox(height: 7),
 
             const SizedBox(height: 100),
@@ -296,8 +297,8 @@ class _FundsTransferRemittanceLastScreenState extends State<FundsTransferRemitta
                     color: Colors.white,
                   ),
                 )
-                    : const Text(
-                  "TRANSFER",
+                    :  Text(
+                  AppLocalizations.of(context)!.transfer,
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ),
@@ -496,16 +497,16 @@ class ConfirmTransferDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "CONFIRM TRANSFER",
+            Text(
+              AppLocalizations.of(context)!.confirmTransfer,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
-              "Please confirm you are making Remittance Transfer",
+            Text(
+              AppLocalizations.of(context)!.pleaseConfirmYouAreMakingRemittanceTransfer,
               style: TextStyle(color: Colors.grey, fontSize: 11),
             ),
             const Divider(height: 24),
@@ -535,8 +536,8 @@ class ConfirmTransferDialog extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    child: const Text(
-                      "CANCEL",
+                    child: Text(
+                      AppLocalizations.of(context)!.cancel,
                       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -552,8 +553,8 @@ class ConfirmTransferDialog extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    child: const Text(
-                      "CONFIRM",
+                    child: Text(
+                      AppLocalizations.of(context)!.confirm,
                       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),

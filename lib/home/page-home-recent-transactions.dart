@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../utils/providers/provider-balances.dart';
 import '../utils/providers/provider-mini-recent.dart';
@@ -211,8 +212,8 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text(
-          'Recent Transactions',
+        title: Text(
+          AppLocalizations.of(context)!.recentTransactions,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16.0,
@@ -289,8 +290,8 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Recent Transactions",
+                   Text(
+                    AppLocalizations.of(context)!.recentTransactions,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -341,9 +342,9 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: TextField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
-                        hintText: "Search by Account, Name, Date",
+                        hintText: AppLocalizations.of(context)!.searchByAccountNameDate,
                         border: OutlineInputBorder(),
                         isDense: true,
                       ),
@@ -372,7 +373,7 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
                       : displayTransactions.isEmpty
                       ? Center(
                     child: Text(
-                      "No transactions available",
+                      AppLocalizations.of(context)!.noTransactionsAvailable,
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
@@ -413,7 +414,7 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
                                   builder: (context) => TransactionStatusCheckDialog(
                                     repaintKey: dialogKey,
                                     data: TransactionStatusCheckData(
-                                      title: "Transaction Details",
+                                      title: AppLocalizations.of(context)!.transactionDetails,
                                       dateTime: DateFormat("MMM d, yyyy | h:mm:ss a").format(DateTime.parse(tx.authTimestamp)),
                                       reference: (tx.creditorName.trim().isEmpty) ? tx.debitRef : tx.transactionRef,
                                       source: tx.debtorsAccount,
@@ -512,7 +513,7 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
                     //   style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
                     // ),
                     Text(
-                      "Actual Balance",
+                      AppLocalizations.of(context)!.actualBalance,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 13,
@@ -646,7 +647,7 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
 
                     const SizedBox(height: 8),
                     Text(
-                      "Actual Balance",
+                      AppLocalizations.of(context)!.actualBalance,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 13,

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../main.dart';
 import '../../utils/api-customer-transfers.dart';
 import '../../utils/dto/api-response-get-charges.dart';
@@ -369,14 +370,14 @@ class _FundsTransferSpsScreenState extends State<FundsTransferSpsScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    const Text('How much would you like to transfer?'),
+                    Text(AppLocalizations.of(context)!.howMuchWouldYouLikeToTransfer),
                     //TODO -- NEW ------------------------
                     const SizedBox(height: 8),
-                    _buildTextInputFieldGrayAmount("Enter Amount", "eg 1000.00", _amountController, maxLines: 1),
+                    _buildTextInputFieldGrayAmount(AppLocalizations.of(context)!.enterTransferAmount, "eg 1000.00", _amountController, maxLines: 1),
                     const SizedBox(height: 16),
-                    const Center(
+                    Center(
                       child: Text(
-                        'The minimum transfer amount is 0.1',
+                        AppLocalizations.of(context)!.theMinimumTransferAmountIs01,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -433,18 +434,18 @@ class _FundsTransferSpsScreenState extends State<FundsTransferSpsScreen> {
                     // _buildTextInputDropDownFieldRed(),
 
                     const SizedBox(height: 7),
-                    const Text("Select transfer type", style: TextStyle(color: Colors.grey)),
+                    Text(AppLocalizations.of(context)!.selectTransferType, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 7),
                     _buildTextInputDropDownFieldRedSpsType(),
 
                     const SizedBox(height: 7),
-                    const Text("Select provided bank", style: TextStyle(color: Colors.grey)),
+                    Text(AppLocalizations.of(context)!.selectProvidedBank, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 7),
                     _buildTextInputBankDropDownFieldGray(),
 
                     //TODO - SPS ACCOUNT VALIDATION
                     const SizedBox(height: 7),
-                    const Text("Enter Beneficiary Account Number", style: TextStyle(color: Colors.grey)),
+                    Text(AppLocalizations.of(context)!.enterBeneficiaryAccountNumber, style: TextStyle(color: Colors.grey)),
                     const SizedBox(height: 7),
                     //_buildTextInputFieldGray('Eg. SO380013000300000510106', beneficiaryAccountNumber, TextInputType.text, focusNode: accountNumberFocusNode),
                     _buildTextInputFieldGray('Eg. SO380013000300000510106', beneficiaryAccountNumber, TextInputType.text, focusNode: accountNumberFocusNode),
@@ -462,24 +463,24 @@ class _FundsTransferSpsScreenState extends State<FundsTransferSpsScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Beneficiary Account Name", style: TextStyle(color: Colors.grey)),
+                          Text(AppLocalizations.of(context)!.beneficiaryAccountName, style: TextStyle(color: Colors.grey)),
                           const SizedBox(height: 7),
-                          _buildTextInputFieldGray('Beneficiary Name', beneficiaryAccountName, TextInputType.text, enabled: false),
+                          _buildTextInputFieldGray(AppLocalizations.of(context)!.beneficiaryName, beneficiaryAccountName, TextInputType.text, enabled: false),
                         ],
                       ),
 
                     const SizedBox(height: 7),
-                    const Text("Select Debit Account", style: TextStyle(color: Colors.grey)),
+                    Text(AppLocalizations.of(context)!.selectDebitAccount, style: TextStyle(color: Colors.grey)),
                     _buildTextInputAccountDropDownFieldGray(accounts),
 
                     const SizedBox(height: 7),
-                    _buildInputField("Narration", "Eg. Reason", beneficiaryNarration),
+                    _buildInputField(AppLocalizations.of(context)!.narration, "Eg. Reason", beneficiaryNarration),
                     const SizedBox(height: 7),
                     // Add to Favourite Switch
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text("Add to favourite", style: TextStyle(color: Colors.grey)),
+                        Text(AppLocalizations.of(context)!.addToFavourite, style: TextStyle(color: Colors.grey)),
                         Transform.scale(
                           scale: 0.7, // Adjust this value to change the size (0.7 means 70% of the original size)
                           child: Switch(
@@ -553,8 +554,8 @@ class _FundsTransferSpsScreenState extends State<FundsTransferSpsScreen> {
                               color: Colors.white,
                             ),
                           )
-                            : const Text(
-                          "TRANSFER",
+                            :  Text(
+                          AppLocalizations.of(context)!.transfer,
                           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       ),
@@ -694,7 +695,7 @@ class _FundsTransferSpsScreenState extends State<FundsTransferSpsScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            hint: const Text("Select account from", style: TextStyle(fontSize: 12),),
+            hint:  Text(AppLocalizations.of(context)!.selectAccountFrom, style: TextStyle(fontSize: 12),),
             dropdownColor: Colors.white,
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {
@@ -874,7 +875,7 @@ class _FundsTransferSpsScreenState extends State<FundsTransferSpsScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Actual Balance\n$currency ${NumberFormat("#,##0.00").format(balance)}",
+                  "${AppLocalizations.of(context)!.actualBalance}\n$currency ${NumberFormat("#,##0.00").format(balance)}",
                   style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ],
@@ -936,7 +937,7 @@ class _FundsTransferSpsScreenState extends State<FundsTransferSpsScreen> {
 
                     const SizedBox(height: 8),
                     Text(
-                      "Actual Balance",
+                      AppLocalizations.of(context)!.actualBalance,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 13,
