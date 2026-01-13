@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
 import '../login/landing-login-3-login.dart';
 import '../utils/constants/app_constants.dart';
@@ -11,6 +11,7 @@ import '../utils/reference-generator.dart';
 import '../utils/util-api-service.dart';
 import '../utils/util-get-imei.dart';
 import '../widgets/progress-dialog.dart';
+import 'camera_capture_screen.dart';
 
 class OpenAccountSelfie2 extends StatefulWidget {
   final File frontImage;
@@ -40,23 +41,25 @@ class _TakeSelfieScreenState extends State<OpenAccountSelfie2> {
   final referenceGenerator = ReferenceGenerator();
   final apiService = ApiService();
   final deviceIdentifier = DeviceIdentifier();
+  List<CameraDescription>? _cameras;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadImageFromCamera();
+    _initializeCameras();
   }
 
   void showSnackBar(BuildContext context, String message, Color color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: const Duration(seconds: 10), // Set to any duration
+        duration: const Duration(seconds: 10),
         backgroundColor: color,
         action: SnackBarAction(
           label: "DISMISS",
           textColor: Colors.white,
-          onPressed: () {}, // Dismiss action
+          onPressed: () {},
         ),
       ),
     );
@@ -70,26 +73,88 @@ class _TakeSelfieScreenState extends State<OpenAccountSelfie2> {
     );
   }
 
-  Future<void> _loadImageFromCamera() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+  Future<void> _initializeCameras() async {
+    try {
+      // Get available cameras
+      _cameras = await availableCameras();
 
-    if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _isLoading = false;
+      });
+
+      // If we have cameras, directly open the camera screen
+      if (_cameras != null && _cameras!.isNotEmpty) {
+        // Wait a bit before opening camera to ensure UI is ready
+        await Future.delayed(const Duration(milliseconds: 500));
+        await _openCameraScreen();
+      } else {
+        if (mounted) {
+          showSnackBar(context, 'No camera available', Colors.red);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar(context, 'Failed to initialize camera: $e', Colors.red);
+      }
+    }
+  }
+
+  Future<void> _openCameraScreen() async {
+    if (_cameras == null || _cameras!.isEmpty) {
+      if (mounted) {
+        showSnackBar(context, 'Camera not available', Colors.red);
+      }
+      return;
+    }
+
+    // Check if front camera is available
+    final frontCamera = _cameras!.firstWhere(
+          (camera) => camera.lensDirection == CameraLensDirection.front,
+      orElse: () => _cameras!.first,
+    );
+
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CameraCaptureScreen(
+          cameras: _cameras!,
+          preferredCamera: frontCamera.lensDirection,
+        ),
+      ),
+    );
+
+    if (result != null && result is XFile) {
+      setState(() {
+        _image = File(result.path);
+      });
+    } else if (result != null && result is File) {
+      setState(() {
+        _image = result;
       });
     }
+  }
+
+  Future<void> _retakeSelfie() async {
+    await _openCameraScreen();
   }
 
   //TODO Create a custom HTTP client that trusts self-signed certificates
   static http.Client _createCustomHttpClient() {
     final HttpClient client = HttpClient()
       ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true; // Trust all certificates
+          (X509Certificate cert, String host, int port) => true;
     return IOClient(client);
   }
 
   Future<void> _uploadImages(BuildContext context) async {
+    if (_image == null) {
+      showSnackBar(context, 'Please take a selfie first', Colors.red);
+      return;
+    }
+
     showCrossingBallsProgressDialog(context, "We are uploading your details.\nPlease wait...");
     try{
       String _accountOpeningEndpoint = '/bb/account/opening/1.0.0';
@@ -113,7 +178,6 @@ class _TakeSelfieScreenState extends State<OpenAccountSelfie2> {
       request.files.add(await http.MultipartFile.fromPath('selfie', _image!.path));
 
       String imei = await DeviceIdentifier.getDeviceIdentifier();
-      // **Adding JSON Body**
       Map<String, dynamic> jsonBody = {
         'txntimestamp': DateTime.now().toUtc().toIso8601String(),
         'xref': referenceGenerator.generateUniqueReference(false),
@@ -143,17 +207,13 @@ class _TakeSelfieScreenState extends State<OpenAccountSelfie2> {
       };
 
       request.fields['request'] = json.encode(jsonBody);
-      //var response = await request.send();
       var response = await client.send(request);
 
       if (response.statusCode == 200) {
         if (kDebugMode) {
           print('➡️ Making POST request to: ${AppConstants.baseUrl+_accountOpeningEndpoint}');
-          print('➡️ Headers: XXX');
-          print('➡️ Request Body: $request');
           stopwatch.stop();
           print('⬅️ Response Status: ${response.statusCode} (Duration : ${stopwatch.elapsedMilliseconds}ms)');
-          print('⬅️ Response Body: $response');
         }
         Navigator.pop(context);
         showDialog(
@@ -179,6 +239,27 @@ class _TakeSelfieScreenState extends State<OpenAccountSelfie2> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: const Text(
+            'Take selfie',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -220,23 +301,32 @@ class _TakeSelfieScreenState extends State<OpenAccountSelfie2> {
                 : CircleAvatar(
               radius: 100,
               backgroundColor: Colors.grey.shade200,
-              child: const Icon(Icons.person, size: 100, color: Colors.grey),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.camera_alt, size: 50, color: Colors.grey),
+                  SizedBox(height: 8),
+                  Text(
+                    "No selfie taken",
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
             const Spacer(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red.shade900,
+                  backgroundColor: _image != null ? Colors.red.shade900 : Colors.grey,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: () {
-                  //TODO - CONTINUE
+                onPressed: _image != null ? () {
                   _uploadImages(context);
-                },
+                } : null,
                 child: const Text("CONTINUE",
                     style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold,)
                 ),
@@ -253,9 +343,9 @@ class _TakeSelfieScreenState extends State<OpenAccountSelfie2> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: _loadImageFromCamera,
+                onPressed: _retakeSelfie,
                 child: Text(
-                  "RE-TAKE SELFIE",
+                  _image != null ? "RE-TAKE SELFIE" : "TAKE SELFIE",
                   style: TextStyle(fontSize: 16, color: Colors.red.shade900, fontWeight: FontWeight.bold,),
                 ),
               ),
@@ -284,7 +374,7 @@ class CenteredImageDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'assets/images/icons/success-check.png', // Replace with your image path
+              'assets/images/icons/success-check.png',
               height: 80,
               width: 80,
               fit: BoxFit.cover,
@@ -313,8 +403,6 @@ class CenteredImageDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 onPressed: () {
-                  //Navigator.of(context).pop();
-                  //TODO
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const PinInputLoginScreen()),);
                 },
                 child: const Text('CONTINUE',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),),
@@ -326,6 +414,3 @@ class CenteredImageDialog extends StatelessWidget {
     );
   }
 }
-
-
-

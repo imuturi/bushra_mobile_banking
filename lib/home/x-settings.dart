@@ -824,8 +824,8 @@ class ConfirmLogOutDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'Are you sure you want to logout ?.',
+              Text(
+                AppLocalizations.of(context)!.areYouSureYouWantToLogout,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
@@ -834,7 +834,7 @@ class ConfirmLogOutDialog extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                'By confirming (YES) you will be logged out and by (NO) you will remain logged in',
+                AppLocalizations.of(context)!.byConfirmingYesYouWillBeLoggedOutAndByNoYouWillRemainLoggedIn,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 12),
               ),
@@ -853,8 +853,8 @@ class ConfirmLogOutDialog extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'YES',
+                  child: Text(
+                    AppLocalizations.of(context)!.yes,
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -874,8 +874,8 @@ class ConfirmLogOutDialog extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'NO',
+                  child: Text(
+                    AppLocalizations.of(context)!.no,
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -904,8 +904,8 @@ class ConfirmChangePinDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'Are you sure you want to change your PIN ?.',
+               Text(
+                 AppLocalizations.of(context)!.areYouSureYouWantToChangeYourPin,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
@@ -914,7 +914,7 @@ class ConfirmChangePinDialog extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                'By confirming (YES) you will be you will be redirected to change your PIN and by (NO) you will remain logged with current',
+                AppLocalizations.of(context)!.byConfirmingYesYouWillBeYouWillBeRedirectedToChangeYourPinAndByNoYouWillRemainLoggedWithCurrent,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 12),
               ),
@@ -936,8 +936,8 @@ class ConfirmChangePinDialog extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'YES',
+                  child: Text(
+                    AppLocalizations.of(context)!.yes,
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -957,8 +957,8 @@ class ConfirmChangePinDialog extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'NO',
+                  child: Text(
+                    AppLocalizations.of(context)!.no,
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),

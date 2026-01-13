@@ -24,32 +24,6 @@ class MoreServicesScreen extends StatefulWidget {
 
 class _MoreServicesScreenState extends State<MoreServicesScreen> {
 
-  final List<Map<String, dynamic>> servicesOptions = [
-    {
-      "icon": Icons.account_balance_wallet,
-      "title": "Accounts",
-    },
-    {
-      "icon": Icons.call,
-      "title": "Request for callback",
-    },
-    {
-      "icon": Icons.arrow_forward_sharp,
-      "title": "Term Deposit",
-    },
-    {
-      "icon": Icons.schedule_send,
-      "title": "Standing order",
-    },
-    {
-      "icon": Icons.credit_card_sharp,
-      "title": "Manage cards",
-    },
-    // {
-    //   "icon": Icons.account_balance,
-    //   "title": "SPS",
-    // },
-  ];
   bool isLoading = false;
   final apiCallback = ApiCallback();
   final TextEditingController _dateStartController = TextEditingController();
@@ -154,6 +128,33 @@ class _MoreServicesScreenState extends State<MoreServicesScreen> {
     final isDarkMode = theme.brightness == Brightness.dark;
     final size = MediaQuery.of(context).size;
     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final List<Map<String, dynamic>> servicesOptions = [
+      {
+        "icon": Icons.account_balance_wallet,
+        "title": AppLocalizations.of(context)!.accounts,
+      },
+      {
+        "icon": Icons.call,
+        "title": AppLocalizations.of(context)!.callbackRequest,
+      },
+      {
+        "icon": Icons.arrow_forward_sharp,
+        "title": AppLocalizations.of(context)!.termDeposit,
+      },
+      {
+        "icon": Icons.schedule_send,
+        "title": AppLocalizations.of(context)!.standingOrder,
+      },
+      {
+        "icon": Icons.credit_card_sharp,
+        "title": AppLocalizations.of(context)!.manageCards,
+      },
+      // {
+      //   "icon": Icons.account_balance,
+      //   "title": "SPS",
+      // },
+    ];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

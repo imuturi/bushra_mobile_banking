@@ -520,11 +520,12 @@ class _PinInputCommitBillPaymentTransactionScreenState extends State<PinInputCom
                     weight: 60,
                   ),
                   onPressed: () {
-                    if (Navigator.of(context).canPop()) {
-                      Navigator.of(context).pop();
-                    } else {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  const PayBillMainScreen()));
-                    }
+                    Navigator.of(context).pop();
+                    // if (Navigator.of(context).canPop()) {
+                    //   Navigator.of(context).pop();
+                    // } else {
+                    //   Navigator.push(context, MaterialPageRoute(builder: (context) =>  const PayBillMainScreen()));
+                    // }
                   },
                 ),
               ),

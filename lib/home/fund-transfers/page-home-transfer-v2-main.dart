@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../models/dto/favourites-get-request.dart';
 import '../../models/dto/favourites-get-response.dart';
 import '../../utils/api-customer-favourites.dart';
@@ -241,28 +242,7 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
   }
 
   //TODO - NEW TRANSFER
-  final List<Map<String, dynamic>> paymentOptions = [
-    {
-      "icon": Icons.loop,
-      "title": "Own Transfer",
-    },
-    {
-      "icon": Icons.devices_other,
-      "title": "Other Transfer",
-    },
-    {
-      "icon": Icons.phone_android_outlined,
-      "title": "Mobile Money",
-    },
-    {
-      "icon": Icons.phone_android_outlined,
-      "title": "SPS Transfer",
-    },
-    {
-      "icon": Icons.send,
-      "title": "Remittance",
-    },
-  ];
+
 
   //TODO FAVOURITES
   final bool _isAvatarVisible = true;
@@ -313,6 +293,29 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> paymentOptions = [
+      {
+        "icon": Icons.loop,
+        "title": AppLocalizations.of(context)!.ownTransfer,
+      },
+      {
+        "icon": Icons.devices_other,
+        "title": AppLocalizations.of(context)!.otherTransfer,
+      },
+      {
+        "icon": Icons.phone_android_outlined,
+        "title": AppLocalizations.of(context)!.mobileMoney,
+      },
+      {
+        "icon": Icons.phone_android_outlined,
+        "title": AppLocalizations.of(context)!.spsTransfer,
+      },
+      {
+        "icon": Icons.send,
+        "title": AppLocalizations.of(context)!.remittance,
+      },
+    ];
+
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
     if (getFavoritesResponse == null || isLoading) {
@@ -331,8 +334,8 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Fund transfer',
+        title:  Text(
+          AppLocalizations.of(context)!.fundTransfer,
           style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -347,9 +350,9 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildTab('Favourites', 0, Icons.star_outline_rounded),
-                _buildTab('New Transfer', 1, Icons.compare_arrows_sharp),
-                _buildTab('History', 2, Icons.history),
+                _buildTab(AppLocalizations.of(context)!.favourites, 0, Icons.star_outline_rounded),
+                _buildTab(AppLocalizations.of(context)!.newTransfer, 1, Icons.compare_arrows_sharp),
+                _buildTab(AppLocalizations.of(context)!.history, 2, Icons.history),
               ],
             ),
           ),
@@ -358,7 +361,7 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Text(
               selectedIndexMainTab == 0
-                  ? 'Which people would you like to transfer funds to ?'
+                  ? AppLocalizations.of(context)!.whichPeopleWouldYouLikeToTransferFundsTo
                   : selectedIndexMainTab == 1
                   ? ''  // New Transfer
                   : '', //Recent Transactions
@@ -513,9 +516,15 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
 
                   : Container(),
                   //TODO - favourite Beneficiaries
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.all(16.0),  // Padding of 16
-                    child: Text('Beneficiaries',style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal)),
+                    child: Text(
+                        AppLocalizations.of(context)!.beneficiaries,
+                        style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.normal
+                        )
+                    ),
                   ),
                   SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -531,16 +540,16 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
                   ),
 
                   //TODO - favourite Frequents
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.all(16.0),  // Padding of 16
-                    child: Text('Frequents',style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal)),
+                    child: Text(AppLocalizations.of(context)!.frequents,style: TextStyle(fontSize: 11, fontWeight: FontWeight.normal)),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: getFavoritesResponse!.data.favourites.sps.isEmpty
-                        ? const Center(
+                        ?  Center(
                           child: Text(
-                            "No Beneficiaries found",
+                            AppLocalizations.of(context)!.noBeneficiariesFound,
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 14,
@@ -904,8 +913,8 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text(
-                  "Recent Transactions",
+                Text(
+                  AppLocalizations.of(context)!.recentTransactions,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

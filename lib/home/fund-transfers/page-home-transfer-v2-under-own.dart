@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../main.dart';
 import '../../models/dto/favourites-add-request.dart' as fav_models;
 import '../../utils/api-customer-favourites.dart';
@@ -346,8 +347,8 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Own transfer',
+        title: Text(
+          AppLocalizations.of(context)!.ownTransfer,
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: false,
@@ -414,15 +415,15 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
             ),
             const SizedBox(height: 12),
             //TODO -- NEW ------------------------
-            Text('Enter Transfer Amount',
+            Text(AppLocalizations.of(context)!.enterTransferAmount,
               style: TextStyle(color: Colors.grey.shade500, fontSize: 14,),
             ),
             const SizedBox(height: 8),
             _buildTextInputFieldGrayAmount("Enter Amount", "eg 1000.00", _amountController, maxLines: 1),
             const SizedBox(height: 16),
-            const Center(
+            Center(
               child: Text(
-                'The minimum transfer amount is 0.1',
+                AppLocalizations.of(context)!.theMinimumTransferAmountIs01,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -474,18 +475,18 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
             ),
             //TODO -- NEW ------------------------
             const SizedBox(height: 7),
-            const Text("Account from", style: TextStyle(color: Colors.grey)),
+            Text(AppLocalizations.of(context)!.accountFrom, style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
             _buildTextInputDropdownFieldRed(accounts),
             const SizedBox(height: 7),
-            const Text("Account to", style: TextStyle(color: Colors.grey)),
+            Text(AppLocalizations.of(context)!.accountTo, style: TextStyle(color: Colors.grey)),
             _buildTextInputDropdownFieldGray(accounts),
             const SizedBox(height: 7),
             // Add to Favourite Switch
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Add to favourite", style: TextStyle(color: Colors.grey)),
+                Text(AppLocalizations.of(context)!.addToFavourite, style: TextStyle(color: Colors.grey)),
                 Transform.scale(
                   scale: 0.7, // Adjust this value to change the size (0.7 means 70% of the original size)
                   child: Switch(
@@ -505,7 +506,7 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
             ),
 
           // Narration Field
-          Text("Narration (Optional)", style: TextStyle(color: Colors.grey)),
+          Text(AppLocalizations.of(context)!.narration, style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 8),
           _buildNarrationField(), // Create this method below
             const SizedBox(height: 40),
@@ -554,8 +555,8 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
                     strokeWidth: 2,
                     color: Colors.white,
                   ),
-                ) : const Text(
-                  "TRANSFER",
+                ) :  Text(
+                  AppLocalizations.of(context)!.transfer,
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ),
@@ -761,7 +762,7 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Actual Balance\n$currency ${NumberFormat("#,##0.00").format(balance)}",
+                  "${AppLocalizations.of(context)!.actualBalance}\n$currency ${NumberFormat("#,##0.00").format(balance)}",
                   style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ],

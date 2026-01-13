@@ -1,5 +1,6 @@
 import 'package:bushra_mobile/qrcode/page-home-qrcode-myqrcode.dart';
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../qrcode/page-home-qrcode-scanner.dart';
 
 class QRCodeMainScreen extends StatelessWidget {
@@ -11,7 +12,7 @@ class QRCodeMainScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Scan to pay'),
+        title: Text(AppLocalizations.of(context)!.scanToPay),
         backgroundColor: Colors.white,
       ),
       body: Padding(
@@ -25,7 +26,7 @@ class QRCodeMainScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: QROptionTile(
-              title: 'My QR Code',
+              title: AppLocalizations.of(context)!.myQrCode,
               icon: Icons.qr_code_scanner,
               onTap: () {
                 //TODO
@@ -44,7 +45,7 @@ class QRCodeMainScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: QROptionTile(
-              title: 'Scan QR to pay',
+              title: AppLocalizations.of(context)!.scanToPay,
               icon: Icons.qr_code_scanner,
               onTap: () {
                 //TODO

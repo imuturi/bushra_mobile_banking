@@ -57,6 +57,9 @@ class AppLocalizationsSo extends AppLocalizations {
   String get transfers => 'Lacag dhaafka';
 
   @override
+  String get manageCards => 'Maamul Kaararka';
+
+  @override
   String get payments => 'Lacag bixinta';
 
   @override

@@ -42,6 +42,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get remittance => 'Remittance';
 
   @override
+  String get manageCards => 'Manage Cards';
+
+  @override
   String get signup => 'Sign Up';
 
   @override

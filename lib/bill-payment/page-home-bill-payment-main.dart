@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/dto/favourites-get-request.dart';
 import '../models/dto/favourites-get-response.dart';
 import '../utils/api-customer-favourites.dart';
@@ -32,29 +33,6 @@ class _PayBillMainScreenState extends State<PayBillMainScreen> {
   int selectedIndex = 0; // Tracks the selected TAB
   bool compactView = true;
 
-  //TODO - NEW BILL
-  final List<Map<String, dynamic>> paymentOptions = [
-    {
-      "icon": Icons.bolt,
-      "title": "Pay electricity",
-    },
-    {
-      "icon": Icons.tv,
-      "title": "Pay TV",
-    },
-    {
-      "icon": Icons.water_drop,
-      "title": "Pay water",
-    },
-    {
-      "icon": Icons.account_balance,
-      "title": "Government payment",
-    },
-    {
-      "icon": Icons.wifi,
-      "title": "Internet payment",
-    },
-  ];
 
   //TODO PAYMENT HISTORY
   final Map<String, List<Map<String, String>>> transactionsByDate = {};
@@ -207,6 +185,29 @@ class _PayBillMainScreenState extends State<PayBillMainScreen> {
     final favouritesProvider = Provider.of<FavouritesProvider>(context, listen: false);
     final billPayments = favouritesProvider.favorites?.data.favourites.billpayment ?? [];
 
+    final List<Map<String, dynamic>> paymentOptions = [
+      {
+        "icon": Icons.bolt,
+        "title": AppLocalizations.of(context)!.payElectricity,
+      },
+      {
+        "icon": Icons.tv,
+        "title": AppLocalizations.of(context)!.payTv,
+      },
+      {
+        "icon": Icons.water_drop,
+        "title": AppLocalizations.of(context)!.payWater,
+      },
+      {
+        "icon": Icons.account_balance,
+        "title": AppLocalizations.of(context)!.governmentPayment,
+      },
+      {
+        "icon": Icons.wifi,
+        "title": AppLocalizations.of(context)!.payInternet,
+      },
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -218,8 +219,8 @@ class _PayBillMainScreenState extends State<PayBillMainScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Paybill',
+        title: Text(
+          AppLocalizations.of(context)!.paybill,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18.0,
@@ -237,9 +238,9 @@ class _PayBillMainScreenState extends State<PayBillMainScreen> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildTab('Favourites', 0, Icons.star_outline_rounded),
+                _buildTab(AppLocalizations.of(context)!.favourites, 0, Icons.star_outline_rounded),
                 _buildTab('New biller', 1, Icons.receipt),
-                _buildTab('History', 2, Icons.history),
+                _buildTab(AppLocalizations.of(context)!.history, 2, Icons.history),
               ],
             ),
           ),
@@ -248,10 +249,10 @@ class _PayBillMainScreenState extends State<PayBillMainScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Text(
               selectedIndex == 0
-                  ? 'Favourite Billers'
+                  ? AppLocalizations.of(context)!.favourites
                   : selectedIndex == 1
                   ? 'Add New Biller'
-                  : 'Payment History',
+                  : AppLocalizations.of(context)!.history,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
@@ -315,7 +316,7 @@ class _PayBillMainScreenState extends State<PayBillMainScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Today",
+                        AppLocalizations.of(context)!.today,
                         style: TextStyle(fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey[700],
@@ -394,7 +395,7 @@ class _PayBillMainScreenState extends State<PayBillMainScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 100),
                   child: Text(
-                    'No favourites found.',
+                    AppLocalizations.of(context)!.noFavouritesFound,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey.shade700,

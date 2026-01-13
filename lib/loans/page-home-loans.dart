@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import '../l10n/app_localizations.dart';
 import '../utils/api-customer-loans.dart';
 import '../utils/dto/api-response-login.dart';
 import '../utils/providers/provider-session.dart';
@@ -186,8 +187,8 @@ class _LoansScreenState extends State<LoansScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Loans',
+        title: Text(
+          AppLocalizations.of(context)!.loans,
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: false,
@@ -294,7 +295,7 @@ class _LoansScreenState extends State<LoansScreen> {
       children: [
         const SizedBox(height: 16),
         LoanDetailsWidget(
-          hintText: 'Select the loan', // Optional custom hint
+          hintText: AppLocalizations.of(context)!.selectTheLoan, // Optional custom hint
           // loansData: yourCustomLoansData, // Optional custom data
           loanAccountsList: loanAccountsList, // Use the fetched loan accounts
         ),
@@ -464,21 +465,21 @@ class _LoansScreenState extends State<LoansScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 12),
-          const Text("Select loan account", style: TextStyle(color: Colors.grey)),
+           Text(AppLocalizations.of(context)!.selectLoanAccount, style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 8),
           _buildTextInputDropDownFieldRedRepayment(),
           const SizedBox(height: 8),
-          const Text("Debit from", style: TextStyle(color: Colors.grey)),
+          Text(AppLocalizations.of(context)!.debitFrom, style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 8),
           _buildTextInputDropDownFieldGrayRepayment(accounts!),
           const SizedBox(height: 12),
-          const Text('How much would you like to repay ?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(AppLocalizations.of(context)!.howMuchWouldYouLikeToRepay, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           //TODO -- NEW ------------------------
-          Text('Enter Transfer Amount',
+          Text(AppLocalizations.of(context)!.enterTransferAmount,
             style: TextStyle(color: Colors.grey.shade500, fontSize: 14,),
           ),
           const SizedBox(height: 8),
-          _buildTextInputFieldGrayAmount("Enter Amount", "eg 1000.00", _amountController, maxLines: 1),
+          _buildTextInputFieldGrayAmount(AppLocalizations.of(context)!.enterTransferAmount, "eg 1000.00", _amountController, maxLines: 1),
           const SizedBox(height: 16),
           const Center(
             child: Text(
@@ -743,11 +744,11 @@ class _LoansScreenState extends State<LoansScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8,),
-          const Text("Select loan type", style: TextStyle(color: Colors.grey)),
+          Text(AppLocalizations.of(context)!.selectLoanType, style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 8),
           _buildTextInputDropDownFieldRedRepayment(),
           const SizedBox(height: 8,),
-          const Text('Select start date', style: TextStyle(color: Colors.grey)),
+           Text(AppLocalizations.of(context)!.selectStartDate, style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 8),
           Stack(
             children: [
@@ -808,7 +809,7 @@ class _LoansScreenState extends State<LoansScreen> {
             ],
           ),
           const SizedBox(height: 8),
-          const Text('Select end date', style: TextStyle(color: Colors.grey)),
+           Text(AppLocalizations.of(context)!.selectEndDate, style: TextStyle(color: Colors.grey)),
           Stack(
             children: [
               TextField(
@@ -899,8 +900,8 @@ class _LoansScreenState extends State<LoansScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text(
-                'SUBMIT',
+              child: Text(
+                AppLocalizations.of(context)!.submit,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -981,7 +982,7 @@ class _LoansScreenState extends State<LoansScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Amount Disbursed', style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
+              Text(AppLocalizations.of(context)!.amountDisbursed, style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
               Text('\$$amountFinanced', style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
             ],
           ),
@@ -991,7 +992,7 @@ class _LoansScreenState extends State<LoansScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Outstanding', style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
+              Text(AppLocalizations.of(context)!.outstanding, style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
               Text('\$$amountDue', style: TextStyle(fontSize: 12, color: Colors.blue.shade900, fontWeight: FontWeight.bold)),
             ],
           ),
@@ -1003,11 +1004,11 @@ class _LoansScreenState extends State<LoansScreen> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                Expanded(child: Center(child: Text('Due Date', style: TextStyle(color: Colors.white)))),
-                Expanded(child: Center(child: Text('Outstanding', style: TextStyle(color: Colors.white)))),
-                Expanded(child: Center(child: Text('Due Amount', style: TextStyle(color: Colors.white)))),
-                Expanded(child: Center(child: Text('Paid Amount', style: TextStyle(color: Colors.white)))),
+              children: [
+                Expanded(child: Center(child: Text(AppLocalizations.of(context)!.dueDate, style: TextStyle(color: Colors.white)))),
+                Expanded(child: Center(child: Text(AppLocalizations.of(context)!.outstanding, style: TextStyle(color: Colors.white)))),
+                Expanded(child: Center(child: Text(AppLocalizations.of(context)!.dueAmount, style: TextStyle(color: Colors.white)))),
+                Expanded(child: Center(child: Text(AppLocalizations.of(context)!.paidAmount, style: TextStyle(color: Colors.white)))),
               ],
             ),
           ),
