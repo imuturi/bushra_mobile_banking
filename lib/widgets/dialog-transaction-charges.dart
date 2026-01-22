@@ -88,7 +88,7 @@ class ConfirmTransferDialog extends StatelessWidget {
     return Column(
       children: [
         _buildDetailRow("Amount", amount),
-        _buildDetailRow("Recipient Acc number", 'A/C #${recipientAccount.substring(0, 4)}****${recipientAccount.substring(recipientAccount.length - 4)}'),
+        _buildDetailRow("Recipient Acc number", 'A/C #${recipientAccount}'),
         //"A/C #${recipientAccount.substring(0, 4)}****${recipientAccount.substring(recipientAccount.length - 4)}";
         _buildDetailRow("Transfer from", sourceAccount),
         _buildDetailRow("Charges", charges),

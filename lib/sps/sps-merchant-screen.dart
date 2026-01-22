@@ -219,7 +219,9 @@ class _QRPaymentMerchantScreenState extends State<QRPaymentMerchantScreen> {
               hint:  Text(AppLocalizations.of(context)!.selectDebitAccount),
               items: accounts?.map<DropdownMenuItem<String>>((account) {
                 String maskedAccount =
-                    "A/C #${account.accountNumber.substring(0, 4)}****${account.accountNumber.substring(account.accountNumber.length - 4)}";
+                    "A/C #${account.accountNumber}";
+                // String maskedAccount =
+                //     "A/C #${account.accountNumber.substring(0, 4)}****${account.accountNumber.substring(account.accountNumber.length - 4)}";
                 return DropdownMenuItem<String>(
                   value: account.accountNumber,
                   child: Text(maskedAccount),

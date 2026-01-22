@@ -23,6 +23,7 @@ import '../utils/constants/app_constants.dart';
 import '../utils/providers/provider-session.dart';
 import '../utils/util-http-client.dart';
 import '../widgets/dialog-coming-soon.dart';
+import 'fund-transfers/page-home-transfer-v2-pin.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool showBackButton;
@@ -264,8 +265,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         //onPressed: () => Navigator.pop(context, true),
                         onPressed: () async {
-                          Navigator.pop(context); // close dialog
-                          await _toggleBiometrics(true); // trigger biometric setup
+                          Navigator.pop(context);
+                          await _toggleBiometrics(true);
                         },
                         child: const Text(
                           "ACTIVATE",
