@@ -429,7 +429,9 @@ class _MyQRScreenState extends State<MyQRScreen> {
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts?.map<DropdownMenuItem<String>>((account) {
               String maskedAccount =
-                  "A/C #${account.iban.substring(0, 4)}****${account.iban.substring(account.iban.length - 4)}";
+                  "A/C #${account.iban.substring(0, 4)}";
+              // String maskedAccount =
+              //     "A/C #${account.iban.substring(0, 4)}****${account.iban.substring(account.iban.length - 4)}";
               return DropdownMenuItem<String>(
                 value: account.iban,
                 child: Text(maskedAccount, style: TextStyle(fontSize: 12),),

@@ -708,7 +708,9 @@ class _LoansScreenState extends State<LoansScreen> {
             icon: const Icon(Icons.arrow_drop_down),
             items: accounts.map<DropdownMenuItem<String>>((account) {
               String maskedAccount =
-                  "A/C #${account.accountNumber.substring(0, 4)}****${account.accountNumber.substring(account.accountNumber.length - 4)}";
+                  "A/C #${account.accountNumber}";
+              // String maskedAccount =
+              //     "A/C #${account.accountNumber.substring(0, 4)}****${account.accountNumber.substring(account.accountNumber.length - 4)}";
               return DropdownMenuItem<String>(
                 value: account.accountNumber,
                 child: Text(maskedAccount, style: TextStyle(fontSize: 12),),

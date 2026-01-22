@@ -35,6 +35,7 @@ class _PinInputLoginScreenState extends State<PinInputLoginScreen> {
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
   bool _dialogShown = false;
   bool _isNoInternet = false;
+  bool biometricsEnabled = false;
 
   String enteredPin = "";
   final LocalAuthentication auth = LocalAuthentication();
@@ -61,11 +62,21 @@ class _PinInputLoginScreenState extends State<PinInputLoginScreen> {
     super.initState();
     _loadSharedPreferencesValue();
     _startListening();
+    _loadBiometricsStatus();
     auth.isDeviceSupported().then(
           (bool isSupported) => setState(() => _supportState = isSupported
           ? _SupportState.supported
           : _SupportState.unsupported),
     );
+  }
+
+  Future<void> _loadBiometricsStatus() async {
+    const secureStorage = FlutterSecureStorage();
+    final value = await secureStorage.read(key: 'BIOMETRICS_ENABLED');
+
+    setState(() {
+      biometricsEnabled = value == 'true';
+    });
   }
 
   void onKeyPressed(String key) {
@@ -535,32 +546,36 @@ class _PinInputLoginScreenState extends State<PinInputLoginScreen> {
                       ),
                     ),
                     const Divider(thickness: 1, indent: 32, endIndent: 32),
-                    Text(
-                      AppLocalizations.of(context)!.useBiometrics,
-                      style: TextStyle(color: Colors.blue.shade900, fontSize: 12),
-                    ),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 16,
-                      children: [
-                        OutlinedButton.icon(
-                          onPressed: _authenticate,
-                          icon: Icon(Icons.fingerprint, color: Colors.indigo.shade900),
-                          label: Text(AppLocalizations.of(context)!.loginWithFingerprint, style: TextStyle(fontSize: 10)),
-                        ),
-                        OutlinedButton.icon(
-                          onPressed: _authenticate,
-                          icon: SvgPicture.asset(
-                            'assets/icons/face-id.svg',
-                            width: 22,
-                            height: 26,
-                            colorFilter: ColorFilter.mode(Colors.indigo.shade900, BlendMode.srcIn),
+
+                    if (biometricsEnabled) ...[
+                      Text(
+                        AppLocalizations.of(context)!.useBiometrics,
+                        style: TextStyle(color: Colors.blue.shade900, fontSize: 12),
+                      ),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 16,
+                        children: [
+                          OutlinedButton.icon(
+                            onPressed: _authenticate,
+                            icon: Icon(Icons.fingerprint, color: Colors.indigo.shade900),
+                            label: Text(AppLocalizations.of(context)!.loginWithFingerprint, style: TextStyle(fontSize: 10)),
                           ),
-                          label: Text(AppLocalizations.of(context)!.loginWithFaceId, style: TextStyle(fontSize: 10)),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
+                          OutlinedButton.icon(
+                            onPressed: _authenticate,
+                            icon: SvgPicture.asset(
+                              'assets/icons/face-id.svg',
+                              width: 22,
+                              height: 26,
+                              colorFilter: ColorFilter.mode(Colors.indigo.shade900, BlendMode.srcIn),
+                            ),
+                            label: Text(AppLocalizations.of(context)!.loginWithFaceId, style: TextStyle(fontSize: 10)),
+                          ),
+                        ],
+                      ),
+                    ],
+
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),

@@ -790,25 +790,6 @@ class _PinInputCommitTransactionScreenState extends State<PinInputCommitTransact
                   ),
                 ),
               ),
-              // Back Button
-              Positioned(
-                top: MediaQuery.of(context).padding.top + 8, // Push below status bar
-                left: 8,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
-                    size: 26,
-                    weight: 60,
-                  ),
-                  onPressed: () {
-                    if (Navigator.of(context).canPop()) {
-                      Navigator.of(context).pop();
-                    } else {
-                    }
-                  },
-                ),
-              ),
               // Main Content
               SingleChildScrollView(
                 child: ConstrainedBox(
@@ -902,6 +883,23 @@ class _PinInputCommitTransactionScreenState extends State<PinInputCommitTransact
                       const SizedBox(height: 14),
                     ],
                   ),
+                ),
+              ),
+              // Back Button
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 8,
+                left: 8,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: 26,
+                    weight: 60,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+
+                  },
                 ),
               ),
             ],

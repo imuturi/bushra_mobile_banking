@@ -19,7 +19,40 @@ import '../../utils/util-log-service.dart';
 import '../../widgets/dialog-transaction-charges.dart';
 
 class FundsTransferSpsScreen extends StatefulWidget {
-  const FundsTransferSpsScreen({super.key});
+  // QR Code parameters - all nullable
+  final String? qrType;
+  final String? transferType;
+  final String? accountHolderName;
+  final String? accountNumberOrWalletID;
+  final String? transactionAmount;
+  final String? financialInstitutionName;
+  final String? transactionParticulars;
+  final bool fetchName;
+
+  // Regular SPS parameters (if coming from other flows)
+  final String? preSelectedBank;
+  final String? preSelectedAccount;
+  final String? preFilledAmount;
+  final String? preFilledAccountNumber;
+  final String? preFilledAccountName;
+  final String? preFilledNarration;
+
+  FundsTransferSpsScreen({
+    this.qrType,
+    this.transferType,
+    this.accountHolderName,
+    this.accountNumberOrWalletID,
+    this.transactionAmount,
+    this.financialInstitutionName,
+    this.transactionParticulars,
+    this.preSelectedBank,
+    this.preSelectedAccount,
+    this.preFilledAmount,
+    this.preFilledAccountNumber,
+    this.preFilledAccountName,
+    this.preFilledNarration,
+    required this.fetchName,
+  });
 
   @override
   State<FundsTransferSpsScreen> createState() => _FundsTransferSpsScreenState();
@@ -72,23 +105,140 @@ class _FundsTransferSpsScreenState extends State<FundsTransferSpsScreen> {
     super.initState();
     showPhoneTextField = false;
     _loadSharedPreferencesValue();
-    getSpsParticipantBanks();
+    getSpsParticipantBanks().then((_) {
+      // After banks are loaded, try to match the financial institution
+      if (widget.financialInstitutionName != null &&
+          widget.financialInstitutionName!.isNotEmpty) {
+        // Find BIC code from the bank name
+        final matchedBank = banks.firstWhere(
+              (bank) => bank["bicName"]?.toString().toLowerCase() ==
+              widget.financialInstitutionName!.toLowerCase(),
+          orElse: () => {},
+        );
+
+        if (matchedBank.isNotEmpty && matchedBank["bicCode"] != null) {
+          setState(() {
+            selectedSpsBank = matchedBank["bicCode"]?.toString();
+          });
+
+          // If we have an account number, try to fetch the name
+          if (widget.accountNumberOrWalletID != null &&
+              widget.accountNumberOrWalletID!.isNotEmpty) {
+            beneficiaryAccountNumber.text = widget.accountNumberOrWalletID!;
+            // Fetch account name if bank is selected
+            if (selectedSpsBank != null && widget.fetchName) {
+              fetchAccountName(widget.accountNumberOrWalletID!);
+            }
+          }
+        }
+      }
+    });
+
     _amountController.addListener(() {
       setState(() {
         selectedAmount = double.tryParse(_amountController.text);
       });
     });
+
     accountNumberFocusNode.addListener(() {
       if (!accountNumberFocusNode.hasFocus) {
-        // User left the field
-        if (beneficiaryAccountNumber.text.isNotEmpty) {
+        if (beneficiaryAccountNumber.text.isNotEmpty && selectedSpsBank != null && widget.fetchName) {
           fetchAccountName(beneficiaryAccountNumber.text);
         }
       }
     });
+
     _favouritesPrefilledForm();
+    _qrCodePrefilledForm();
   }
 
+  String? _findBicCodeFromBankName(String bankName) {
+    if (banks.isEmpty) return null;
+
+    // Clean the bank name for matching
+    final cleanBankName = bankName.toLowerCase().trim();
+
+    // Try exact match first
+    for (var bank in banks) {
+      final bicName = bank["bicName"]?.toString().toLowerCase().trim() ?? '';
+      if (bicName == cleanBankName ||
+          bicName.contains(cleanBankName) ||
+          cleanBankName.contains(bicName)) {
+        return bank["bicCode"]?.toString();
+      }
+    }
+
+    // Try partial match
+    for (var bank in banks) {
+      final bicName = bank["bicName"]?.toString().toLowerCase().trim() ?? '';
+      if (bicName.contains('daryeel') && cleanBankName.contains('daryeel')) {
+        return bank["bicCode"]?.toString();
+      }
+    }
+
+    return null;
+  }
+
+  void _qrCodePrefilledForm() {
+    // Prefill amount from QR code
+    if (widget.transactionAmount != null && widget.transactionAmount!.isNotEmpty) {
+      _amountController.text = widget.transactionAmount!;
+      setState(() {
+        selectedAmount = double.tryParse(widget.transactionAmount!);
+      });
+    }
+
+    // Prefill account number from QR code
+    if (widget.accountNumberOrWalletID != null && widget.accountNumberOrWalletID!.isNotEmpty) {
+      beneficiaryAccountNumber.text = widget.accountNumberOrWalletID!;
+      // Store the account number for later lookup when bank is selected
+    }
+
+    if (widget.qrType != null && widget.qrType!.isNotEmpty) {
+      selectedSpsTransferType = widget.qrType!;
+    }
+
+    // Prefill account name from QR code
+    if (widget.accountHolderName != null && widget.accountHolderName!.isNotEmpty) {
+      beneficiaryAccountName.text = widget.accountHolderName!;
+      setState(() {
+        showAccountNameField = true;
+      });
+    }
+
+    // Prefill narration from QR code
+    if (widget.transactionParticulars != null && widget.transactionParticulars!.isNotEmpty) {
+      beneficiaryNarration.text = widget.transactionParticulars!;
+    }
+
+    // Handle regular SPS prefilled data (for other flows)
+    if (widget.preFilledAmount != null && widget.preFilledAmount!.isNotEmpty) {
+      _amountController.text = widget.preFilledAmount!;
+    }
+
+    if (widget.preFilledAccountNumber != null && widget.preFilledAccountNumber!.isNotEmpty) {
+      beneficiaryAccountNumber.text = widget.preFilledAccountNumber!;
+    }
+
+    if (widget.preFilledAccountName != null && widget.preFilledAccountName!.isNotEmpty) {
+      beneficiaryAccountName.text = widget.preFilledAccountName!;
+      setState(() {
+        showAccountNameField = true;
+      });
+    }
+
+    if (widget.preFilledNarration != null && widget.preFilledNarration!.isNotEmpty) {
+      beneficiaryNarration.text = widget.preFilledNarration!;
+    }
+
+    if (widget.preSelectedBank != null && widget.preSelectedBank!.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          selectedSpsBank = widget.preSelectedBank;
+        });
+      });
+    }
+  }
 
   @override
   void dispose() {

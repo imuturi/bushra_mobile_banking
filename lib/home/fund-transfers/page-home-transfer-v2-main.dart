@@ -403,7 +403,7 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
                         //TODO - SPS
                         Navigator.push(context,
                             MaterialPageRoute(builder: (
-                                context) => const FundsTransferSpsScreen()));
+                                context) =>  FundsTransferSpsScreen(fetchName: true,)));
                       }else if(index == 4){
                         //TODO - REMITTANCE
                         Navigator.push(context,
@@ -638,7 +638,7 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
                               bankcode: selectedItem.bankcode,
                             );
                             context.read<FavoriteTransferDataProvider>().setFavorite(fav);
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => const FundsTransferSpsScreen()),);
+                            Navigator.push(context, MaterialPageRoute(builder: (_) =>  FundsTransferSpsScreen(fetchName: true,)),);
                           } else {
                             // Show a message if no item is selected
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -854,7 +854,7 @@ class _FundsTransferMainScreenState extends State<FundsTransferMainScreen> {
                     //TODO - SPS
                     Navigator.push(context,
                         MaterialPageRoute(builder: (
-                            context) => const FundsTransferSpsScreen()));
+                            context) =>  FundsTransferSpsScreen(fetchName: true,)));
                   }else if(index == 4){
                     //TODO - TRANSFER STATUS
                     // Navigator.push(context,

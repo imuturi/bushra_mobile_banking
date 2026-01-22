@@ -305,6 +305,8 @@ abstract class AppLocalizations {
 
   String get remittance;
 
+  String get manageCards;
+
   /// No description provided for @paidAmount.
   ///
   /// In en, this message translates to:

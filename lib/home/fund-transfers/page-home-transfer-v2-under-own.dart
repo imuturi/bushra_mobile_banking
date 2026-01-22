@@ -562,7 +562,7 @@ class _FundsTransferOwnScreenState extends State<FundsTransferOwnScreen> {
               ),
             ),
             // Extra spacing at the bottom
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:bushra_mobile/utils/reference-generator.dart';
@@ -136,34 +137,74 @@ class ApiCustomerFundsTransfers {
     );
   }
 
+  Future<dynamic> fundsTransferStatus(
+      String transactionReference,
+      String transactionCode,
+      ) async {
+    final body = {
+      'txntimestamp': DateTime.now().toUtc().toIso8601String(),
+      'xref': referenceGenerator.generateUniqueReference(false),
+      'transactionDetails': {
+        'direction': "0200",
+        'transactionType': "TRANSACTIONSTATUS",
+        'transactionCode': transactionCode,
+        'hostCode': "MOBILE",
+        'transactionRef': transactionReference
+      },
+      'channelDetails': {
+        'host': await DeviceLocation.getLocalIpAddress(),
+        'geolocation': "1.2921, 36.8219",
+        'userAgent': Platform.isAndroid
+            ? "Android"
+            : (Platform.isIOS ? "iOS" : "Unknown"),
+        'userAgentVersion': "1.0",
+        'channel': "MOBILE",
+        'clientId': "client123",
+        'deviceId': await DeviceIdentifier.getDeviceIdentifier(),
+      }
+    };
 
-  Future<dynamic> fundsTransferStatus(String transactionReference, String transactionCode) async {
+    // Print nicely formatted request
+    print("==== FUNDS TRANSFER STATUS REQUEST ====");
+    print(const JsonEncoder.withIndent('  ').convert(body));
+    print("======================================");
+
     return apiService.makeApiCall(
       _customerFundsTransferStatus,
       ApiModule.fundsTransfer,
       method: 'POST',
-      body: {
-        'txntimestamp': DateTime.now().toUtc().toIso8601String(),
-        'xref': referenceGenerator.generateUniqueReference(false),
-        'transactionDetails': {
-          'direction': "0200",
-          'transactionType': "TRANSACTIONSTATUS",
-          'transactionCode': transactionCode,
-          'hostCode': "MOBILE",
-          'transactionRef': transactionReference
-        },
-        'channelDetails': {
-          'host': await DeviceLocation.getLocalIpAddress(),
-          'geolocation': "1.2921, 36.8219",//await DeviceLocation.getDeviceLocation(),
-          'userAgent': Platform.isAndroid ? "Android" : (Platform.isIOS ? "iOS" : "Unknown"),
-          'userAgentVersion': "1.0",
-          'channel': "MOBILE",
-          'clientId': "client123",
-          'deviceId': await DeviceIdentifier.getDeviceIdentifier(),
-        }
-      },
+      body: body,
     );
   }
+
+
+  // Future<dynamic> fundsTransferStatus(String transactionReference, String transactionCode) async {
+  //   return apiService.makeApiCall(
+  //     _customerFundsTransferStatus,
+  //     ApiModule.fundsTransfer,
+  //     method: 'POST',
+  //     body: {
+  //       'txntimestamp': DateTime.now().toUtc().toIso8601String(),
+  //       'xref': referenceGenerator.generateUniqueReference(false),
+  //       'transactionDetails': {
+  //         'direction': "0200",
+  //         'transactionType': "TRANSACTIONSTATUS",
+  //         'transactionCode': transactionCode,
+  //         'hostCode': "MOBILE",
+  //         'transactionRef': transactionReference
+  //       },
+  //       'channelDetails': {
+  //         'host': await DeviceLocation.getLocalIpAddress(),
+  //         'geolocation': "1.2921, 36.8219",//await DeviceLocation.getDeviceLocation(),
+  //         'userAgent': Platform.isAndroid ? "Android" : (Platform.isIOS ? "iOS" : "Unknown"),
+  //         'userAgentVersion': "1.0",
+  //         'channel': "MOBILE",
+  //         'clientId': "client123",
+  //         'deviceId': await DeviceIdentifier.getDeviceIdentifier(),
+  //       }
+  //     },
+  //   );
+  // }
 
   Future<dynamic> fundsTransfer(String messageId, String drAccount, String crAccount, String phoneNumber, String currency, String narration, double amount, String fcmToken) async {
     return apiService.makeApiCall(

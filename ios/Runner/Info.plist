@@ -26,14 +26,24 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tel</string>
+		<string>undecimus</string>
+		<string>sileo</string>
+		<string>zbra</string>
+		<string>filza</string>
+		<string>activator</string>
+		<string>cydia</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>QR code scanner needs camera access to scan QR codes</string>
 	<key>NSContactsUsageDescription</key>
 	<string>We need access to your contacts.</string>
-    <key>NSFaceIDUsageDescription</key>
-    <string>This app uses Face ID to authenticate you faster and securely.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>This app uses Face ID to authenticate you faster and securely.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This app needs access to location when open and in the background.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -42,12 +52,14 @@
 	<string>This app needs access to location in the background.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need microphone access for voice input.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs access to save QR codes to your gallery.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>QR code scanner needs photos access to get QR code from photo library</string>
-    <key>UIApplicationSupportsIndirectInputEvents</key>
-    <true/>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-    <string>This app needs access to save QR codes to your gallery.</string>
+	<key>NSUserNotificationUsageDescription</key>
+	<string>This app uses notifications to keep you updated.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -63,8 +75,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSUserNotificationUsageDescription</key>
-    <string>This app uses notifications to keep you updated.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -72,15 +82,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>tel</string>
-        <string>undecimus</string>
-        <string>sileo</string>
-        <string>zbra</string>
-        <string>filza</string>
-        <string>activator</string>
-        <string>cydia</string>
-    </array>
 </dict>
 </plist>

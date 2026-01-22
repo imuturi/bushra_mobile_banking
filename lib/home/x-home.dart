@@ -99,10 +99,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
     Navigator.pop(context);
   }
   //TODO - Transaction Status Share
-  void onShare(GlobalKey repaintKey){
-    // _shareWidget(repaintKey);
-    _generateStyledPdf();
-  }
+  // void onShare(GlobalKey repaintKey){
+  //   // _shareWidget(repaintKey);
+  //   _generateStyledPdf();
+  // }
 
   void _startListening() {
     _connectivitySubscription = InternetCheckerService().connectivityStream.listen((results) async {
@@ -284,8 +284,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
 
     final output = await getTemporaryDirectory();
-    final file = File('${output.path}/payment_receipt.pdf');
-    await file.writeAsBytes(await pdf.save());
+    // final file = File('${output.path}/payment_receipt.pdf');
+    // await file.writeAsBytes(await pdf.save());
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/payment_receipt.pdf');
 
     setState(() => isLoadingShare = false);
     await Share.shareXFiles([XFile(file.path)], text: 'Here is your Transaction receipt.');
@@ -311,34 +313,93 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   Future<void> _shareWidget(GlobalKey repaintKey) async {
     try {
-      if (repaintKey.currentContext == null) {
-        debugPrint("Widget not ready yet");
+      final context = repaintKey.currentContext;
+      if (context == null) {
+        debugPrint("RepaintBoundary not ready");
         return;
       }
-      RenderRepaintBoundary boundary =
-      repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      if (boundary.debugNeedsPaint) {
-        await Future.delayed(const Duration(milliseconds: 20));
-        return _shareWidget(repaintKey);
+
+      final renderObject = context.findRenderObject();
+      if (renderObject == null || renderObject is! RenderRepaintBoundary) {
+        debugPrint("RenderRepaintBoundary not found");
+        return;
       }
-      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+      final boundary = renderObject;
+
+      // Wait for widget to be painted (max ~300ms)
+      int retries = 0;
+      while (boundary.debugNeedsPaint && retries < 10) {
+        await Future.delayed(const Duration(milliseconds: 30));
+        retries++;
+      }
+
+      if (boundary.debugNeedsPaint) {
+        debugPrint("Still not painted, aborting share");
+        return;
+      }
+
+      final image = await boundary.toImage(pixelRatio: 3.0);
+      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+      if (byteData == null) {
+        showSnackBar(context, "Unable to capture receipt image", Colors.red);
+        return;
+      }
+
+      final pngBytes = byteData.buffer.asUint8List();
       final directory = await getTemporaryDirectory();
       final filePath = '${directory.path}/receipt.png';
-      await File(filePath).writeAsBytes(pngBytes);
-      //File imgFile = File(filePath)..writeAsBytesSync(pngBytes);
-      await SharePlus.instance.share(
-        ShareParams(
-          text: "Here is your receipt for the transaction.",
-          files: [XFile(filePath)],
-        ),
+      final file = File(filePath);
+
+      await file.writeAsBytes(pngBytes, flush: true);
+
+      if (!await file.exists()) {
+        showSnackBar(context, "Image not saved, try again", Colors.red);
+        return;
+      }
+
+      await Share.shareXFiles(
+        [XFile(filePath)],
+        text: "Here is your receipt for the transaction.",
       );
-    } catch (e) {
-      showSnackBar(context, "Error Sharing Receipt : $e", Colors.red);
+    } catch (e, s) {
       debugPrint("Error sharing receipt: $e");
+      debugPrintStack(stackTrace: s);
+      showSnackBar(context, "Error sharing receipt: $e ", Colors.red);
     }
   }
+
+  // Future<void> _shareWidget(GlobalKey repaintKey) async {
+  //   try {
+  //     if (repaintKey.currentContext == null) {
+  //       debugPrint("Widget not ready yet");
+  //       return;
+  //     }
+  //     RenderRepaintBoundary boundary =
+  //     repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+  //     if (boundary.debugNeedsPaint) {
+  //       await Future.delayed(const Duration(milliseconds: 20));
+  //       return _shareWidget(repaintKey);
+  //     }
+  //     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+  //     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  //     Uint8List pngBytes = byteData!.buffer.asUint8List();
+  //     final directory = await getTemporaryDirectory();
+  //     final filePath = '${directory.path}/receipt.png';
+  //     await File(filePath).writeAsBytes(pngBytes);
+  //     //File imgFile = File(filePath)..writeAsBytesSync(pngBytes);
+  //     await SharePlus.instance.share(
+  //       ShareParams(
+  //         text: "Here is your receipt for the transaction.",
+  //         files: [XFile(filePath)],
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     showSnackBar(context, "Error Sharing Receipt : $e", Colors.red);
+  //     debugPrint("Error sharing receipt: $e");
+  //   }
+  // }
 
   Future<Uint8List?> _fetchImageBytes() async {
     try {
@@ -1030,8 +1091,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
             ),
             onConfirmed: onConfirmed,
             onShare: () {
+
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                _shareWidget(dialogKey); // will now find the boundary
+                _shareWidget(dialogKey);
               });
             },
             isLoading: false,
@@ -1045,7 +1107,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
           builder: (context) => TransactionStatusCheckDialog(
             repaintKey: dialogKey,
             data: TransactionStatusCheckData(
-              title: "Transaction Details",
+              title: AppLocalizations.of(context)!.transactionDetails,
               dateTime: DateFormat("MMM d, yyyy | h:mm:ss a").format(DateTime.parse(transaction.authTimestamp)),
               reference: (transaction.transactionRef.trim().isEmpty) ? transaction.debitRef : transaction.transactionRef,
               source: transaction.debtorsAccount,

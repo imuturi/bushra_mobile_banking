@@ -345,86 +345,86 @@ class _PayBillElectricityScreenState extends State<PayBillElectricityScreen> {
             //   ],
             // ),
             // Frequency buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: frequencies.map((freq) {
-                bool isSelected = freq == selectedFrequency;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedFrequency = freq;
-                    });
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: isSelected
-                            ? Colors.red.shade900
-                            : Colors.black,
-                        width: 2,
-                      ),
-                    ),
-                    child: Text(
-                      freq,
-                      style: TextStyle(
-                        color: isSelected ? Colors.red.shade900 : Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 8,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: frequencies.map((freq) {
+            //     bool isSelected = freq == selectedFrequency;
+            //     return GestureDetector(
+            //       onTap: () {
+            //         setState(() {
+            //           selectedFrequency = freq;
+            //         });
+            //       },
+            //       child: Container(
+            //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            //         decoration: BoxDecoration(
+            //           shape: BoxShape.circle,
+            //           border: Border.all(
+            //             color: isSelected
+            //                 ? Colors.red.shade900
+            //                 : Colors.black,
+            //             width: 2,
+            //           ),
+            //         ),
+            //         child: Text(
+            //           freq,
+            //           style: TextStyle(
+            //             color: isSelected ? Colors.red.shade900 : Colors.black,
+            //             fontWeight: FontWeight.w500,
+            //             fontSize: 8,
+            //           ),
+            //         ),
+            //       ),
+            //     );
+            //   }).toList(),
+            // ),
 
-            const SizedBox(height: 22),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Starts on",
-                    style:
-                    TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-            const Text("Repeat on",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            const SizedBox(height: 12),
-
-            // Day selector
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(days.length, (index) {
-                bool isSelected = selectedDays.contains(index);
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (isSelected) {
-                        selectedDays.remove(index);
-                      } else {
-                        selectedDays.add(index);
-                      }
-                    });
-                  },
-                  child: CircleAvatar(
-                    radius: 18,
-                    backgroundColor:
-                    isSelected ? Colors.red.shade900 : Colors.grey.shade300,
-                    child: Text(
-                      days[index],
-                      style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.indigo[900],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            ),
+            // const SizedBox(height: 22),
+            // const Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("Starts on",
+            //         style:
+            //         TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+            //   ],
+            // ),
+            //
+            // const SizedBox(height: 16),
+            // const Text("Repeat on",
+            //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            // const SizedBox(height: 12),
+            //
+            // // Day selector
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: List.generate(days.length, (index) {
+            //     bool isSelected = selectedDays.contains(index);
+            //     return GestureDetector(
+            //       onTap: () {
+            //         setState(() {
+            //           if (isSelected) {
+            //             selectedDays.remove(index);
+            //           } else {
+            //             selectedDays.add(index);
+            //           }
+            //         });
+            //       },
+            //       child: CircleAvatar(
+            //         radius: 18,
+            //         backgroundColor:
+            //         isSelected ? Colors.red.shade900 : Colors.grey.shade300,
+            //         child: Text(
+            //           days[index],
+            //           style: TextStyle(
+            //             color: isSelected ? Colors.white : Colors.indigo[900],
+            //             fontWeight: FontWeight.bold,
+            //             fontSize: 12,
+            //           ),
+            //         ),
+            //       ),
+            //     );
+            //   }),
+            // ),
             const SizedBox(height: 10),
             // Transfer Button
             SizedBox(
