@@ -15,7 +15,7 @@ class IdCaptureScreen extends StatefulWidget {
     required this.accountType,
     required this.passportNumber,
     required this.phoneNumber,
-    required this.dateOfBirth
+    required this.dateOfBirth,
   });
 
   @override
@@ -55,55 +55,158 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
       final image = await _cameraController!.takePicture();
       File capturedFile = File(image.path);
 
-      // Load image for cropping
       img.Image? original = img.decodeImage(await capturedFile.readAsBytes());
       if (original != null) {
-        // int centerX = original.width ~/ 2;
-        // int centerY = original.height ~/ 2;
-        // int cropWidth = 300;
-        // int cropHeight = 180;
-        // img.Image cropped = img.copyCrop(original,
-        //     x: centerX - cropWidth ~/ 2,
-        //     y: centerY - cropHeight ~/ 2,
-        //     width: cropWidth,
-        //     height: cropHeight
-        // );
-        // File croppedFile = File(image.path)..writeAsBytesSync(img.encodeJpg(cropped));
-        //
-        // setState(() {
-        //   if (_isFrontSide) {
-        //     _frontImage = croppedFile;
-        //   } else {
-        //     _backImage = croppedFile;
-        //   }
-        // });
+        if (!mounted) return;
 
-        if (!mounted) return; // Ensure widget is still active
-        setState(() {
-          if (_isFrontSide) {
+        if (_isFrontSide) {
+          // Front captured — show confirmation sheet before proceeding to back
+          setState(() {
             _frontImage = capturedFile;
-          } else {
+          });
+          _showFrontCapturedSheet(context, capturedFile);
+        } else {
+          // Back captured — proceed normally
+          setState(() {
             _backImage = capturedFile;
-          }
-        });
+          });
 
-        if (_frontImage != null && _backImage != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PreviewScreen(
-                frontImage: _frontImage!,
-                backImage: _backImage!,
-                accountType: widget.accountType,
-                passportNumber: widget.passportNumber,
-                phoneNumber: widget.phoneNumber,
-                dateOfBirth: widget.dateOfBirth,
+          if (_frontImage != null && _backImage != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PreviewScreen(
+                  frontImage: _frontImage!,
+                  backImage: _backImage!,
+                  accountType: widget.accountType,
+                  passportNumber: widget.passportNumber,
+                  phoneNumber: widget.phoneNumber,
+                  dateOfBirth: widget.dateOfBirth,
+                ),
               ),
-            ),
-          );
+            );
+          }
         }
       }
     }
+  }
+
+  void _showFrontCapturedSheet(BuildContext context, File capturedFile) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) {
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Success icon + title
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade50,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.check_circle, color: Colors.green.shade600, size: 28),
+                  ),
+                  const SizedBox(width: 12),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Front Side Captured!",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "Now let's scan the back side of your ID.",
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              // Thumbnail of the captured front image
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.file(
+                  capturedFile,
+                  height: 160,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Retake or Continue buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        // Clear front image and dismiss sheet to retake
+                        setState(() {
+                          _frontImage = null;
+                        });
+                        Navigator.pop(sheetContext);
+                      },
+                      icon: const Icon(Icons.refresh, size: 18),
+                      label: const Text("Retake"),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.black87,
+                        side: const BorderSide(color: Colors.grey),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pop(sheetContext);
+                        // Switch to back side
+                        setState(() {
+                          _isFrontSide = false;
+                        });
+                      },
+                      icon: const Icon(Icons.flip, size: 18, color: Colors.white),
+                      label: const Text(
+                        "Scan Back Side",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red.shade900,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -130,12 +233,14 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
                       IconButton(
                         icon: const Icon(Icons.flash_on, color: Colors.white, size: 30),
                         onPressed: () {
-                          //TODO
+                          // TODO: implement flash toggle
                         },
                       ),
                     ],
                   ),
                 ),
+
+                // Toggle with captured indicator
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 1),
                   padding: const EdgeInsets.all(4),
@@ -146,39 +251,41 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _toggleButton("FRONT", _isFrontSide),
-                      _toggleButton("BACK", !_isFrontSide),
+                      _toggleButton("FRONT", _isFrontSide, captured: _frontImage != null),
+                      _toggleButton("BACK", !_isFrontSide, captured: _backImage != null),
                     ],
                   ),
                 ),
+
                 if (_showInstructions)
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Place the camera to fit in the frame and scan ID to get details of the Identification card",
+                          style: TextStyle(color: Colors.black),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _showInstructions = false;
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade900),
+                          child: const Text("GOT IT", style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Place the camera to fit in the frame and scan ID to get details of the Identification card",
-                        style: TextStyle(color: Colors.black),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 8),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _showInstructions = false;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade900),
-                        child: const Text("GOT IT", style: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  ),
-                ),
+
                 const Spacer(),
                 Container(
                   width: 300,
@@ -192,10 +299,7 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
                 const Spacer(),
                 IconButton(
                   icon: const Icon(Icons.camera, color: Colors.white, size: 50),
-                  onPressed: (){
-                    //TODO
-                    _captureImage(context);
-                  },
+                  onPressed: () => _captureImage(context),
                 ),
                 const SizedBox(height: 30),
               ],
@@ -206,7 +310,7 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
     );
   }
 
-  Widget _toggleButton(String label, bool isActive) {
+  Widget _toggleButton(String label, bool isActive, {bool captured = false}) {
     return GestureDetector(
       onTap: () => setState(() => _isFrontSide = (label == "FRONT")),
       child: Container(
@@ -216,12 +320,25 @@ class _IdCaptureScreenState extends State<IdCaptureScreen> {
           color: isActive ? Colors.purple.shade900 : Colors.white,
           borderRadius: BorderRadius.circular(18),
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isActive ? Colors.white : Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: isActive ? Colors.white : Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (captured) ...[
+              const SizedBox(width: 4),
+              Icon(
+                Icons.check_circle,
+                size: 14,
+                color: isActive ? Colors.greenAccent : Colors.green.shade600,
+              ),
+            ],
+          ],
         ),
       ),
     );
@@ -243,7 +360,7 @@ class PreviewScreen extends StatelessWidget {
     required this.accountType,
     required this.passportNumber,
     required this.phoneNumber,
-    required this.dateOfBirth
+    required this.dateOfBirth,
   });
 
   @override
@@ -264,7 +381,7 @@ class PreviewScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const SizedBox(height: 40,),
+          const SizedBox(height: 40),
           Expanded(
             child: ListView(
               children: [
@@ -282,23 +399,25 @@ class PreviewScreen extends StatelessWidget {
               ],
             ),
           ),
-          // Image.file(frontImage),
-          // Image.file(backImage),
           Padding(
             padding: const EdgeInsets.all(16),
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  //TODO
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => OpenAccountVerifyIdentityScreen(
-                    frontImage: frontImage,
-                    backImage: backImage,
-                    accountType: accountType,
-                    passportNumber: passportNumber,
-                    phoneNumber: phoneNumber,
-                    dateOfBirth: dateOfBirth,)
-                  ),);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OpenAccountVerifyIdentityScreen(
+                        frontImage: frontImage,
+                        backImage: backImage,
+                        accountType: accountType,
+                        passportNumber: passportNumber,
+                        phoneNumber: phoneNumber,
+                        dateOfBirth: dateOfBirth,
+                      ),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red.shade900,
@@ -317,7 +436,7 @@ class PreviewScreen extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
